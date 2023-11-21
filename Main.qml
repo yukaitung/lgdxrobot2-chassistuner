@@ -16,6 +16,26 @@ ApplicationWindow {
         SerialPort.updateSerialDevices();
     }
 
+    Connections {
+        target: SerialPort
+        function onDeviceReadyChanged() {
+            if(SerialPort.deviceReady) {
+                wheel1Kp.text = SerialPort.pFirstConstants[0];
+                wheel2Kp.text = SerialPort.pFirstConstants[1];
+                wheel3Kp.text = SerialPort.pFirstConstants[2];
+                wheel4Kp.text = SerialPort.pFirstConstants[3];
+                wheel1Ki.text = SerialPort.iFirstConstants[0];
+                wheel2Ki.text = SerialPort.iFirstConstants[1];
+                wheel3Ki.text = SerialPort.iFirstConstants[2];
+                wheel4Ki.text = SerialPort.iFirstConstants[3];
+                wheel1Kd.text = SerialPort.dFirstConstants[0];
+                wheel2Kd.text = SerialPort.dFirstConstants[1];
+                wheel3Kd.text = SerialPort.dFirstConstants[2];
+                wheel4Kd.text = SerialPort.dFirstConstants[3];
+            }
+        }
+    }
+
     ScrollView {
         anchors.fill: parent
 
@@ -56,8 +76,20 @@ ApplicationWindow {
                 }
             }
 
-            Label {
-                text: qsTr("2. Robot status:")
+            RowLayout {
+                Label {
+                    text: qsTr("2. Robot status: ")
+                }
+                Label {
+                    text: qsTr("Connected")
+                    color: "Green"
+                    visible: SerialPort.deviceReady
+                }
+                Label {
+                    text: qsTr("Disconnected")
+                    color: "Red"
+                    visible: !SerialPort.deviceReady
+                }
             }
 
             Label {
@@ -76,6 +108,11 @@ ApplicationWindow {
                 .arg(SerialPort.pConstants[1]).arg(SerialPort.iConstants[1]).arg(SerialPort.dConstants[1])
                 .arg(SerialPort.pConstants[2]).arg(SerialPort.iConstants[2]).arg(SerialPort.dConstants[2])
                 .arg(SerialPort.pConstants[3]).arg(SerialPort.iConstants[3]).arg(SerialPort.dConstants[3])
+            }
+
+            Label {
+                text: qsTr("2.4. PWM (Out of 1027): Wheel 1: %1, Wheel 2: %2, Wheel 3: %3, Wheel 4: %4")
+                .arg(SerialPort.pwm[0]).arg(SerialPort.pwm[1]).arg(SerialPort.pwm[2]).arg(SerialPort.pwm[3])
             }
 
             RowLayout {
@@ -150,17 +187,6 @@ ApplicationWindow {
                     Layout.preferredHeight: 500
                     antialiasing: true
                     legend.visible: false
-
-                    LineSeries {
-                        name: "Line"
-                        XYPoint { x: 0; y: 0 }
-                        XYPoint { x: 1.1; y: 2.1 }
-                        XYPoint { x: 1.9; y: 3.3 }
-                        XYPoint { x: 2.1; y: 2.1 }
-                        XYPoint { x: 2.9; y: 4.9 }
-                        XYPoint { x: 3.4; y: 3.0 }
-                        XYPoint { x: 4.1; y: 3.3 }
-                    }
                 }
 
                 ChartView {
@@ -168,17 +194,6 @@ ApplicationWindow {
                     Layout.preferredHeight: 500
                     antialiasing: true
                     legend.visible: false
-
-                    LineSeries {
-                        name: "Line"
-                        XYPoint { x: 0; y: 0 }
-                        XYPoint { x: 1.1; y: 2.1 }
-                        XYPoint { x: 1.9; y: 3.3 }
-                        XYPoint { x: 2.1; y: 2.1 }
-                        XYPoint { x: 2.9; y: 4.9 }
-                        XYPoint { x: 3.4; y: 3.0 }
-                        XYPoint { x: 4.1; y: 3.3 }
-                    }
                 }
 
                 ChartView {
@@ -186,17 +201,6 @@ ApplicationWindow {
                     Layout.preferredHeight: 500
                     antialiasing: true
                     legend.visible: false
-
-                    LineSeries {
-                        name: "Line"
-                        XYPoint { x: 0; y: 0 }
-                        XYPoint { x: 1.1; y: 2.1 }
-                        XYPoint { x: 1.9; y: 3.3 }
-                        XYPoint { x: 2.1; y: 2.1 }
-                        XYPoint { x: 2.9; y: 4.9 }
-                        XYPoint { x: 3.4; y: 3.0 }
-                        XYPoint { x: 4.1; y: 3.3 }
-                    }
                 }
 
                 ChartView {
@@ -204,93 +208,118 @@ ApplicationWindow {
                     Layout.preferredHeight: 500
                     antialiasing: true
                     legend.visible: false
+                }
 
-                    LineSeries {
-                        name: "Line"
-                        XYPoint { x: 0; y: 0 }
-                        XYPoint { x: 1.1; y: 2.1 }
-                        XYPoint { x: 1.9; y: 3.3 }
-                        XYPoint { x: 2.1; y: 2.1 }
-                        XYPoint { x: 2.9; y: 4.9 }
-                        XYPoint { x: 3.4; y: 3.0 }
-                        XYPoint { x: 4.1; y: 3.3 }
+                Button {
+                    text: qsTr("Reset Chart")
+                }
+
+                Button {
+                    text: qsTr("Reset Chart")
+                }
+
+                Button {
+                    text: qsTr("Reset Chart")
+                }
+
+                Button {
+                    text: qsTr("Reset Chart")
+                }
+
+                Label {
+                    text: qsTr("Test PID target velocity:")
+                }
+
+                Label {
+                    text: qsTr("Test PID target velocity:")
+                }
+
+                Label {
+                    text: qsTr("Test PID target velocity:")
+                }
+
+                Label {
+                    text: qsTr("Test PID target velocity:")
+                }
+
+                TextField {
+                    id: wheel1Target
+                }
+
+                TextField {
+                    id: wheel2Target
+                }
+
+                TextField {
+                    id: wheel3Target
+                }
+
+                TextField {
+                    id: wheel4Target
+                }
+
+                Button {
+                    text: qsTr("Test")
+                    onClicked: {
+                        if(wheel1Target.text.length === 0)
+                            wheel1Target = "0";
+                        SerialPort.setSingleWheelVelocity(0, wheel1Target.text)
                     }
                 }
 
                 Button {
-                    text: qsTr("Reset Chart")
-                }
-
-                Button {
-                    text: qsTr("Reset Chart")
-                }
-
-                Button {
-                    text: qsTr("Reset Chart")
-                }
-
-                Button {
-                    text: qsTr("Reset Chart")
-                }
-
-                Label {
-                    text: qsTr("Test PID target velocity:")
-                }
-
-                Label {
-                    text: qsTr("Test PID target velocity:")
-                }
-
-                Label {
-                    text: qsTr("Test PID target velocity:")
-                }
-
-                Label {
-                    text: qsTr("Test PID target velocity:")
-                }
-
-                TextField {
-                }
-
-                TextField {
-                }
-
-                TextField {
-                }
-
-                TextField {
+                    text: qsTr("Test")
+                    onClicked: {
+                        if(wheel2Target.text.length === 0)
+                            wheel2Target = "0";
+                        SerialPort.setSingleWheelVelocity(1, wheel2Target.text)
+                    }
                 }
 
                 Button {
                     text: qsTr("Test")
+                    onClicked: {
+                        if(wheel3Target.text.length === 0)
+                            wheel3Target = "0";
+                        SerialPort.setSingleWheelVelocity(2, wheel3Target.text)
+                    }
                 }
 
                 Button {
                     text: qsTr("Test")
-                }
-
-                Button {
-                    text: qsTr("Test")
-                }
-
-                Button {
-                    text: qsTr("Test")
-                }
-
-                Button {
-                    text: qsTr("Stop")
+                    onClicked: {
+                        if(wheel4Target.text.length === 0)
+                            wheel4Target = "0";
+                        SerialPort.setSingleWheelVelocity(3, wheel4Target.text)
+                    }
                 }
 
                 Button {
                     text: qsTr("Stop")
+                    onClicked: {
+                        SerialPort.setSingleWheelVelocity(0, 0)
+                    }
                 }
 
                 Button {
                     text: qsTr("Stop")
+                    onClicked: {
+                        SerialPort.setSingleWheelVelocity(1, 0)
+                    }
                 }
 
                 Button {
                     text: qsTr("Stop")
+                    onClicked: {
+                        SerialPort.setSingleWheelVelocity(2, 0)
+                    }
+                }
+
+                Button {
+                    text: qsTr("Stop")
+                    onClicked: {
+                        SerialPort.setSingleWheelVelocity(3, 0)
+                    }
                 }
 
                 Label {
@@ -455,39 +484,99 @@ ApplicationWindow {
 
                 Button {
                     text: qsTr("Update PID")
+                    onClicked: {
+                        if(wheel1Kp.text.length === 0)
+                            wheel1Kp.text = "0";
+                        if(wheel1Ki.text.length === 0)
+                            wheel1Ki.text = "0";
+                        if(wheel1Kd.text.length === 0)
+                            wheel1Kd.text = "0";
+                        SerialPort.setPID(0, wheel1Kp.text, wheel1Ki.text, wheel1Kd.text);
+                    }
                 }
 
                 Button {
                     text: qsTr("Update PID")
+                    onClicked: {
+                        if(wheel2Kp.text.length === 0)
+                            wheel2Kp.text = "0";
+                        if(wheel2Ki.text.length === 0)
+                            wheel2Ki.text = "0";
+                        if(wheel2Kd.text.length === 0)
+                            wheel2Kd.text = "0";
+                        SerialPort.setPID(1, wheel2Kp.text, wheel2Ki.text, wheel2Kd.text);
+                    }
                 }
 
                 Button {
                     text: qsTr("Update PID")
+                    onClicked: {
+                        if(wheel3Kp.text.length === 0)
+                            wheel3Kp.text = "0";
+                        if(wheel3Ki.text.length === 0)
+                            wheel3Ki.text = "0";
+                        if(wheel3Kd.text.length === 0)
+                            wheel3Kd.text = "0";
+                        SerialPort.setPID(2, wheel3Kp.text, wheel3Ki.text, wheel3Kd.text);
+                    }
                 }
 
                 Button {
                     text: qsTr("Update PID")
+                    onClicked: {
+                        if(wheel4Kp.text.length === 0)
+                            wheel4Kp.text = "0";
+                        if(wheel4Ki.text.length === 0)
+                            wheel4Ki.text = "0";
+                        if(wheel4Kd.text.length === 0)
+                            wheel4Kd.text = "0";
+                        SerialPort.setPID(3, wheel4Kp.text, wheel4Ki.text, wheel4Kd.text);
+                    }
                 }
 
                 Button {
                     text: qsTr("Reset PID")
+                    onClicked: {
+                        wheel1Kp.text = SerialPort.pFirstConstants[0];
+                        wheel1Ki.text = SerialPort.iFirstConstants[0];
+                        wheel1Kd.text = SerialPort.dFirstConstants[0];
+                        SerialPort.setPID(0, wheel1Kp.text, wheel1Ki.text, wheel1Kd.text);
+                    }
                 }
 
                 Button {
                     text: qsTr("Reset PID")
+                    onClicked: {
+                        wheel2Kp.text = SerialPort.pFirstConstants[1];
+                        wheel2Ki.text = SerialPort.iFirstConstants[1];
+                        wheel2Kd.text = SerialPort.dFirstConstants[1];
+                        SerialPort.setPID(1, wheel2Kp.text, wheel2Ki.text, wheel2Kd.text);
+                    }
                 }
 
                 Button {
                     text: qsTr("Reset PID")
+                    onClicked: {
+                        wheel3Kp.text = SerialPort.pFirstConstants[2];
+                        wheel3Ki.text = SerialPort.iFirstConstants[2];
+                        wheel3Kd.text = SerialPort.dFirstConstants[2];
+                        SerialPort.setPID(2, wheel3Kp.text, wheel3Ki.text, wheel3Kd.text);
+                    }
                 }
 
                 Button {
                     text: qsTr("Reset PID")
+                    onClicked: {
+                        wheel4Kp.text = SerialPort.pFirstConstants[3];
+                        wheel4Ki.text = SerialPort.iFirstConstants[3];
+                        wheel4Kd.text = SerialPort.dFirstConstants[3];
+                        SerialPort.setPID(3, wheel4Kp.text, wheel4Ki.text, wheel4Kd.text);
+                    }
                 }
             }
 
             Label {
-
+                // Empty
             }
         }
     }

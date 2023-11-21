@@ -17,6 +17,11 @@ class SerialPort : public QObject
         QVector<int> mPConstants = {0, 0, 0, 0};
         QVector<int> mIConstants = {0, 0, 0, 0};
         QVector<int> mDConstants = {0, 0, 0, 0};
+        QVector<int> mFirstPConstants = {0, 0, 0, 0};
+        QVector<int> mFirstIConstants = {0, 0, 0, 0};
+        QVector<int> mFirstDConstants = {0, 0, 0, 0};
+        QVector<int> mPwm = {0, 0, 0, 0};
+        bool mDeviceReady = false;
 
         Q_PROPERTY(QVector<QString> serialDevicesName READ serialDevicesName NOTIFY serialDevicesNameChanged)
         Q_PROPERTY(QVector<float> targetWheelsVelocity READ targetWheelsVelocity NOTIFY robotStatusChanged)
@@ -24,6 +29,11 @@ class SerialPort : public QObject
         Q_PROPERTY(QVector<int> pConstants READ pConstants NOTIFY robotStatusChanged)
         Q_PROPERTY(QVector<int> iConstants READ iConstants NOTIFY robotStatusChanged)
         Q_PROPERTY(QVector<int> dConstants READ dConstants NOTIFY robotStatusChanged)
+        Q_PROPERTY(QVector<int> pFirstConstants READ pFirstConstants NOTIFY robotStatusChanged)
+        Q_PROPERTY(QVector<int> iFirstConstants READ iFirstConstants NOTIFY robotStatusChanged)
+        Q_PROPERTY(QVector<int> dFirstConstants READ dFirstConstants NOTIFY robotStatusChanged)
+        Q_PROPERTY(QVector<int> pwm READ pwm NOTIFY robotStatusChanged)
+        Q_PROPERTY(bool deviceReady READ deviceReady NOTIFY deviceReadyChanged)
 
         QSerialPort mSerial;
         QByteArray mSerialBuffer;
@@ -41,16 +51,24 @@ class SerialPort : public QObject
         QVector<int> pConstants() {return mPConstants;}
         QVector<int> iConstants() {return mIConstants;}
         QVector<int> dConstants() {return mDConstants;}
+        QVector<int> pFirstConstants() {return mFirstPConstants;}
+        QVector<int> iFirstConstants() {return mFirstIConstants;}
+        QVector<int> dFirstConstants() {return mFirstDConstants;}
+        QVector<int> pwm() {return mPwm;}
+        bool deviceReady() {return mDeviceReady;}
 
     public slots:
         void updateSerialDevices();
         void connect(QString portName);
         void read();
         void setWheelsVelocity(float x, float y, float w);
+        void setSingleWheelVelocity(int motor, float velocity);
+        void setPID(int motor, int kp, int ki, int kd);
 
     signals:
         void serialDevicesNameChanged();
         void robotStatusChanged();
+        void deviceReadyChanged();
 };
 
 #endif // SERIALPORT_H
