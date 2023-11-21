@@ -4,12 +4,14 @@ project(LGDXRobot2-ChassisTuner VERSION 0.1 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(Qt6 6.4 REQUIRED COMPONENTS Quick Charts)
+find_package(Qt6 6.4 REQUIRED COMPONENTS Quick SerialPort Charts)
 
 qt_standard_project_setup()
 
 qt_add_executable(appLGDXRobot2-ChassisTuner
     main.cpp
+    SerialPort.h
+    SerialPort.cpp
 )
 
 qt_add_qml_module(appLGDXRobot2-ChassisTuner
@@ -27,7 +29,7 @@ set_target_properties(appLGDXRobot2-ChassisTuner PROPERTIES
 )
 
 target_link_libraries(appLGDXRobot2-ChassisTuner
-    PRIVATE Qt6::Quick Qt6::Charts
+    PRIVATE Qt6::Quick Qt6::SerialPort Qt6::Charts
 )
 
 install(TARGETS appLGDXRobot2-ChassisTuner

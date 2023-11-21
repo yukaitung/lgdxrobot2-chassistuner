@@ -3,13 +3,18 @@ import QtQuick.Window
 import QtQuick.Layouts
 import QtQuick.Controls
 import QtCharts
+import SerialPort
 
 ApplicationWindow {
     id: window
     width: 1920
     height: 1080
     visible: true
-    title: qsTr("LGDX Robot 2 Chassis Turner")
+    title: qsTr("LGDX Robot 2 Chassis Tuner")
+
+    Component.onCompleted: {
+        SerialPort.updateSerialDevices();
+    }
 
     ScrollView {
         anchors.fill: parent
@@ -35,20 +40,42 @@ ApplicationWindow {
                 }
 
                 ComboBox {
-                    model: ["First", "Second", "Third"]
+                    id: serialDevicesCombo
+                    Layout.preferredWidth: 300
+                    model: SerialPort.serialDevicesName
                 }
 
                 Button {
                     text: qsTr("Connect")
+                    onClicked: SerialPort.connect(serialDevicesCombo.currentText)
                 }
 
                 Button {
                     text: qsTr("Refresh")
+                    onClicked: SerialPort.updateSerialDevices()
                 }
             }
 
             Label {
                 text: qsTr("2. Robot status:")
+            }
+
+            Label {
+                text: qsTr("2.1. Target Wheels Velocity (rad/s): Wheel 1: %1, Wheel 2: %2, Wheel 3 %3, Wheel 4: %4")
+                .arg(SerialPort.targetWheelsVelocity[0]).arg(SerialPort.targetWheelsVelocity[1]).arg(SerialPort.targetWheelsVelocity[2]).arg(SerialPort.targetWheelsVelocity[3])
+            }
+
+            Label {
+                text: qsTr("2.2. Measured Wheels Velocity (rad/s): Wheel 1: %1, Wheel 2: %2, Wheel 3: %3, Wheel 4: %4")
+                .arg(SerialPort.measuredWheelsVelocity[0]).arg(SerialPort.measuredWheelsVelocity[1]).arg(SerialPort.measuredWheelsVelocity[2]).arg(SerialPort.measuredWheelsVelocity[3])
+            }
+
+            Label {
+                text: qsTr("2.3. PID (P, I, D): Wheel 1: (%1, %2, %3), Wheel 2: (%4, %5, %6), Wheel 3: (%7, %8, %9), Wheel 4: (%10, %11, %12)")
+                .arg(SerialPort.pConstants[0]).arg(SerialPort.iConstants[0]).arg(SerialPort.dConstants[0])
+                .arg(SerialPort.pConstants[1]).arg(SerialPort.iConstants[1]).arg(SerialPort.dConstants[1])
+                .arg(SerialPort.pConstants[2]).arg(SerialPort.iConstants[2]).arg(SerialPort.dConstants[2])
+                .arg(SerialPort.pConstants[3]).arg(SerialPort.iConstants[3]).arg(SerialPort.dConstants[3])
             }
 
             RowLayout {
@@ -59,23 +86,36 @@ ApplicationWindow {
                 }
 
                 TextField {
+                    id: xVelocityTextField
                     placeholderText: qsTr("X velocity")
                 }
 
                 TextField {
+                    id: yVelocityTextField
                     placeholderText: qsTr("Y velocity")
                 }
 
                 TextField {
+                    id: wVelocityTextField
                     placeholderText: qsTr("w velocity")
                 }
 
                 Button {
                     text: qsTr("Send")
+                    onClicked: {
+                        if(xVelocityTextField.text.length === 0)
+                            xVelocityTextField.text = "0";
+                        if(yVelocityTextField.text.length === 0)
+                            yVelocityTextField.text = "0";
+                        if(wVelocityTextField.text.length === 0)
+                            wVelocityTextField.text = "0";
+                        SerialPort.setWheelsVelocity(xVelocityTextField.text, yVelocityTextField.text, wVelocityTextField.text)
+                    }
                 }
 
                 Button {
                     text: qsTr("Stop")
+                    onClicked: SerialPort.setWheelsVelocity(0, 0, 0)
                 }
             }
 
@@ -237,6 +277,22 @@ ApplicationWindow {
                     text: qsTr("Test")
                 }
 
+                Button {
+                    text: qsTr("Stop")
+                }
+
+                Button {
+                    text: qsTr("Stop")
+                }
+
+                Button {
+                    text: qsTr("Stop")
+                }
+
+                Button {
+                    text: qsTr("Stop")
+                }
+
                 Label {
                     text: qsTr("Set PID:")
                 }
@@ -261,7 +317,7 @@ ApplicationWindow {
                         verticalAlignment: Text.AlignVCenter
                     }
                     TextField {
-
+                        id: wheel1Kp
                     }
                 }
 
@@ -273,7 +329,7 @@ ApplicationWindow {
                         verticalAlignment: Text.AlignVCenter
                     }
                     TextField {
-
+                        id: wheel2Kp
                     }
                 }
 
@@ -285,7 +341,7 @@ ApplicationWindow {
                         verticalAlignment: Text.AlignVCenter
                     }
                     TextField {
-
+                        id: wheel3Kp
                     }
                 }
 
@@ -297,7 +353,7 @@ ApplicationWindow {
                         verticalAlignment: Text.AlignVCenter
                     }
                     TextField {
-
+                        id: wheel4Kp
                     }
                 }
 
@@ -309,7 +365,7 @@ ApplicationWindow {
                         verticalAlignment: Text.AlignVCenter
                     }
                     TextField {
-
+                        id: wheel1Ki
                     }
                 }
 
@@ -321,7 +377,7 @@ ApplicationWindow {
                         verticalAlignment: Text.AlignVCenter
                     }
                     TextField {
-
+                        id: wheel2Ki
                     }
                 }
 
@@ -333,7 +389,7 @@ ApplicationWindow {
                         verticalAlignment: Text.AlignVCenter
                     }
                     TextField {
-
+                        id: wheel3Ki
                     }
                 }
 
@@ -345,7 +401,7 @@ ApplicationWindow {
                         verticalAlignment: Text.AlignVCenter
                     }
                     TextField {
-
+                        id: wheel4Ki
                     }
                 }
 
@@ -357,7 +413,7 @@ ApplicationWindow {
                         verticalAlignment: Text.AlignVCenter
                     }
                     TextField {
-
+                        id: wheel1Kd
                     }
                 }
 
@@ -369,7 +425,7 @@ ApplicationWindow {
                         verticalAlignment: Text.AlignVCenter
                     }
                     TextField {
-
+                        id: wheel2Kd
                     }
                 }
 
@@ -381,7 +437,7 @@ ApplicationWindow {
                         verticalAlignment: Text.AlignVCenter
                     }
                     TextField {
-
+                        id: wheel3Kd
                     }
                 }
 
@@ -393,7 +449,7 @@ ApplicationWindow {
                         verticalAlignment: Text.AlignVCenter
                     }
                     TextField {
-
+                        id: wheel4Kd
                     }
                 }
 
