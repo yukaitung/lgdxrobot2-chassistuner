@@ -5,14 +5,6 @@ SerialPort::SerialPort(QObject *parent) : QObject{parent}
     QObject::connect(&mSerial, &QSerialPort::readyRead, this, &SerialPort::read);
 }
 
-float SerialPort::uint32ToFloat(uint32_t n){
-    return (float)(*(float*)&n);
-}
-
-uint32_t combineByte(uint32_t a, uint32_t b, uint32_t c, uint32_t d) {
-    return a << 24 | b << 16 | c << 8 | d;
-}
-
 QObject *SerialPort::qmlInstance(QQmlEngine *engine, QJSEngine *scriptEngine)
 {
     Q_UNUSED(engine);
@@ -54,38 +46,42 @@ void SerialPort::read()
         QByteArray frame = mSerialBuffer + data;
         int index = 2;
         for(int i = 0; i < 4; i++) {
-            uint32_t temp = combineByte((uint8_t) frame[index], (uint8_t) frame[index + 1], (uint8_t) frame[index + 2], (uint8_t) frame[index + 3]);
+            uint32_t temp = combineBytes((uint8_t) frame[index], (uint8_t) frame[index + 1], (uint8_t) frame[index + 2], (uint8_t) frame[index + 3]);
             mTargetWheelsVelocity[i] = uint32ToFloat(temp);
             index += 4;
         }
         for(int i = 0; i < 4; i++) {
-            uint32_t temp = combineByte((uint8_t) frame[index], (uint8_t) frame[index + 1], (uint8_t) frame[index + 2], (uint8_t) frame[index + 3]);
+            uint32_t temp = combineBytes((uint8_t) frame[index], (uint8_t) frame[index + 1], (uint8_t) frame[index + 2], (uint8_t) frame[index + 3]);
             mMeasuredWheelsVelocity[i] = uint32ToFloat(temp);
             index += 4;
         }
         for(int i = 0; i < 4; i++) {
-            mPConstants[i] = combineByte((uint8_t) frame[index], (uint8_t) frame[index + 1], (uint8_t) frame[index + 2], (uint8_t) frame[index + 3]);
+            uint32_t temp = combineBytes((uint8_t) frame[index], (uint8_t) frame[index + 1], (uint8_t) frame[index + 2], (uint8_t) frame[index + 3]);
+            mPConstants[i] = uint32ToFloat(temp);
             if(!mDeviceReady) {
-                mFirstPConstants[i] = mPConstants[i];
+                mFirstPConstants[i] = QString::number(mPConstants[i]);
+                qDebug() << mFirstPConstants[i];
             }
             index += 4;
         }
         for(int i = 0; i < 4; i++) {
-            mIConstants[i] = combineByte((uint8_t) frame[index], (uint8_t) frame[index + 1], (uint8_t) frame[index + 2], (uint8_t) frame[index + 3]);
+            uint32_t temp = combineBytes((uint8_t) frame[index], (uint8_t) frame[index + 1], (uint8_t) frame[index + 2], (uint8_t) frame[index + 3]);
+            mIConstants[i] = uint32ToFloat(temp);
             if(!mDeviceReady) {
-                mFirstIConstants[i] = mIConstants[i];
+                mFirstIConstants[i] = QString::number(mIConstants[i]);
             }
             index += 4;
         }
         for(int i = 0; i < 4; i++) {
-            mDConstants[i] = combineByte((uint8_t) frame[index], (uint8_t) frame[index + 1], (uint8_t) frame[index + 2], (uint8_t) frame[index + 3]);
+            uint32_t temp = combineBytes((uint8_t) frame[index], (uint8_t) frame[index + 1], (uint8_t) frame[index + 2], (uint8_t) frame[index + 3]);
+            mDConstants[i] = uint32ToFloat(temp);
             if(!mDeviceReady) {
-                mFirstDConstants[i] = mDConstants[i];
+                mFirstDConstants[i] = QString::number(mDConstants[i]);
             }
             index += 4;
         }
         for(int i = 0; i < 4; i++) {
-            mPwm[i] = combineByte((uint8_t) frame[index], (uint8_t) frame[index + 1], (uint8_t) frame[index + 2], (uint8_t) frame[index + 3]);
+            mPwm[i] = combineBytes((uint8_t) frame[index], (uint8_t) frame[index + 1], (uint8_t) frame[index + 2], (uint8_t) frame[index + 3]);
             index += 4;
         }
         if(!mDeviceReady) {
@@ -145,26 +141,29 @@ void SerialPort::setSingleWheelVelocity(int motor, float velocity)
     }
 }
 
-void SerialPort::setPID(int motor, int kp, int ki, int kd)
+void SerialPort::setPID(int motor, float kp, float ki, float kd)
 {
+    uint32_t fp = floatToUint32(kp);
+    uint32_t fi= floatToUint32(ki);
+    uint32_t fd = floatToUint32(kd);
     char ba[17];
     ba[0] = 'P';
     ba[1] = (motor & 4278190080) >> 24;
     ba[2] = (motor & 16711680) >> 16;
     ba[3] = (motor & 65280) >> 8;
     ba[4] = motor & 255;
-    ba[5] = (kp & 4278190080) >> 24;
-    ba[6] = (kp & 16711680) >> 16;
-    ba[7] = (kp & 65280) >> 8;
-    ba[8] = kp & 255;
-    ba[9] = (ki & 4278190080) >> 24;
-    ba[10] = (ki & 16711680) >> 16;
-    ba[11] = (ki & 65280) >> 8;
-    ba[12] = ki & 255;
-    ba[13] = (kd & 4278190080) >> 24;
-    ba[14] = (kd & 16711680) >> 16;
-    ba[15] = (kd & 65280) >> 8;
-    ba[16] = kd & 255;
+    ba[5] = (fp & 4278190080) >> 24;
+    ba[6] = (fp & 16711680) >> 16;
+    ba[7] = (fp & 65280) >> 8;
+    ba[8] = fp & 255;
+    ba[9] = (fi & 4278190080) >> 24;
+    ba[10] = (fi & 16711680) >> 16;
+    ba[11] = (fi & 65280) >> 8;
+    ba[12] = fi & 255;
+    ba[13] = (fd & 4278190080) >> 24;
+    ba[14] = (fd & 16711680) >> 16;
+    ba[15] = (fd & 65280) >> 8;
+    ba[16] = fd & 255;
     if(mSerial.isOpen()) {
         mSerial.write(ba, 17);
     }
