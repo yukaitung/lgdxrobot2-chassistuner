@@ -14,7 +14,17 @@ ApplicationWindow {
 
     Component.onCompleted: {
         SerialPort.updateSerialDevices();
+
     }
+
+    property bool wheel1ChartRun: false
+    property double wheel1ChartStartTimeMs: 0
+    property bool wheel2ChartRun: false
+    property double wheel2ChartStartTimeMs: 0
+    property bool wheel3ChartRun: false
+    property double wheel3ChartStartTimeMs: 0
+    property bool wheel4ChartRun: false
+    property double wheel4ChartStartTimeMs: 0
 
     Connections {
         target: SerialPort
@@ -32,6 +42,32 @@ ApplicationWindow {
                 wheel2Kd.text = SerialPort.dFirstConstants[1];
                 wheel3Kd.text = SerialPort.dFirstConstants[2];
                 wheel4Kd.text = SerialPort.dFirstConstants[3];
+            }
+        }
+        function onRobotStatusChanged() {
+            if(wheel1ChartRun === true) {
+                let timeNow = Date.now() - wheel1ChartStartTimeMs;
+                wheel1ChartLine1.append(timeNow, SerialPort.measuredWheelsVelocity[0]);
+                wheel1ChartLine2.append(timeNow, parseFloat(wheel1Target.text));
+                wheel1ChartAxisX.max = timeNow;
+            }
+            if(wheel2ChartRun === true) {
+                let timeNow = Date.now() - wheel2ChartStartTimeMs;
+                wheel2ChartLine1.append(timeNow, SerialPort.measuredWheelsVelocity[1]);
+                wheel2ChartLine2.append(timeNow, parseFloat(wheel2Target.text));
+                wheel2ChartAxisX.max = timeNow;
+            }
+            if(wheel3ChartRun === true) {
+                let timeNow = Date.now() - wheel3ChartStartTimeMs;
+                wheel3ChartLine1.append(timeNow, SerialPort.measuredWheelsVelocity[2]);
+                wheel3ChartLine2.append(timeNow, parseFloat(wheel3Target.text));
+                wheel3ChartAxisX.max = timeNow;
+            }
+            if(wheel4ChartRun === true) {
+                let timeNow = Date.now() - wheel4ChartStartTimeMs;
+                wheel4ChartLine1.append(timeNow, SerialPort.measuredWheelsVelocity[3]);
+                wheel4ChartLine2.append(timeNow, parseFloat(wheel4Target.text));
+                wheel4ChartAxisX.max = timeNow;
             }
         }
     }
@@ -120,7 +156,7 @@ ApplicationWindow {
                 spacing: 8
 
                 Label {
-                    text: qsTr("3. Test motor:")
+                    text: qsTr("3. Test motor (m/s) before IK:")
                 }
 
                 TextField {
@@ -188,6 +224,25 @@ ApplicationWindow {
                     Layout.preferredHeight: 500
                     antialiasing: true
                     legend.visible: false
+
+                    LineSeries {
+                        id: wheel1ChartLine1
+                        color: "red"
+                        axisX: ValueAxis {
+                            id: wheel1ChartAxisX
+                            min: 0
+                            max: 1
+                        }
+                        axisY: ValueAxis {
+                            id: wheel1ChartAxisY
+                            min: 0
+                            max: 1
+                        }
+                    }
+
+                    LineSeries {
+                        id: wheel1ChartLine2
+                    }
                 }
 
                 ChartView {
@@ -195,6 +250,25 @@ ApplicationWindow {
                     Layout.preferredHeight: 500
                     antialiasing: true
                     legend.visible: false
+
+                    LineSeries {
+                        id: wheel2ChartLine1
+                        color: "red"
+                        axisX: ValueAxis {
+                            id: wheel2ChartAxisX
+                            min: 0
+                            max: 1
+                        }
+                        axisY: ValueAxis {
+                            id: wheel2ChartAxisY
+                            min: 0
+                            max: 1
+                        }
+                    }
+
+                    LineSeries {
+                        id: wheel2ChartLine2
+                    }
                 }
 
                 ChartView {
@@ -202,6 +276,25 @@ ApplicationWindow {
                     Layout.preferredHeight: 500
                     antialiasing: true
                     legend.visible: false
+
+                    LineSeries {
+                        id: wheel3ChartLine1
+                        color: "red"
+                        axisX: ValueAxis {
+                            id: wheel3ChartAxisX
+                            min: 0
+                            max: 1
+                        }
+                        axisY: ValueAxis {
+                            id: wheel3ChartAxisY
+                            min: 0
+                            max: 1
+                        }
+                    }
+
+                    LineSeries {
+                        id: wheel3ChartLine2
+                    }
                 }
 
                 ChartView {
@@ -209,22 +302,41 @@ ApplicationWindow {
                     Layout.preferredHeight: 500
                     antialiasing: true
                     legend.visible: false
+
+                    LineSeries {
+                        id: wheel4ChartLine1
+                        color: "red"
+                        axisX: ValueAxis {
+                            id: wheel4ChartAxisX
+                            min: 0
+                            max: 1
+                        }
+                        axisY: ValueAxis {
+                            id: wheel4ChartAxisY
+                            min: 0
+                            max: 1
+                        }
+                    }
+
+                    LineSeries {
+                        id: wheel4ChartLine2
+                    }
                 }
 
                 Label {
-                    text: qsTr("Test PID target velocity:")
+                    text: qsTr("Test PID target velocity (rad/s) after IK:")
                 }
 
                 Label {
-                    text: qsTr("Test PID target velocity:")
+                    text: qsTr("Test PID target velocity (rad/s) after IK:")
                 }
 
                 Label {
-                    text: qsTr("Test PID target velocity:")
+                    text: qsTr("Test PID target velocity (rad/s) after IK:")
                 }
 
                 Label {
-                    text: qsTr("Test PID target velocity:")
+                    text: qsTr("Test PID target velocity (rad/s) after IK:")
                 }
 
                 TextField {
@@ -251,6 +363,12 @@ ApplicationWindow {
                         onClicked: {
                             if(wheel1Target.text.length === 0)
                                 wheel1Target.text = "0";
+                            wheel1ChartLine1.clear();
+                            wheel1ChartLine2.clear();
+                            wheel1ChartAxisX.max = 1;
+                            wheel1ChartAxisY.max = parseFloat(wheel1Target.text) + 2;
+                            wheel1ChartStartTimeMs = Date.now();
+                            wheel1ChartRun = true;
                             SerialPort.setSingleWheelVelocity(0, wheel1Target.text)
                         }
                     }
@@ -259,6 +377,7 @@ ApplicationWindow {
                         text: qsTr("Stop")
                         onClicked: {
                             SerialPort.setSingleWheelVelocity(0, 0)
+                            wheel1ChartRun = false;
                         }
                     }
                 }
@@ -271,6 +390,12 @@ ApplicationWindow {
                         onClicked: {
                             if(wheel2Target.text.length === 0)
                                 wheel2Target.text = "0";
+                            wheel2ChartLine1.clear();
+                            wheel2ChartLine2.clear();
+                            wheel2ChartAxisX.max = 1;
+                            wheel2ChartAxisY.max = parseFloat(wheel2Target.text) + 2;
+                            wheel2ChartStartTimeMs = Date.now();
+                            wheel2ChartRun = true;
                             SerialPort.setSingleWheelVelocity(1, wheel2Target.text)
                         }
                     }
@@ -279,6 +404,7 @@ ApplicationWindow {
                         text: qsTr("Stop")
                         onClicked: {
                             SerialPort.setSingleWheelVelocity(1, 0)
+                            wheel2ChartRun = false;
                         }
                     }
                 }
@@ -291,6 +417,12 @@ ApplicationWindow {
                         onClicked: {
                             if(wheel3Target.text.length === 0)
                                 wheel3Target.text = "0";
+                            wheel3ChartLine1.clear();
+                            wheel3ChartLine2.clear();
+                            wheel3ChartAxisX.max = 1;
+                            wheel3ChartAxisY.max = parseFloat(wheel3Target.text) + 2;
+                            wheel3ChartStartTimeMs = Date.now();
+                            wheel3ChartRun = true;
                             SerialPort.setSingleWheelVelocity(2, wheel3Target.text)
                         }
                     }
@@ -299,6 +431,7 @@ ApplicationWindow {
                         text: qsTr("Stop")
                         onClicked: {
                             SerialPort.setSingleWheelVelocity(2, 0)
+                            wheel3ChartRun = false;
                         }
                     }
                 }
@@ -311,6 +444,12 @@ ApplicationWindow {
                         onClicked: {
                             if(wheel4Target.text.length === 0)
                                 wheel4Target.text = "0";
+                            wheel4ChartLine1.clear();
+                            wheel4ChartLine2.clear();
+                            wheel4ChartAxisX.max = 1;
+                            wheel4ChartAxisY.max = parseFloat(wheel4Target.text) + 2;
+                            wheel4ChartStartTimeMs = Date.now();
+                            wheel4ChartRun = true;
                             SerialPort.setSingleWheelVelocity(3, wheel4Target.text)
                         }
                     }
@@ -319,6 +458,7 @@ ApplicationWindow {
                         text: qsTr("Stop")
                         onClicked: {
                             SerialPort.setSingleWheelVelocity(3, 0)
+                            wheel4ChartRun = false;
                         }
                     }
                 }

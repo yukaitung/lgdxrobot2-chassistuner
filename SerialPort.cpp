@@ -1,5 +1,5 @@
 #include "SerialPort.h"
-#include <iostream>
+
 SerialPort::SerialPort(QObject *parent) : QObject{parent}
 {
     QObject::connect(&mSerial, &QSerialPort::readyRead, this, &SerialPort::read);
@@ -60,7 +60,6 @@ void SerialPort::read()
             mPConstants[i] = uint32ToFloat(temp);
             if(!mDeviceReady) {
                 mFirstPConstants[i] = QString::number(mPConstants[i]);
-                qDebug() << mFirstPConstants[i];
             }
             index += 4;
         }
