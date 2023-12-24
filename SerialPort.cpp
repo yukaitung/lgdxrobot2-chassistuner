@@ -83,6 +83,11 @@ void SerialPort::read()
             mPwm[i] = combineBytes((uint8_t) frame[index], (uint8_t) frame[index + 1], (uint8_t) frame[index + 2], (uint8_t) frame[index + 3]);
             index += 4;
         }
+        for(int i = 0; i < 2; i++) {
+            mIna219[i] = combineBytes((uint8_t) frame[index], (uint8_t) frame[index + 1], (uint8_t) frame[index + 2], (uint8_t) frame[index + 3]);
+            index += 4;
+        }
+
         if(!mDeviceReady) {
             mDeviceReady = true;
             emit deviceReadyChanged();

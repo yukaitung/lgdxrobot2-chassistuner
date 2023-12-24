@@ -152,6 +152,12 @@ ApplicationWindow {
                 .arg(SerialPort.pwm[0]).arg(SerialPort.pwm[1]).arg(SerialPort.pwm[2]).arg(SerialPort.pwm[3])
             }
 
+            Label {
+                text: qsTr("2.5. Voltage (V): V1: %1, V2: %2")
+                //.arg(Number(SerialPort.ina219[0]/100000).toFixed(2)).arg(Number(SerialPort.ina219[1]/100000).toFixed(2))
+                .arg(Number(SerialPort.ina219[0] * 0.004).toFixed(2)).arg(Number(SerialPort.ina219[1] * 0.004).toFixed(2))
+            }
+
             RowLayout {
                 spacing: 8
 
