@@ -20,6 +20,8 @@ This software is developed with Qt 6. Using QML for user interface, Qt Serial Po
 
 ## Screenshots
 
+![Screenshot](img/screenshot.png)
+
 # Getting started
 
 ### Prerequisite
