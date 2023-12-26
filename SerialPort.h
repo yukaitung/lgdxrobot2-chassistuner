@@ -22,6 +22,7 @@ class SerialPort : public QObject
         QVector<QString> mFirstDConstants = {0, 0, 0, 0};
         QVector<int> mPwm = {0, 0, 0, 0};
         QVector<int> mIna219 = {0, 0};
+        QVector<int> mEstop = {0, 0};
         bool mDeviceReady = false;
 
         Q_PROPERTY(QVector<QString> serialDevicesName READ serialDevicesName NOTIFY serialDevicesNameChanged)
@@ -35,6 +36,7 @@ class SerialPort : public QObject
         Q_PROPERTY(QVector<QString> dFirstConstants READ dFirstConstants NOTIFY robotStatusChanged)
         Q_PROPERTY(QVector<int> pwm READ pwm NOTIFY robotStatusChanged)
         Q_PROPERTY(QVector<int> ina219 READ ina219 NOTIFY robotStatusChanged)
+        Q_PROPERTY(QVector<int> estop READ estop NOTIFY robotStatusChanged)
         Q_PROPERTY(bool deviceReady READ deviceReady NOTIFY deviceReadyChanged)
 
         QSerialPort mSerial;
@@ -62,6 +64,7 @@ class SerialPort : public QObject
         QVector<QString> dFirstConstants() {return mFirstDConstants;}
         QVector<int> pwm() {return mPwm;}
         QVector<int> ina219() {return mIna219;}
+        QVector<int> estop() {return mEstop;}
         bool deviceReady() {return mDeviceReady;}
 
     public slots:
@@ -71,6 +74,7 @@ class SerialPort : public QObject
         void setWheelsVelocity(float x, float y, float w);
         void setSingleWheelVelocity(int motor, float velocity);
         void setPID(int motor, float kp, float ki, float kd);
+        void setSoftwareEStop(int enable);
 
     signals:
         void serialDevicesNameChanged();

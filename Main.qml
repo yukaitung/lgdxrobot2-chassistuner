@@ -186,7 +186,7 @@ ApplicationWindow {
             }
 
             Label {
-                text: qsTr("2.5. Voltage (V): V1: %1, V2: %2")
+                text: qsTr("2.5. Battery Voltage (V): BT1 Actuator: %1, BT2 Logic: %2")
                 .arg(Number(SerialPort.ina219[0] * 0.004).toFixed(2)).arg(Number(SerialPort.ina219[1] * 0.004).toFixed(2))
             }
 
@@ -231,8 +231,31 @@ ApplicationWindow {
                 }
             }
 
+            RowLayout {
+                spacing: 8
+
+                Label {
+                    text: qsTr("4. Test Software E-Stop:")
+                }
+
+                Button {
+                    text: qsTr("Enable")
+                    onClicked: SerialPort.setSoftwareEStop(1)
+                }
+
+                Button {
+                    text: qsTr("Disable")
+                    onClicked: SerialPort.setSoftwareEStop(0)
+                }
+            }
+
             Label {
-                text: qsTr("4. PID tuner:")
+                text: qsTr("4.1. E-Stop Enabled (0 = Disable, 1 = Enable): Software: %1, Hardware: %2")
+                .arg(SerialPort.estop[0]).arg(SerialPort.estop[1])
+            }
+
+            Label {
+                text: qsTr("5. PID tuner:")
             }
 
             GridLayout {

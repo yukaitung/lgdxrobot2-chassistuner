@@ -87,7 +87,10 @@ void SerialPort::read()
             mIna219[i] = combineBytes((uint8_t) frame[index], (uint8_t) frame[index + 1], (uint8_t) frame[index + 2], (uint8_t) frame[index + 3]);
             index += 4;
         }
-
+        for(int i = 0; i < 2; i++) {
+            mEstop[i] = combineBytes((uint8_t) frame[index], (uint8_t) frame[index + 1], (uint8_t) frame[index + 2], (uint8_t) frame[index + 3]);
+            index += 4;
+        }
         if(!mDeviceReady) {
             mDeviceReady = true;
             emit deviceReadyChanged();
@@ -170,6 +173,22 @@ void SerialPort::setPID(int motor, float kp, float ki, float kd)
     ba[16] = fd & 255;
     if(mSerial.isOpen()) {
         mSerial.write(ba, 17);
+    }
+    else {
+        qDebug() << "Serial is closed.";
+    }
+}
+
+void SerialPort::setSoftwareEStop(int enable)
+{
+    char ba[5];
+    ba[0] = 'E';
+    ba[1] = (enable & 4278190080) >> 24;
+    ba[2] = (enable & 16711680) >> 16;
+    ba[3] = (enable & 65280) >> 8;
+    ba[4] = enable & 255;
+    if(mSerial.isOpen()) {
+        mSerial.write(ba, 5);
     }
     else {
         qDebug() << "Serial is closed.";
