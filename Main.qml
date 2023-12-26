@@ -18,18 +18,24 @@ ApplicationWindow {
     }
 
     property double chartMaxMs: 5000
+    property double chartMaxPoints: 500
+    //property variant wheelChartRun: [false, false, false, false]
     property bool wheel1ChartRun: false
     property double wheel1ChartTarget: 0
     property double wheel1ChartStartTimeMs: 0
+    property double wheel1MeetTargetTimeMs: 0
     property bool wheel2ChartRun: false
     property double wheel2ChartTarget: 0
     property double wheel2ChartStartTimeMs: 0
+    property double wheel2MeetTargetTimeMs: 0
     property bool wheel3ChartRun: false
     property double wheel3ChartTarget: 0
     property double wheel3ChartStartTimeMs: 0
+    property double wheel3MeetTargetTimeMs: 0
     property bool wheel4ChartRun: false
     property double wheel4ChartTarget: 0
     property double wheel4ChartStartTimeMs: 0
+    property double wheel4MeetTargetTimeMs: 0
 
     Connections {
         target: SerialPort
@@ -56,6 +62,13 @@ ApplicationWindow {
                 wheel1ChartLine2.append(timeNow, wheel1ChartTarget);
                 wheel1ChartAxisX.max = timeNow;
                 wheel1ChartAxisX.min = timeNow - chartMaxMs > 0 ? timeNow - chartMaxMs : 0
+                if(wheel1MeetTargetTimeMs === 0 && SerialPort.measuredWheelsVelocity[0] >= wheel1ChartTarget) {
+                    wheel1MeetTargetTimeMs = Date.now() - wheel1ChartStartTimeMs;
+                }
+                if(wheel1ChartLine1.count > chartMaxPoints)
+                    wheel1ChartLine1.remove(0)
+                if(wheel1ChartLine2.count > chartMaxPoints)
+                    wheel1ChartLine2.remove(0)
             }
             if(wheel2ChartRun === true) {
                 let timeNow = Date.now() - wheel2ChartStartTimeMs;
@@ -63,6 +76,13 @@ ApplicationWindow {
                 wheel2ChartLine2.append(timeNow, wheel2ChartTarget);
                 wheel2ChartAxisX.max = timeNow;
                 wheel2ChartAxisX.min = timeNow - chartMaxMs > 0 ? timeNow - chartMaxMs : 0
+                if(wheel2MeetTargetTimeMs === 0 && SerialPort.measuredWheelsVelocity[1] >= wheel2ChartTarget) {
+                    wheel2MeetTargetTimeMs = Date.now() - wheel2ChartStartTimeMs;
+                }
+                if(wheel2ChartLine1.count > chartMaxPoints)
+                    wheel2ChartLine1.remove(0)
+                if(wheel2ChartLine2.count > chartMaxPoints)
+                    wheel2ChartLine2.remove(0)
             }
             if(wheel3ChartRun === true) {
                 let timeNow = Date.now() - wheel3ChartStartTimeMs;
@@ -70,6 +90,13 @@ ApplicationWindow {
                 wheel3ChartLine2.append(timeNow, wheel3ChartTarget);
                 wheel3ChartAxisX.max = timeNow;
                 wheel3ChartAxisX.min = timeNow - chartMaxMs > 0 ? timeNow - chartMaxMs : 0
+                if(wheel3MeetTargetTimeMs === 0 && SerialPort.measuredWheelsVelocity[2] >= wheel3ChartTarget) {
+                    wheel3MeetTargetTimeMs = Date.now() - wheel3ChartStartTimeMs;
+                }
+                if(wheel3ChartLine1.count > chartMaxPoints)
+                    wheel3ChartLine1.remove(0)
+                if(wheel3ChartLine2.count > chartMaxPoints)
+                    wheel3ChartLine2.remove(0)
             }
             if(wheel4ChartRun === true) {
                 let timeNow = Date.now() - wheel4ChartStartTimeMs;
@@ -77,6 +104,13 @@ ApplicationWindow {
                 wheel4ChartLine2.append(timeNow, wheel4ChartTarget);
                 wheel4ChartAxisX.max = timeNow;
                 wheel4ChartAxisX.min = timeNow - chartMaxMs > 0 ? timeNow - chartMaxMs : 0
+                if(wheel4MeetTargetTimeMs === 0 && SerialPort.measuredWheelsVelocity[3] >= wheel4ChartTarget) {
+                    wheel4MeetTargetTimeMs = Date.now() - wheel4ChartStartTimeMs;
+                }
+                if(wheel4ChartLine1.count > chartMaxPoints)
+                    wheel4ChartLine1.remove(0)
+                if(wheel4ChartLine2.count > chartMaxPoints)
+                    wheel4ChartLine2.remove(0)
             }
         }
     }
@@ -163,7 +197,6 @@ ApplicationWindow {
 
             Label {
                 text: qsTr("2.5. Voltage (V): V1: %1, V2: %2")
-                //.arg(Number(SerialPort.ina219[0]/100000).toFixed(2)).arg(Number(SerialPort.ina219[1]/100000).toFixed(2))
                 .arg(Number(SerialPort.ina219[0] * 0.004).toFixed(2)).arg(Number(SerialPort.ina219[1] * 0.004).toFixed(2))
             }
 
@@ -370,6 +403,22 @@ ApplicationWindow {
                     id: wheel4Target
                 }
 
+                Label {
+                    text: qsTr("Reach target at %1 ms").arg(wheel1MeetTargetTimeMs)
+                }
+
+                Label {
+                    text: qsTr("Reach target at %1 ms").arg(wheel2MeetTargetTimeMs)
+                }
+
+                Label {
+                    text: qsTr("Reach target at %1 ms").arg(wheel3MeetTargetTimeMs)
+                }
+
+                Label {
+                    text: qsTr("Reach target at %1 ms").arg(wheel4MeetTargetTimeMs)
+                }
+
                 RowLayout {
                     spacing: 8
 
@@ -384,6 +433,7 @@ ApplicationWindow {
                                 wheel1ChartAxisX.max = 1;
                                 wheel1ChartStartTimeMs = Date.now();
                                 wheel1ChartRun = true;
+                                wheel1MeetTargetTimeMs = 0;
                             }
                             wheel1ChartAxisY.max = parseFloat(wheel1Target.text) + 2;
                             wheel1ChartTarget = parseFloat(wheel1Target.text);
@@ -414,6 +464,7 @@ ApplicationWindow {
                                 wheel2ChartAxisX.max = 1;
                                 wheel2ChartStartTimeMs = Date.now();
                                 wheel2ChartRun = true;
+                                wheel2MeetTargetTimeMs = 0;
                             }
                             wheel2ChartAxisY.max = parseFloat(wheel2Target.text) + 2;
                             wheel2ChartTarget = parseFloat(wheel2Target.text);
@@ -444,6 +495,7 @@ ApplicationWindow {
                                 wheel3ChartAxisX.max = 1;
                                 wheel3ChartStartTimeMs = Date.now();
                                 wheel3ChartRun = true;
+                                wheel3MeetTargetTimeMs = 0;
                             }
                             wheel3ChartAxisY.max = parseFloat(wheel3Target.text) + 2;
                             wheel3ChartTarget = parseFloat(wheel3Target.text);
@@ -474,6 +526,7 @@ ApplicationWindow {
                                 wheel4ChartAxisX.max = 1;
                                 wheel4ChartStartTimeMs = Date.now();
                                 wheel4ChartRun = true;
+                                wheel4MeetTargetTimeMs = 0;
                             }
                             wheel4ChartAxisY.max = parseFloat(wheel4Target.text) + 2;
                             wheel4ChartTarget = parseFloat(wheel4Target.text);
