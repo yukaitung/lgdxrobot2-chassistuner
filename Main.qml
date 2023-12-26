@@ -19,22 +19,12 @@ ApplicationWindow {
 
     property double chartMaxMs: 5000
     property double chartMaxPoints: 500
-    //property variant wheelChartRun: [false, false, false, false]
-    property bool wheel1ChartRun: false
-    property double wheel1ChartTarget: 0
-    property double wheel1ChartStartTimeMs: 0
-    property double wheel1MeetTargetTimeMs: 0
-    property bool wheel2ChartRun: false
-    property double wheel2ChartTarget: 0
-    property double wheel2ChartStartTimeMs: 0
+    property variant wheelChartRun: [false, false, false, false]
+    property variant wheelChartTarget: [0, 0, 0, 0]
+    property variant wheelChartStartTimeMs: [0, 0, 0, 0]
+    property double wheel1MeetTargetTimeMs: 0 // Keep this for binding
     property double wheel2MeetTargetTimeMs: 0
-    property bool wheel3ChartRun: false
-    property double wheel3ChartTarget: 0
-    property double wheel3ChartStartTimeMs: 0
     property double wheel3MeetTargetTimeMs: 0
-    property bool wheel4ChartRun: false
-    property double wheel4ChartTarget: 0
-    property double wheel4ChartStartTimeMs: 0
     property double wheel4MeetTargetTimeMs: 0
 
     Connections {
@@ -56,56 +46,56 @@ ApplicationWindow {
             }
         }
         function onRobotStatusChanged() {
-            if(wheel1ChartRun === true) {
-                let timeNow = Date.now() - wheel1ChartStartTimeMs;
+            if(wheelChartRun[0] === true) {
+                let timeNow = Date.now() - wheelChartStartTimeMs[0];
                 wheel1ChartLine1.append(timeNow, SerialPort.measuredWheelsVelocity[0]);
-                wheel1ChartLine2.append(timeNow, wheel1ChartTarget);
+                wheel1ChartLine2.append(timeNow, wheelChartTarget[0]);
                 wheel1ChartAxisX.max = timeNow;
                 wheel1ChartAxisX.min = timeNow - chartMaxMs > 0 ? timeNow - chartMaxMs : 0
-                if(wheel1MeetTargetTimeMs === 0 && SerialPort.measuredWheelsVelocity[0] >= wheel1ChartTarget) {
-                    wheel1MeetTargetTimeMs = Date.now() - wheel1ChartStartTimeMs;
+                if(wheel1MeetTargetTimeMs === 0 && SerialPort.measuredWheelsVelocity[0] >= wheelChartTarget[0]) {
+                    wheel1MeetTargetTimeMs = Date.now() - wheelChartStartTimeMs[0];
                 }
                 if(wheel1ChartLine1.count > chartMaxPoints)
                     wheel1ChartLine1.remove(0)
                 if(wheel1ChartLine2.count > chartMaxPoints)
                     wheel1ChartLine2.remove(0)
             }
-            if(wheel2ChartRun === true) {
-                let timeNow = Date.now() - wheel2ChartStartTimeMs;
+            if(wheelChartRun[1] === true) {
+                let timeNow = Date.now() - wheelChartStartTimeMs[1];
                 wheel2ChartLine1.append(timeNow, SerialPort.measuredWheelsVelocity[1]);
-                wheel2ChartLine2.append(timeNow, wheel2ChartTarget);
+                wheel2ChartLine2.append(timeNow, wheelChartTarget[1]);
                 wheel2ChartAxisX.max = timeNow;
                 wheel2ChartAxisX.min = timeNow - chartMaxMs > 0 ? timeNow - chartMaxMs : 0
-                if(wheel2MeetTargetTimeMs === 0 && SerialPort.measuredWheelsVelocity[1] >= wheel2ChartTarget) {
-                    wheel2MeetTargetTimeMs = Date.now() - wheel2ChartStartTimeMs;
+                if(wheel2MeetTargetTimeMs === 0 && SerialPort.measuredWheelsVelocity[1] >= wheelChartTarget[1]) {
+                    wheel2MeetTargetTimeMs = Date.now() - wheelChartStartTimeMs[1];
                 }
                 if(wheel2ChartLine1.count > chartMaxPoints)
                     wheel2ChartLine1.remove(0)
                 if(wheel2ChartLine2.count > chartMaxPoints)
                     wheel2ChartLine2.remove(0)
             }
-            if(wheel3ChartRun === true) {
-                let timeNow = Date.now() - wheel3ChartStartTimeMs;
+            if(wheelChartRun[2] === true) {
+                let timeNow = Date.now() - wheelChartStartTimeMs[2];
                 wheel3ChartLine1.append(timeNow, SerialPort.measuredWheelsVelocity[2]);
-                wheel3ChartLine2.append(timeNow, wheel3ChartTarget);
+                wheel3ChartLine2.append(timeNow, wheelChartTarget[2]);
                 wheel3ChartAxisX.max = timeNow;
                 wheel3ChartAxisX.min = timeNow - chartMaxMs > 0 ? timeNow - chartMaxMs : 0
-                if(wheel3MeetTargetTimeMs === 0 && SerialPort.measuredWheelsVelocity[2] >= wheel3ChartTarget) {
-                    wheel3MeetTargetTimeMs = Date.now() - wheel3ChartStartTimeMs;
+                if(wheel3MeetTargetTimeMs === 0 && SerialPort.measuredWheelsVelocity[2] >= wheelChartTarget[2]) {
+                    wheel3MeetTargetTimeMs = Date.now() - wheelChartStartTimeMs[2];
                 }
                 if(wheel3ChartLine1.count > chartMaxPoints)
                     wheel3ChartLine1.remove(0)
                 if(wheel3ChartLine2.count > chartMaxPoints)
                     wheel3ChartLine2.remove(0)
             }
-            if(wheel4ChartRun === true) {
-                let timeNow = Date.now() - wheel4ChartStartTimeMs;
+            if(wheelChartRun[3] === true) {
+                let timeNow = Date.now() - wheelChartStartTimeMs[3];
                 wheel4ChartLine1.append(timeNow, SerialPort.measuredWheelsVelocity[3]);
-                wheel4ChartLine2.append(timeNow, wheel4ChartTarget);
+                wheel4ChartLine2.append(timeNow, wheelChartTarget[3]);
                 wheel4ChartAxisX.max = timeNow;
                 wheel4ChartAxisX.min = timeNow - chartMaxMs > 0 ? timeNow - chartMaxMs : 0
-                if(wheel4MeetTargetTimeMs === 0 && SerialPort.measuredWheelsVelocity[3] >= wheel4ChartTarget) {
-                    wheel4MeetTargetTimeMs = Date.now() - wheel4ChartStartTimeMs;
+                if(wheel4MeetTargetTimeMs === 0 && SerialPort.measuredWheelsVelocity[3] >= wheelChartTarget[3]) {
+                    wheel4MeetTargetTimeMs = Date.now() - wheelChartStartTimeMs[3];
                 }
                 if(wheel4ChartLine1.count > chartMaxPoints)
                     wheel4ChartLine1.remove(0)
@@ -427,16 +417,16 @@ ApplicationWindow {
                         onClicked: {
                             if(wheel1Target.text.length === 0)
                                 wheel1Target.text = "0";
-                            if(!wheel1ChartRun) {
+                            if(!wheelChartRun[0]) {
                                 wheel1ChartLine1.clear();
                                 wheel1ChartLine2.clear();
                                 wheel1ChartAxisX.max = 1;
-                                wheel1ChartStartTimeMs = Date.now();
-                                wheel1ChartRun = true;
+                                wheelChartStartTimeMs[0] = Date.now();
+                                wheelChartRun[0] = true;
                                 wheel1MeetTargetTimeMs = 0;
                             }
                             wheel1ChartAxisY.max = parseFloat(wheel1Target.text) + 2;
-                            wheel1ChartTarget = parseFloat(wheel1Target.text);
+                            wheelChartTarget[0] = parseFloat(wheel1Target.text);
                             SerialPort.setSingleWheelVelocity(0, wheel1Target.text);
                         }
                     }
@@ -445,7 +435,7 @@ ApplicationWindow {
                         text: qsTr("Stop")
                         onClicked: {
                             SerialPort.setSingleWheelVelocity(0, 0)
-                            wheel1ChartRun = false;
+                            wheelChartRun[0] = false;
                         }
                     }
                 }
@@ -458,16 +448,16 @@ ApplicationWindow {
                         onClicked: {
                             if(wheel2Target.text.length === 0)
                                 wheel2Target.text = "0";
-                            if(!wheel2ChartRun) {
+                            if(!wheelChartRun[1]) {
                                 wheel2ChartLine1.clear();
                                 wheel2ChartLine2.clear();
                                 wheel2ChartAxisX.max = 1;
-                                wheel2ChartStartTimeMs = Date.now();
-                                wheel2ChartRun = true;
+                                wheelChartStartTimeMs[1] = Date.now();
+                                wheelChartRun[1] = true;
                                 wheel2MeetTargetTimeMs = 0;
                             }
                             wheel2ChartAxisY.max = parseFloat(wheel2Target.text) + 2;
-                            wheel2ChartTarget = parseFloat(wheel2Target.text);
+                            wheelChartTarget[1] = parseFloat(wheel2Target.text);
                             SerialPort.setSingleWheelVelocity(1, wheel2Target.text);
                         }
                     }
@@ -476,7 +466,7 @@ ApplicationWindow {
                         text: qsTr("Stop")
                         onClicked: {
                             SerialPort.setSingleWheelVelocity(1, 0)
-                            wheel2ChartRun = false;
+                            wheelChartRun[1] = false;
                         }
                     }
                 }
@@ -489,16 +479,16 @@ ApplicationWindow {
                         onClicked: {
                             if(wheel3Target.text.length === 0)
                                 wheel3Target.text = "0";
-                            if(!wheel3ChartRun) {
+                            if(!wheelChartRun[2]) {
                                 wheel3ChartLine1.clear();
                                 wheel3ChartLine2.clear();
                                 wheel3ChartAxisX.max = 1;
-                                wheel3ChartStartTimeMs = Date.now();
-                                wheel3ChartRun = true;
+                                wheelChartStartTimeMs[2] = Date.now();
+                                wheelChartRun[2] = true;
                                 wheel3MeetTargetTimeMs = 0;
                             }
                             wheel3ChartAxisY.max = parseFloat(wheel3Target.text) + 2;
-                            wheel3ChartTarget = parseFloat(wheel3Target.text);
+                            wheelChartTarget[2] = parseFloat(wheel3Target.text);
                             SerialPort.setSingleWheelVelocity(2, wheel3Target.text);
                         }
                     }
@@ -507,7 +497,7 @@ ApplicationWindow {
                         text: qsTr("Stop")
                         onClicked: {
                             SerialPort.setSingleWheelVelocity(2, 0)
-                            wheel3ChartRun = false;
+                            wheelChartRun[2] = false;
                         }
                     }
                 }
@@ -520,16 +510,16 @@ ApplicationWindow {
                         onClicked: {
                             if(wheel4Target.text.length === 0)
                                 wheel4Target.text = "0";
-                            if(!wheel4ChartRun) {
+                            if(!wheelChartRun[3]) {
                                 wheel4ChartLine1.clear();
                                 wheel4ChartLine2.clear();
                                 wheel4ChartAxisX.max = 1;
-                                wheel4ChartStartTimeMs = Date.now();
-                                wheel4ChartRun = true;
+                                wheelChartStartTimeMs[3] = Date.now();
+                                wheelChartRun[3] = true;
                                 wheel4MeetTargetTimeMs = 0;
                             }
                             wheel4ChartAxisY.max = parseFloat(wheel4Target.text) + 2;
-                            wheel4ChartTarget = parseFloat(wheel4Target.text);
+                            wheelChartTarget[3] = parseFloat(wheel4Target.text);
                             SerialPort.setSingleWheelVelocity(3, wheel4Target.text);
                         }
                     }
@@ -538,7 +528,7 @@ ApplicationWindow {
                         text: qsTr("Stop")
                         onClicked: {
                             SerialPort.setSingleWheelVelocity(3, 0)
-                            wheel4ChartRun = false;
+                            wheelChartRun[3] = false;
                         }
                     }
                 }
