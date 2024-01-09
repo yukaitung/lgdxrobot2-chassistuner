@@ -181,12 +181,7 @@ ApplicationWindow {
             }
 
             Label {
-                text: qsTr("2.4. PWM (Out of 71999): Wheel 1: %1, Wheel 2: %2, Wheel 3: %3, Wheel 4: %4")
-                .arg(SerialPort.pwm[0]).arg(SerialPort.pwm[1]).arg(SerialPort.pwm[2]).arg(SerialPort.pwm[3])
-            }
-
-            Label {
-                text: qsTr("2.5. Battery Voltage (V): BT1 Actuator: %1, BT2 Logic: %2")
+                text: qsTr("2.4. Battery Voltage (V): BT1 Actuator: %1, BT2 Logic: %2")
                 .arg(Number(SerialPort.ina219[0] * 0.004).toFixed(2)).arg(Number(SerialPort.ina219[1] * 0.004).toFixed(2))
             }
 

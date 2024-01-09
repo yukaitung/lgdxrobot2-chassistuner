@@ -27,10 +27,10 @@ void SerialPort::connect(QString portName)
 void SerialPort::read()
 {
     QByteArray data = mSerial.readAll();
-    if(data.size() > 2) {
+    if(data.size() > 5) {
         // Locate frame size
         if(data[0] == (char) 170) {
-            mSerialFrameSize = (int) data[1] + 1;
+            mSerialFrameSize = combineBytes((uint8_t) data[1], (uint8_t) data[2], (uint8_t) data[3], (uint8_t) data[4]);
             // The package is too small, wait for next pacakge
             if(data.size() < mSerialFrameSize) {
                 mSerialBuffer += data;
@@ -44,7 +44,7 @@ void SerialPort::read()
     {
         // Get data
         QByteArray frame = mSerialBuffer + data;
-        int index = 2;
+        int index = 5;
         for(int i = 0; i < 4; i++) {
             uint32_t temp = combineBytes((uint8_t) frame[index], (uint8_t) frame[index + 1], (uint8_t) frame[index + 2], (uint8_t) frame[index + 3]);
             mTargetWheelsVelocity[i] = uint32ToFloat(temp);
@@ -77,10 +77,6 @@ void SerialPort::read()
             if(!mDeviceReady) {
                 mFirstDConstants[i] = QString::number(mDConstants[i]);
             }
-            index += 4;
-        }
-        for(int i = 0; i < 4; i++) {
-            mPwm[i] = combineBytes((uint8_t) frame[index], (uint8_t) frame[index + 1], (uint8_t) frame[index + 2], (uint8_t) frame[index + 3]);
             index += 4;
         }
         for(int i = 0; i < 2; i++) {

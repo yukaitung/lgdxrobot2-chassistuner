@@ -20,7 +20,6 @@ class SerialPort : public QObject
         QVector<QString> mFirstPConstants = {0, 0, 0, 0}; // JavaScript
         QVector<QString> mFirstIConstants = {0, 0, 0, 0};
         QVector<QString> mFirstDConstants = {0, 0, 0, 0};
-        QVector<int> mPwm = {0, 0, 0, 0};
         QVector<int> mIna219 = {0, 0};
         QVector<int> mEstop = {0, 0};
         bool mDeviceReady = false;
@@ -34,7 +33,6 @@ class SerialPort : public QObject
         Q_PROPERTY(QVector<QString> pFirstConstants READ pFirstConstants NOTIFY robotStatusChanged)
         Q_PROPERTY(QVector<QString> iFirstConstants READ iFirstConstants NOTIFY robotStatusChanged)
         Q_PROPERTY(QVector<QString> dFirstConstants READ dFirstConstants NOTIFY robotStatusChanged)
-        Q_PROPERTY(QVector<int> pwm READ pwm NOTIFY robotStatusChanged)
         Q_PROPERTY(QVector<int> ina219 READ ina219 NOTIFY robotStatusChanged)
         Q_PROPERTY(QVector<int> estop READ estop NOTIFY robotStatusChanged)
         Q_PROPERTY(bool deviceReady READ deviceReady NOTIFY deviceReadyChanged)
@@ -62,7 +60,6 @@ class SerialPort : public QObject
         QVector<QString> pFirstConstants() {return mFirstPConstants;}
         QVector<QString> iFirstConstants() {return mFirstIConstants;}
         QVector<QString> dFirstConstants() {return mFirstDConstants;}
-        QVector<int> pwm() {return mPwm;}
         QVector<int> ina219() {return mIna219;}
         QVector<int> estop() {return mEstop;}
         bool deviceReady() {return mDeviceReady;}
