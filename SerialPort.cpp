@@ -46,11 +46,13 @@ void SerialPort::read()
     if(mSerialBuffer.size() + data.size() == mSerialFrameSize)
     {
         qint64 currentTime = QDateTime::currentMSecsSinceEpoch();
-        receiveTimeWait = currentTime - lastReceiveTime;
+        refreshTimeQt = currentTime - lastReceiveTime;
         lastReceiveTime = currentTime;
         // Get data
         QByteArray frame = mSerialBuffer + data;
         int index = 2;
+        refreshTimeMcu = combineBytes((uint8_t) frame[index], (uint8_t) frame[index + 1]);
+        index += 2;
         for(int i = 0; i < 3; i++)
         {
             uint32_t temp = combineBytes((uint8_t) frame[index], (uint8_t) frame[index + 1], (uint8_t) frame[index + 2], (uint8_t) frame[index + 3]);

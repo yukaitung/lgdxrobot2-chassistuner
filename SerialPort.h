@@ -22,9 +22,9 @@ class SerialPort : public QObject
         QVector<QString> firstPConstants = {0, 0, 0, 0}; // JavaScript
         QVector<QString> firstIConstants = {0, 0, 0, 0};
         QVector<QString> firstDConstants = {0, 0, 0, 0};
-        QVector<int> ina219 = {0, 0};
+        QVector<float> ina219 = {0, 0};
         QVector<int> eStop = {0, 0};
-        qint64 lastReceiveTime = 0, receiveTimeWait = 0;
+        qint64 lastReceiveTime = 0, refreshTimeQt = 0, refreshTimeMcu = 0;
         bool deviceReady = false;
 
         Q_PROPERTY(QVector<QString> serialDevicesName MEMBER serialDevicesName NOTIFY serialDevicesNameChanged)
@@ -38,9 +38,10 @@ class SerialPort : public QObject
         Q_PROPERTY(QVector<QString> pFirstConstants MEMBER firstPConstants NOTIFY robotStatusChanged)
         Q_PROPERTY(QVector<QString> iFirstConstants MEMBER firstIConstants NOTIFY robotStatusChanged)
         Q_PROPERTY(QVector<QString> dFirstConstants MEMBER firstDConstants NOTIFY robotStatusChanged)
-        Q_PROPERTY(QVector<int> ina219 MEMBER ina219 NOTIFY robotStatusChanged)
+        Q_PROPERTY(QVector<float> ina219 MEMBER ina219 NOTIFY robotStatusChanged)
         Q_PROPERTY(QVector<int> eStop MEMBER eStop NOTIFY robotStatusChanged)
-        Q_PROPERTY(qint64 receiveTimeWait MEMBER receiveTimeWait NOTIFY robotStatusChanged)
+        Q_PROPERTY(qint64 refreshTimeQt MEMBER refreshTimeQt NOTIFY robotStatusChanged)
+        Q_PROPERTY(qint64 refreshTimeMcu MEMBER refreshTimeMcu NOTIFY robotStatusChanged)
         Q_PROPERTY(bool deviceReady MEMBER deviceReady NOTIFY deviceReadyChanged)
 
         QSerialPort mSerial;

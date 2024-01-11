@@ -163,8 +163,8 @@ ApplicationWindow {
             }
 
             Label {
-                text: qsTr("Data refresh time (ms): %1")
-                .arg(SerialPort.receiveTimeWait)
+                text: qsTr("Data refresh time (ms): MCU: %1, Qt: %2")
+                .arg(SerialPort.refreshTimeMcu).arg(SerialPort.refreshTimeQt)
             }
 
             Label {
