@@ -1,4 +1,5 @@
 #include "SerialPort.h"
+#include <QDateTime>
 
 SerialPort::SerialPort(QObject *parent) : QObject{parent}
 {
@@ -15,11 +16,10 @@ QObject *SerialPort::qmlInstance(QQmlEngine *engine, QJSEngine *scriptEngine)
 
 void SerialPort::connect(QString portName)
 {
-    mDeviceReady = false;
+    deviceReady = false;
     emit deviceReadyChanged();
-    if(mSerial.isOpen()) {
+    if(mSerial.isOpen())
         mSerial.close();
-    }
     mSerial.setPortName(portName);
     mSerial.open(QIODevice::ReadWrite);
 }
@@ -27,12 +27,15 @@ void SerialPort::connect(QString portName)
 void SerialPort::read()
 {
     QByteArray data = mSerial.readAll();
-    if(data.size() > 5) {
+    if(data.size() > 2)
+    {
         // Locate frame size
-        if(data[0] == (char) 170) {
-            mSerialFrameSize = combineBytes((uint8_t) data[1], (uint8_t) data[2], (uint8_t) data[3], (uint8_t) data[4]);
+        if(data[0] == (char) 170)
+        {
+            mSerialFrameSize = data[1];
             // The package is too small, wait for next pacakge
-            if(data.size() < mSerialFrameSize) {
+            if(data.size() < mSerialFrameSize)
+            {
                 mSerialBuffer += data;
                 return;
             }
@@ -42,58 +45,90 @@ void SerialPort::read()
 
     if(mSerialBuffer.size() + data.size() == mSerialFrameSize)
     {
+        qint64 currentTime = QDateTime::currentMSecsSinceEpoch();
+        receiveTimeWait = currentTime - lastReceiveTime;
+        lastReceiveTime = currentTime;
         // Get data
         QByteArray frame = mSerialBuffer + data;
-        int index = 5;
-        for(int i = 0; i < 4; i++) {
+        int index = 2;
+        for(int i = 0; i < 3; i++)
+        {
             uint32_t temp = combineBytes((uint8_t) frame[index], (uint8_t) frame[index + 1], (uint8_t) frame[index + 2], (uint8_t) frame[index + 3]);
-            mTargetWheelsVelocity[i] = uint32ToFloat(temp);
+            transform[i] = uint32ToFloat(temp);
             index += 4;
         }
-        for(int i = 0; i < 4; i++) {
+        for(int i = 0; i < 3; i++)
+        {
             uint32_t temp = combineBytes((uint8_t) frame[index], (uint8_t) frame[index + 1], (uint8_t) frame[index + 2], (uint8_t) frame[index + 3]);
-            mMeasuredWheelsVelocity[i] = uint32ToFloat(temp);
+            forwardKinematic[i] = uint32ToFloat(temp);
             index += 4;
         }
-        for(int i = 0; i < 4; i++) {
+        for(int i = 0; i < 4; i++)
+        {
             uint32_t temp = combineBytes((uint8_t) frame[index], (uint8_t) frame[index + 1], (uint8_t) frame[index + 2], (uint8_t) frame[index + 3]);
-            mPConstants[i] = uint32ToFloat(temp);
-            if(!mDeviceReady) {
-                mFirstPConstants[i] = QString::number(mPConstants[i]);
-            }
+            targetWheelsVelocity[i] = uint32ToFloat(temp);
             index += 4;
         }
-        for(int i = 0; i < 4; i++) {
+        for(int i = 0; i < 4; i++)
+        {
             uint32_t temp = combineBytes((uint8_t) frame[index], (uint8_t) frame[index + 1], (uint8_t) frame[index + 2], (uint8_t) frame[index + 3]);
-            mIConstants[i] = uint32ToFloat(temp);
-            if(!mDeviceReady) {
-                mFirstIConstants[i] = QString::number(mIConstants[i]);
-            }
+            measuredWheelsVelocity[i] = uint32ToFloat(temp);
             index += 4;
         }
-        for(int i = 0; i < 4; i++) {
+        for(int i = 0; i < 4; i++)
+        {
             uint32_t temp = combineBytes((uint8_t) frame[index], (uint8_t) frame[index + 1], (uint8_t) frame[index + 2], (uint8_t) frame[index + 3]);
-            mDConstants[i] = uint32ToFloat(temp);
-            if(!mDeviceReady) {
-                mFirstDConstants[i] = QString::number(mDConstants[i]);
-            }
+            pConstants[i] = uint32ToFloat(temp);
+            if(!deviceReady)
+                firstPConstants[i] = QString::number(pConstants[i]);
             index += 4;
         }
-        for(int i = 0; i < 2; i++) {
-            mIna219[i] = combineBytes((uint8_t) frame[index], (uint8_t) frame[index + 1], (uint8_t) frame[index + 2], (uint8_t) frame[index + 3]);
+        for(int i = 0; i < 4; i++)
+        {
+            uint32_t temp = combineBytes((uint8_t) frame[index], (uint8_t) frame[index + 1], (uint8_t) frame[index + 2], (uint8_t) frame[index + 3]);
+            iConstants[i] = uint32ToFloat(temp);
+            if(!deviceReady)
+                firstIConstants[i] = QString::number(iConstants[i]);
             index += 4;
         }
-        for(int i = 0; i < 2; i++) {
-            mEstop[i] = combineBytes((uint8_t) frame[index], (uint8_t) frame[index + 1], (uint8_t) frame[index + 2], (uint8_t) frame[index + 3]);
+        for(int i = 0; i < 4; i++)
+        {
+            uint32_t temp = combineBytes((uint8_t) frame[index], (uint8_t) frame[index + 1], (uint8_t) frame[index + 2], (uint8_t) frame[index + 3]);
+            dConstants[i] = uint32ToFloat(temp);
+            if(!deviceReady)
+                firstDConstants[i] = QString::number(dConstants[i]);
             index += 4;
         }
-        if(!mDeviceReady) {
-            mDeviceReady = true;
+        for(int i = 0; i < 2; i++)
+        {
+            ina219[i] = combineBytes((uint8_t) frame[index], (uint8_t) frame[index + 1]) * 0.004;
+            index += 2;
+        }
+        uint8_t eStopByte = frame[index];
+        int compare = 128;
+        for(int i = 0; i < 2; i++)
+        {
+            eStop[i] = (eStopByte & compare) >> (7 - i);
+            compare = compare >> 1;
+        }
+        if(!deviceReady)
+        {
+            deviceReady = true;
             emit deviceReadyChanged();
         }
         emit robotStatusChanged();
         mSerialBuffer.clear();
     }
+}
+
+void SerialPort::resetRobotTransform()
+{
+    char ba[1];
+    ba[0] = 'T';
+    if(mSerial.isOpen())
+        mSerial.write(ba, 1);
+    else
+        qDebug() << "Serial is closed.";
 }
 
 void SerialPort::setWheelsVelocity(float x, float y, float w)
@@ -115,12 +150,10 @@ void SerialPort::setWheelsVelocity(float x, float y, float w)
     ba[10] = (uw & 16711680) >> 16;
     ba[11] = (uw & 65280) >> 8;
     ba[12] = uw & 255;
-    if(mSerial.isOpen()) {
+    if(mSerial.isOpen())
         mSerial.write(ba, 13);
-    }
-    else {
+    else
         qDebug() << "Serial is closed.";
-    }
 }
 
 void SerialPort::setSingleWheelVelocity(int motor, float velocity)
@@ -136,12 +169,10 @@ void SerialPort::setSingleWheelVelocity(int motor, float velocity)
     ba[6] = (v & 16711680) >> 16;
     ba[7] = (v & 65280) >> 8;
     ba[8] = v & 255;
-    if(mSerial.isOpen()) {
+    if(mSerial.isOpen())
         mSerial.write(ba, 9);
-    }
-    else {
+    else
         qDebug() << "Serial is closed.";
-    }
 }
 
 void SerialPort::setPID(int motor, float kp, float ki, float kd)
@@ -167,12 +198,10 @@ void SerialPort::setPID(int motor, float kp, float ki, float kd)
     ba[14] = (fd & 16711680) >> 16;
     ba[15] = (fd & 65280) >> 8;
     ba[16] = fd & 255;
-    if(mSerial.isOpen()) {
+    if(mSerial.isOpen())
         mSerial.write(ba, 17);
-    }
-    else {
+    else
         qDebug() << "Serial is closed.";
-    }
 }
 
 void SerialPort::setSoftwareEStop(int enable)
@@ -183,20 +212,19 @@ void SerialPort::setSoftwareEStop(int enable)
     ba[2] = (enable & 16711680) >> 16;
     ba[3] = (enable & 65280) >> 8;
     ba[4] = enable & 255;
-    if(mSerial.isOpen()) {
+    if(mSerial.isOpen())
         mSerial.write(ba, 5);
-    }
-    else {
+    else
         qDebug() << "Serial is closed.";
-    }
 }
 
 void SerialPort::updateSerialDevices()
 {
-    mSerialDevicesName.clear();
+    serialDevicesName.clear();
     const auto serialPortInfos = QSerialPortInfo::availablePorts();
-    for (const QSerialPortInfo &portInfo : serialPortInfos) {
-        mSerialDevicesName.append(portInfo.portName());
+    for (const QSerialPortInfo &portInfo : serialPortInfos)
+    {
+        serialDevicesName.append(portInfo.portName());
     }
     emit serialDevicesNameChanged();
 }

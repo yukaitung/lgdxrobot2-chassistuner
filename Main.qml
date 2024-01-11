@@ -163,17 +163,46 @@ ApplicationWindow {
             }
 
             Label {
-                text: qsTr("2.1. Target Wheels Velocity (rad/s): Wheel 1: %1, Wheel 2: %2, Wheel 3 %3, Wheel 4: %4")
+                text: qsTr("Data refresh time (ms): %1")
+                .arg(SerialPort.receiveTimeWait)
+            }
+
+            Label {
+                text: qsTr("Robot transform: x: %1 (m), y: %2 (m), w: %3 (rad)")
+                .arg(SerialPort.transform[0]).arg(SerialPort.transform[1]).arg(SerialPort.transform[2])
+            }
+
+            RowLayout {
+                spacing: 8
+
+                Label {
+                    text: qsTr("Reset robot transform: ")
+                }
+
+                Button {
+                    text: qsTr("Reset")
+                    onClicked: SerialPort.resetRobotTransform()
+                    enabled: SerialPort.deviceReady
+                }
+            }
+
+            Label {
+                text: qsTr("Robot forward kinematic: x: %1 (m/s), y: %2 (m/s), w: %3 (rad/s)")
+                .arg(SerialPort.forwardKinematic[0]).arg(SerialPort.forwardKinematic[1]).arg(SerialPort.forwardKinematic[2])
+            }
+
+            Label {
+                text: qsTr("Target Wheels Velocity (rad/s): Wheel 1: %1, Wheel 2: %2, Wheel 3 %3, Wheel 4: %4")
                 .arg(SerialPort.targetWheelsVelocity[0]).arg(SerialPort.targetWheelsVelocity[1]).arg(SerialPort.targetWheelsVelocity[2]).arg(SerialPort.targetWheelsVelocity[3])
             }
 
             Label {
-                text: qsTr("2.2. Measured Wheels Velocity (rad/s): Wheel 1: %1, Wheel 2: %2, Wheel 3: %3, Wheel 4: %4")
+                text: qsTr("Measured Wheels Velocity (rad/s): Wheel 1: %1, Wheel 2: %2, Wheel 3: %3, Wheel 4: %4")
                 .arg(SerialPort.measuredWheelsVelocity[0]).arg(SerialPort.measuredWheelsVelocity[1]).arg(SerialPort.measuredWheelsVelocity[2]).arg(SerialPort.measuredWheelsVelocity[3])
             }
 
             Label {
-                text: qsTr("2.3. PID (P, I, D): Wheel 1: (%1, %2, %3), Wheel 2: (%4, %5, %6), Wheel 3: (%7, %8, %9), Wheel 4: (%10, %11, %12)")
+                text: qsTr("PID (P, I, D): Wheel 1: (%1, %2, %3), Wheel 2: (%4, %5, %6), Wheel 3: (%7, %8, %9), Wheel 4: (%10, %11, %12)")
                 .arg(SerialPort.pConstants[0]).arg(SerialPort.iConstants[0]).arg(SerialPort.dConstants[0])
                 .arg(SerialPort.pConstants[1]).arg(SerialPort.iConstants[1]).arg(SerialPort.dConstants[1])
                 .arg(SerialPort.pConstants[2]).arg(SerialPort.iConstants[2]).arg(SerialPort.dConstants[2])
@@ -181,8 +210,8 @@ ApplicationWindow {
             }
 
             Label {
-                text: qsTr("2.4. Battery Voltage (V): BT1 Actuator: %1, BT2 Logic: %2")
-                .arg(Number(SerialPort.ina219[0] * 0.004).toFixed(2)).arg(Number(SerialPort.ina219[1] * 0.004).toFixed(2))
+                text: qsTr("Battery Voltage (V): BT1 Actuator: %1, BT2 Logic: %2")
+                .arg(Number(SerialPort.ina219[0]).toFixed(2)).arg(Number(SerialPort.ina219[1]).toFixed(2))
             }
 
             RowLayout {
@@ -218,11 +247,13 @@ ApplicationWindow {
                             wVelocityTextField.text = "0";
                         SerialPort.setWheelsVelocity(xVelocityTextField.text, yVelocityTextField.text, wVelocityTextField.text)
                     }
+                    enabled: SerialPort.deviceReady
                 }
 
                 Button {
                     text: qsTr("Stop")
                     onClicked: SerialPort.setWheelsVelocity(0, 0, 0)
+                    enabled: SerialPort.deviceReady
                 }
             }
 
@@ -236,17 +267,19 @@ ApplicationWindow {
                 Button {
                     text: qsTr("Enable")
                     onClicked: SerialPort.setSoftwareEStop(1)
+                    enabled: SerialPort.deviceReady
                 }
 
                 Button {
                     text: qsTr("Disable")
                     onClicked: SerialPort.setSoftwareEStop(0)
+                    enabled: SerialPort.deviceReady
                 }
             }
 
             Label {
-                text: qsTr("4.1. E-Stop Enabled (0 = Disable, 1 = Enable): Software: %1, Hardware: %2")
-                .arg(SerialPort.estop[0]).arg(SerialPort.estop[1])
+                text: qsTr("E-Stop Enabled (0 = Disable, 1 = Enable): Software: %1, Hardware: %2")
+                .arg(SerialPort.eStop[0]).arg(SerialPort.eStop[1])
             }
 
             Label {
@@ -447,6 +480,7 @@ ApplicationWindow {
                             wheelChartTarget[0] = parseFloat(wheel1Target.text);
                             SerialPort.setSingleWheelVelocity(0, wheel1Target.text);
                         }
+                        enabled: SerialPort.deviceReady
                     }
 
                     Button {
@@ -455,6 +489,7 @@ ApplicationWindow {
                             SerialPort.setSingleWheelVelocity(0, 0)
                             wheelChartRun[0] = false;
                         }
+                        enabled: SerialPort.deviceReady
                     }
                 }
 
@@ -478,6 +513,7 @@ ApplicationWindow {
                             wheelChartTarget[1] = parseFloat(wheel2Target.text);
                             SerialPort.setSingleWheelVelocity(1, wheel2Target.text);
                         }
+                        enabled: SerialPort.deviceReady
                     }
 
                     Button {
@@ -486,6 +522,7 @@ ApplicationWindow {
                             SerialPort.setSingleWheelVelocity(1, 0)
                             wheelChartRun[1] = false;
                         }
+                        enabled: SerialPort.deviceReady
                     }
                 }
 
@@ -509,6 +546,7 @@ ApplicationWindow {
                             wheelChartTarget[2] = parseFloat(wheel3Target.text);
                             SerialPort.setSingleWheelVelocity(2, wheel3Target.text);
                         }
+                        enabled: SerialPort.deviceReady
                     }
 
                     Button {
@@ -517,6 +555,7 @@ ApplicationWindow {
                             SerialPort.setSingleWheelVelocity(2, 0)
                             wheelChartRun[2] = false;
                         }
+                        enabled: SerialPort.deviceReady
                     }
                 }
 
@@ -540,6 +579,7 @@ ApplicationWindow {
                             wheelChartTarget[3] = parseFloat(wheel4Target.text);
                             SerialPort.setSingleWheelVelocity(3, wheel4Target.text);
                         }
+                        enabled: SerialPort.deviceReady
                     }
 
                     Button {
@@ -548,6 +588,7 @@ ApplicationWindow {
                             SerialPort.setSingleWheelVelocity(3, 0)
                             wheelChartRun[3] = false;
                         }
+                        enabled: SerialPort.deviceReady
                     }
                 }
 
@@ -694,6 +735,7 @@ ApplicationWindow {
                                 wheel1Kd.text = "0";
                             SerialPort.setPID(0, wheel1Kp.text, wheel1Ki.text, wheel1Kd.text);
                         }
+                        enabled: SerialPort.deviceReady
                     }
 
                     Button {
@@ -704,6 +746,7 @@ ApplicationWindow {
                             wheel1Kd.text = SerialPort.dFirstConstants[0];
                             SerialPort.setPID(0, wheel1Kp.text, wheel1Ki.text, wheel1Kd.text);
                         }
+                        enabled: SerialPort.deviceReady
                     }
                 }
 
@@ -721,6 +764,7 @@ ApplicationWindow {
                                 wheel2Kd.text = "0";
                             SerialPort.setPID(1, wheel2Kp.text, wheel2Ki.text, wheel2Kd.text);
                         }
+                        enabled: SerialPort.deviceReady
                     }
 
                     Button {
@@ -731,6 +775,7 @@ ApplicationWindow {
                             wheel2Kd.text = SerialPort.dFirstConstants[1];
                             SerialPort.setPID(1, wheel2Kp.text, wheel2Ki.text, wheel2Kd.text);
                         }
+                        enabled: SerialPort.deviceReady
                     }
                 }
 
@@ -748,6 +793,7 @@ ApplicationWindow {
                                 wheel3Kd.text = "0";
                             SerialPort.setPID(2, wheel3Kp.text, wheel3Ki.text, wheel3Kd.text);
                         }
+                        enabled: SerialPort.deviceReady
                     }
 
                     Button {
@@ -758,6 +804,7 @@ ApplicationWindow {
                             wheel3Kd.text = SerialPort.dFirstConstants[2];
                             SerialPort.setPID(2, wheel3Kp.text, wheel3Ki.text, wheel3Kd.text);
                         }
+                        enabled: SerialPort.deviceReady
                     }
                 }
 
@@ -775,6 +822,7 @@ ApplicationWindow {
                                 wheel4Kd.text = "0";
                             SerialPort.setPID(3, wheel4Kp.text, wheel4Ki.text, wheel4Kd.text);
                         }
+                        enabled: SerialPort.deviceReady
                     }
 
                     Button {
@@ -785,6 +833,7 @@ ApplicationWindow {
                             wheel4Kd.text = SerialPort.dFirstConstants[3];
                             SerialPort.setPID(3, wheel4Kp.text, wheel4Ki.text, wheel4Kd.text);
                         }
+                        enabled: SerialPort.deviceReady
                     }
                 }
             }

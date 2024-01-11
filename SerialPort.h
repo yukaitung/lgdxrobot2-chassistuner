@@ -11,31 +11,37 @@ class SerialPort : public QObject
     Q_OBJECT
 
     private:
-        QVector<QString> mSerialDevicesName;
-        QVector<float> mTargetWheelsVelocity = {0.0, 0.0, 0.0, 0.0};
-        QVector<float> mMeasuredWheelsVelocity = {0.0, 0.0, 0.0, 0.0};
-        QVector<float> mPConstants = {0, 0, 0, 0};
-        QVector<float> mIConstants = {0, 0, 0, 0};
-        QVector<float> mDConstants = {0, 0, 0, 0};
-        QVector<QString> mFirstPConstants = {0, 0, 0, 0}; // JavaScript
-        QVector<QString> mFirstIConstants = {0, 0, 0, 0};
-        QVector<QString> mFirstDConstants = {0, 0, 0, 0};
-        QVector<int> mIna219 = {0, 0};
-        QVector<int> mEstop = {0, 0};
-        bool mDeviceReady = false;
+        QVector<QString> serialDevicesName;
+        QVector<float> transform = {0.0, 0.0, 0.0};
+        QVector<float> forwardKinematic = {0.0, 0.0, 0.0};
+        QVector<float> targetWheelsVelocity = {0.0, 0.0, 0.0, 0.0};
+        QVector<float> measuredWheelsVelocity = {0.0, 0.0, 0.0, 0.0};
+        QVector<float> pConstants = {0, 0, 0, 0};
+        QVector<float> iConstants = {0, 0, 0, 0};
+        QVector<float> dConstants = {0, 0, 0, 0};
+        QVector<QString> firstPConstants = {0, 0, 0, 0}; // JavaScript
+        QVector<QString> firstIConstants = {0, 0, 0, 0};
+        QVector<QString> firstDConstants = {0, 0, 0, 0};
+        QVector<int> ina219 = {0, 0};
+        QVector<int> eStop = {0, 0};
+        qint64 lastReceiveTime = 0, receiveTimeWait = 0;
+        bool deviceReady = false;
 
-        Q_PROPERTY(QVector<QString> serialDevicesName READ serialDevicesName NOTIFY serialDevicesNameChanged)
-        Q_PROPERTY(QVector<float> targetWheelsVelocity READ targetWheelsVelocity NOTIFY robotStatusChanged)
-        Q_PROPERTY(QVector<float> measuredWheelsVelocity READ measuredWheelsVelocity NOTIFY robotStatusChanged)
-        Q_PROPERTY(QVector<float> pConstants READ pConstants NOTIFY robotStatusChanged)
-        Q_PROPERTY(QVector<float> iConstants READ iConstants NOTIFY robotStatusChanged)
-        Q_PROPERTY(QVector<float> dConstants READ dConstants NOTIFY robotStatusChanged)
-        Q_PROPERTY(QVector<QString> pFirstConstants READ pFirstConstants NOTIFY robotStatusChanged)
-        Q_PROPERTY(QVector<QString> iFirstConstants READ iFirstConstants NOTIFY robotStatusChanged)
-        Q_PROPERTY(QVector<QString> dFirstConstants READ dFirstConstants NOTIFY robotStatusChanged)
-        Q_PROPERTY(QVector<int> ina219 READ ina219 NOTIFY robotStatusChanged)
-        Q_PROPERTY(QVector<int> estop READ estop NOTIFY robotStatusChanged)
-        Q_PROPERTY(bool deviceReady READ deviceReady NOTIFY deviceReadyChanged)
+        Q_PROPERTY(QVector<QString> serialDevicesName MEMBER serialDevicesName NOTIFY serialDevicesNameChanged)
+        Q_PROPERTY(QVector<float> transform MEMBER transform NOTIFY robotStatusChanged)
+        Q_PROPERTY(QVector<float> forwardKinematic MEMBER forwardKinematic NOTIFY robotStatusChanged)
+        Q_PROPERTY(QVector<float> targetWheelsVelocity MEMBER targetWheelsVelocity NOTIFY robotStatusChanged)
+        Q_PROPERTY(QVector<float> measuredWheelsVelocity MEMBER measuredWheelsVelocity NOTIFY robotStatusChanged)
+        Q_PROPERTY(QVector<float> pConstants MEMBER pConstants NOTIFY robotStatusChanged)
+        Q_PROPERTY(QVector<float> iConstants MEMBER iConstants NOTIFY robotStatusChanged)
+        Q_PROPERTY(QVector<float> dConstants MEMBER dConstants NOTIFY robotStatusChanged)
+        Q_PROPERTY(QVector<QString> pFirstConstants MEMBER firstPConstants NOTIFY robotStatusChanged)
+        Q_PROPERTY(QVector<QString> iFirstConstants MEMBER firstIConstants NOTIFY robotStatusChanged)
+        Q_PROPERTY(QVector<QString> dFirstConstants MEMBER firstDConstants NOTIFY robotStatusChanged)
+        Q_PROPERTY(QVector<int> ina219 MEMBER ina219 NOTIFY robotStatusChanged)
+        Q_PROPERTY(QVector<int> eStop MEMBER eStop NOTIFY robotStatusChanged)
+        Q_PROPERTY(qint64 receiveTimeWait MEMBER receiveTimeWait NOTIFY robotStatusChanged)
+        Q_PROPERTY(bool deviceReady MEMBER deviceReady NOTIFY deviceReadyChanged)
 
         QSerialPort mSerial;
         QByteArray mSerialBuffer;
@@ -44,30 +50,17 @@ class SerialPort : public QObject
         explicit SerialPort(QObject *parent = nullptr);
         uint32_t floatToUint32(float n){ return (uint32_t)(*(uint32_t*)&n); }
         float uint32ToFloat(uint32_t n){ return (float)(*(float*)&n); }
-        uint32_t combineBytes(uint32_t a, uint32_t b, uint32_t c, uint32_t d) {
-            return a << 24 | b << 16 | c << 8 | d;
-        }
-
+        uint32_t combineBytes(uint32_t a, uint32_t b, uint32_t c, uint32_t d) { return a << 24 | b << 16 | c << 8 | d; }
+        uint16_t combineBytes(uint16_t a, uint16_t b) { return a << 8 | b; }
 
     public:
         static QObject *qmlInstance(QQmlEngine *engine, QJSEngine *scriptEngine);
-        QVector<QString> serialDevicesName() {return mSerialDevicesName;}
-        QVector<float> targetWheelsVelocity() {return mTargetWheelsVelocity;}
-        QVector<float> measuredWheelsVelocity() {return mMeasuredWheelsVelocity;}
-        QVector<float> pConstants() {return mPConstants;}
-        QVector<float> iConstants() {return mIConstants;}
-        QVector<float> dConstants() {return mDConstants;}
-        QVector<QString> pFirstConstants() {return mFirstPConstants;}
-        QVector<QString> iFirstConstants() {return mFirstIConstants;}
-        QVector<QString> dFirstConstants() {return mFirstDConstants;}
-        QVector<int> ina219() {return mIna219;}
-        QVector<int> estop() {return mEstop;}
-        bool deviceReady() {return mDeviceReady;}
 
     public slots:
         void updateSerialDevices();
         void connect(QString portName);
         void read();
+        void resetRobotTransform();
         void setWheelsVelocity(float x, float y, float w);
         void setSingleWheelVelocity(int motor, float velocity);
         void setPID(int motor, float kp, float ki, float kd);
