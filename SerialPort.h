@@ -11,6 +11,9 @@ class SerialPort : public QObject
     Q_OBJECT
 
     private:
+        int dataPackageVersion = 0;
+        int dataPackageSize = 0;
+        QString serialNumber;
         QVector<QString> serialDevicesName;
         QVector<float> transform = {0.0, 0.0, 0.0};
         QVector<float> forwardKinematic = {0.0, 0.0, 0.0};
@@ -27,6 +30,9 @@ class SerialPort : public QObject
         qint64 lastReceiveTime = 0, refreshTimeQt = 0, refreshTimeMcu = 0;
         bool deviceReady = false;
 
+        Q_PROPERTY(int dataPackageVersion MEMBER dataPackageVersion NOTIFY robotStatusChanged)
+        Q_PROPERTY(int dataPackageSize MEMBER dataPackageSize NOTIFY robotStatusChanged)
+        Q_PROPERTY(QString serialNumber MEMBER serialNumber NOTIFY robotStatusChanged)
         Q_PROPERTY(QVector<QString> serialDevicesName MEMBER serialDevicesName NOTIFY serialDevicesNameChanged)
         Q_PROPERTY(QVector<float> transform MEMBER transform NOTIFY robotStatusChanged)
         Q_PROPERTY(QVector<float> forwardKinematic MEMBER forwardKinematic NOTIFY robotStatusChanged)
@@ -66,6 +72,7 @@ class SerialPort : public QObject
         void setSingleWheelVelocity(int motor, float velocity);
         void setPID(int motor, float kp, float ki, float kd);
         void setSoftwareEStop(int enable);
+        void getSerialNumber();
 
     signals:
         void serialDevicesNameChanged();

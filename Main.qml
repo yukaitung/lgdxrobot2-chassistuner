@@ -163,6 +163,36 @@ ApplicationWindow {
             }
 
             Label {
+                text: qsTr("Package Version: %1")
+                .arg(SerialPort.dataPackageVersion)
+            }
+
+            Label {
+                text: qsTr("Package Size: %1")
+                .arg(SerialPort.dataPackageSize)
+            }
+
+            RowLayout {
+                spacing: 8
+
+                Label {
+                    text: qsTr("Serial Number: %1")
+                    .arg(SerialPort.serialNumber)
+                }
+
+                Button {
+                    text: qsTr("Get")
+                    onClicked: SerialPort.getSerialNumber()
+                    enabled: SerialPort.deviceReady
+                }
+            }
+
+            Label {
+                text: qsTr("Data refresh time (ms): MCU: %1, Qt: %2")
+                .arg(SerialPort.refreshTimeMcu).arg(SerialPort.refreshTimeQt)
+            }
+
+            Label {
                 text: qsTr("Data refresh time (ms): MCU: %1, Qt: %2")
                 .arg(SerialPort.refreshTimeMcu).arg(SerialPort.refreshTimeQt)
             }

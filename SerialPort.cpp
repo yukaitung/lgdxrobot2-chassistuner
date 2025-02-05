@@ -32,7 +32,8 @@ void SerialPort::read()
         // Locate frame size
         if(data[0] == (char) 170)
         {
-            mSerialFrameSize = data[1];
+            mSerialFrameSize = data[2];
+            dataPackageSize = mSerialFrameSize;
             // The package is too small, wait for next pacakge
             if(data.size() < mSerialFrameSize)
             {
@@ -40,6 +41,11 @@ void SerialPort::read()
                 return;
             }
             // The package is too big, discard the data
+        }
+        else if(data[0] == (char) 171)
+        {
+            QString sn = data.toHex().toUpper();
+            serialNumber = sn.right(sn.length() - 2);
         }
     }
 
@@ -50,7 +56,8 @@ void SerialPort::read()
         lastReceiveTime = currentTime;
         // Get data
         QByteArray frame = mSerialBuffer + data;
-        int index = 2;
+        dataPackageVersion = frame[1];
+        int index = 3;
         refreshTimeMcu = combineBytes((uint8_t) frame[index], (uint8_t) frame[index + 1]);
         index += 2;
         for(int i = 0; i < 3; i++)
@@ -216,6 +223,16 @@ void SerialPort::setSoftwareEStop(int enable)
     ba[4] = enable & 255;
     if(mSerial.isOpen())
         mSerial.write(ba, 5);
+    else
+        qDebug() << "Serial is closed.";
+}
+
+void SerialPort::getSerialNumber()
+{
+    char ba[1];
+    ba[0] = 'S';
+    if(mSerial.isOpen())
+        mSerial.write(ba, 1);
     else
         qDebug() << "Serial is closed.";
 }
