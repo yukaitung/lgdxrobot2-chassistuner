@@ -45,7 +45,7 @@ void SerialPort::read()
         else if(data[0] == (char) 171)
         {
             QString sn = data.toHex().toUpper();
-            serialNumber = sn.right(sn.length() - 2);
+            serialNumber = sn.mid(2, sn.length() - 4);
         }
     }
 
