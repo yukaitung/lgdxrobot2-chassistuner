@@ -1,33 +1,6 @@
-# LGDX Robot 2 ChassisTuner
+# LGDXRobot2 ChassisTuner
 
-LGDX Robot 2 is a DIY universal mecanum wheel chassis project. The LGDX Robot 2 ChassisTuner tests the communication all functionalities in the MCU.
+LGDXRobot2 ChassisTuner is a GUI tool written in Qt, designed for testing and fine-tuning LGDXRobot2 hardware. It allows you to validate your setup and optimise performance.
 
-### Links
-
-*   [LGDXRobot2-MCU](https://gitlab.com/yukaitung/lgdxrobot2-mcu)
-*   [LGDXRobot2-ChassisTuner](https://gitlab.com/yukaitung/lgdxrobot2-chassistuner)
-
-# How it works
-
-This software is developed with Qt 6. Using QML for user interface, Qt Serial Port to communicate with MCU and Qt Chart to display PID charts.
-
-### Functionality
-
-* Test connection to the MCU
-* Display all status from MCU (Refer [LGDXRobot2-MCU](https://gitlab.com/yukaitung/lgdxrobot2-mcu) for detail)
-* Test motors and E-stop
-* PID tune for every wheel, as well as a chart showing the result for PID setting
-
-## Screenshots
-
-![Screenshot](img/screenshot.png)
-
-# Getting started
-
-### Prerequisite
-
-This project requires Qt 6.5.1 and Qt Charts. Install all packages using Qt Maintenance Tool.
-
-### Build & Run
-
-Using Qt Creator to open the project and press "Run".
+- [Homepage](https://lgdxrobot.bristolgram.uk/lgdxrobot2/)
+- [Documentation](https://docs.lgdxrobot.bristolgram.uk/lgdxrobot2/chassistuner/)
