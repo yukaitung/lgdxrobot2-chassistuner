@@ -2,6 +2,7 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Controls.Material
 import QtQuick.Layouts
+import SerialPort
 import "../../shared"
 
 Pane {
@@ -20,7 +21,8 @@ Pane {
     }
 
     LabelText {
-      text: qsTr("Disconnected")
+      text: SerialPort.isConnected ? qsTr("Connected") : qsTr("Disconnected")
+      color: SerialPort.isConnected ? "green" : "red"
     }
 
     LabelText {

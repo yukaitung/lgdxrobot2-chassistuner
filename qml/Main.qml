@@ -1,10 +1,11 @@
 import QtQuick
-import QtQuick.Layouts
 import QtQuick.Controls
 import QtQuick.Controls.Material
+import QtQuick.Layouts
+import SerialPort
+import "global.js" as Global
 import "pages"
 import "shared"
-import "global.js" as Global
 
 ApplicationWindow {
 	id: window
@@ -12,6 +13,11 @@ ApplicationWindow {
 	height: 720
 	visible: true
 	title: qsTr("LGDXRobot2 ChassisTuner")
+
+	Component.onCompleted: {
+		SerialPort.updateDeviceList();
+	}
+
 
 	header: ToolBar {
 		id: toolBar
@@ -33,22 +39,33 @@ ApplicationWindow {
 			ToolButton {
 				icon.source: Qt.resolvedUrl("qrc:/qml/img/refresh.svg")
 				icon.color: "white"
+				onClicked: SerialPort.updateDeviceList()
 			}
 
 			ComboBox {
-				Layout.preferredHeight: 32
+				id: serialPortComboBox
+				Layout.preferredHeight: 36
 				Layout.preferredWidth: 300
-				model: ["First", "Second", "Third"]
+				model: SerialPort.deviceList
 				background: Rectangle {
-						color: "white"
-						border.color: "white"
-						radius: 4
+					color: "white"
+					border.color: "white"
+					radius: 4
 				}
 			}
 
 			ToolButton {
 				icon.source: Qt.resolvedUrl("qrc:/qml/img/connect.svg")
 				icon.color: "white"
+				onClicked: SerialPort.connect(serialPortComboBox.currentText)
+				visible: !SerialPort.isConnected
+			}
+
+			ToolButton {
+				icon.source: Qt.resolvedUrl("qrc:/qml/img/disconnect.svg")
+				icon.color: "white"
+				onClicked: SerialPort.disconnect()
+				visible: SerialPort.isConnected
 			}
 		}
 	}

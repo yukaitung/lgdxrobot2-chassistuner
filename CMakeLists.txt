@@ -4,7 +4,7 @@ project(LGDXRobot2ChassisTuner VERSION 0.1 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(Qt6 REQUIRED COMPONENTS Quick Graphs)
+find_package(Qt6 REQUIRED COMPONENTS Quick Graphs SerialPort)
 
 qt_standard_project_setup(REQUIRES 6.8)
 set(CMAKE_AUTORCC ON)
@@ -12,6 +12,7 @@ set(CMAKE_AUTORCC ON)
 qt_add_executable(appLGDXRobot2ChassisTuner
     application.qrc
     src/main.cpp
+    src/SerialPort.cpp
 )
 
 qt_add_qml_module(appLGDXRobot2ChassisTuner
@@ -43,7 +44,7 @@ set_target_properties(appLGDXRobot2ChassisTuner PROPERTIES
 )
 
 target_link_libraries(appLGDXRobot2ChassisTuner
-    PRIVATE Qt6::Quick Qt::Graphs
+    PRIVATE Qt6::Quick Qt6::Graphs Qt6::SerialPort
 )
 
 include(GNUInstallDirs)
