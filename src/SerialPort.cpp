@@ -1,17 +1,22 @@
 #include "SerialPort.h"
+#include "src/lgdxrobot2.h"
 #include <QtSerialPort/qserialport.h>
+
+RobotData* SerialPort::robotData = nullptr;
+SerialPort* SerialPort::instance = nullptr; 
 
 SerialPort::SerialPort(QObject *parent) : QObject{parent}
 {
 	QObject::connect(&serial, &QSerialPort::readyRead, this, &SerialPort::read);
+	robotData = RobotData::getInstance();
 }
 
-QObject *SerialPort::getInstance(QQmlEngine *engine, QJSEngine *scriptEngine)
+SerialPort *SerialPort::getInstance()
 {
-	Q_UNUSED(engine);
-	Q_UNUSED(scriptEngine);
+	if (instance == nullptr)
+		instance = new SerialPort;
 
-	return new SerialPort;
+	return instance;
 }
 
 void SerialPort::updateDeviceList()
@@ -58,8 +63,24 @@ void SerialPort::read()
 		if (next != -1)
 		{
 			// Found a frame
-			QByteArray packet = buffer.mid(start, next - start);
-			qDebug().noquote() << "Packet:" << packet.toHex(' ').toUpper();
+			QByteArray frame = buffer.mid(start, next - start);
+			if (frame.size() > 3)
+			{
+				switch (frame[2])
+				{
+					case MCU_DATA_TYPE:
+						McuData mcuData;
+						memcpy(&mcuData, frame.data(), sizeof(McuData));
+						robotData->updateMcuData(mcuData);
+					case MCU_SERIAL_NUMBER_TYPE:
+						McuSerialNumber mcuSerialNumber;
+						memcpy(&mcuSerialNumber, frame.data(), sizeof(McuSerialNumber));
+						robotData->updateMcuSerialNumber(mcuSerialNumber);
+						break;
+					default:
+						break;
+				}
+			}
 			buffer.remove(0, next );
 		}
 		else

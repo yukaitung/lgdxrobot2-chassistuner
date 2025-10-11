@@ -1,0 +1,34 @@
+#ifndef QMLROBOTDATA_H
+#define QMLROBOTDATA_H
+
+#include <QObject>
+#include <QMetaType>
+#include <QVector>
+
+class QmlMcuData : public QObject
+{
+  Q_OBJECT
+  Q_PROPERTY(QVector<float> transform MEMBER transform NOTIFY updated)
+  Q_PROPERTY(QVector<float> motorsTargetVelocity MEMBER motorsTargetVelocity NOTIFY updated)
+  Q_PROPERTY(QVector<float> motorsActualVelocity MEMBER motorsActualVelocity NOTIFY updated)
+  Q_PROPERTY(QVector<float> battery1 MEMBER battery1 NOTIFY updated)
+  Q_PROPERTY(QVector<float> battery2 MEMBER battery2 NOTIFY updated)
+  Q_PROPERTY(bool softwareEmergencyStopEnabled MEMBER softwareEmergencyStopEnabled NOTIFY updated)
+  Q_PROPERTY(bool hardwareEmergencyStopEnabled MEMBER hardwareEmergencyStopEnabled NOTIFY updated)
+
+  public:
+    explicit QmlMcuData(QObject *parent = nullptr);
+    QVector<float> transform = {0.0f, 0.0f, 0.0f}; // x, y, rotation
+    QVector<float> motorsTargetVelocity = {0.0f, 0.0f, 0.0f, 0.0f}; // motor 1, motor 2, motor 3, motor 4
+    QVector<float> motorsActualVelocity = {0.0f, 0.0f, 0.0f, 0.0f}; // motor 1, motor 2, motor 3, motor 4
+    QVector<float> battery1 = {0.0f, 0.0f}; // voltage, current
+    QVector<float> battery2 = {0.0f, 0.0f}; // voltage, current
+    bool softwareEmergencyStopEnabled = false;
+    bool hardwareEmergencyStopEnabled = false;
+
+  signals:
+    void updated();
+};
+
+#endif // ROBOTD_H
+

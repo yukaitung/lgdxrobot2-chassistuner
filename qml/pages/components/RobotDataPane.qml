@@ -3,6 +3,7 @@ import QtQuick.Controls
 import QtQuick.Controls.Material
 import QtQuick.Layouts
 import SerialPort
+import RobotData
 import "../../shared"
 
 Pane {
@@ -31,7 +32,7 @@ Pane {
     }
 
     LabelText {
-      text: "1234567890"
+      text: RobotData.serialNumber
     }
 
     LabelText {
@@ -40,7 +41,10 @@ Pane {
     }
 
     LabelText {
-      text: qsTr("X: 1 m, Y: 2 m, Rotation: 3 rad/s")
+      text: qsTr("X: %1 m, Y: %2 m, Rotation: %3 rad/s")
+        .arg(RobotData.mcuData.transform[0].toFixed(4))
+        .arg(RobotData.mcuData.transform[1].toFixed(4))
+        .arg(RobotData.mcuData.transform[2].toFixed(4))
     }
 
     LabelText {
@@ -49,7 +53,11 @@ Pane {
     }
 
     LabelText {
-      text: qsTr("Motor 1: 4 m/s, Motor 2: 5 m/s")
+      text: qsTr("Motor 1: %1 m/s, Motor 2: %2 m/s, Motor 3: %3 m/s, Motor 4: %4 m/s")
+        .arg(RobotData.mcuData.motorsTargetVelocity[0].toFixed(4))
+        .arg(RobotData.mcuData.motorsTargetVelocity[1].toFixed(4))
+        .arg(RobotData.mcuData.motorsTargetVelocity[2].toFixed(4))
+        .arg(RobotData.mcuData.motorsTargetVelocity[3].toFixed(4))
     }
 
     LabelText {
@@ -58,7 +66,11 @@ Pane {
     }
 
     LabelText {
-      text: qsTr("Motor 1: 6 m/s, Motor 2: 7 m/s")
+      text: qsTr("Motor 1: %1 m/s, Motor 2: %2 m/s, Motor 3: %3 m/s, Motor 4: %4 m/s")
+        .arg(RobotData.mcuData.motorsActualVelocity[0].toFixed(4))
+        .arg(RobotData.mcuData.motorsActualVelocity[1].toFixed(4))
+        .arg(RobotData.mcuData.motorsActualVelocity[2].toFixed(4))
+        .arg(RobotData.mcuData.motorsActualVelocity[3].toFixed(4))
     }
 
     LabelText {
@@ -67,7 +79,10 @@ Pane {
     }
 
     LabelText {
-      text: qsTr("Voltage: 12.3 V, Current: 1.2 A, Power: 2.3 W")
+      text: qsTr("Voltage: %1 V, Current: %2 A, Power: %3 W")
+        .arg(RobotData.mcuData.battery1[0].toFixed(2))
+        .arg(RobotData.mcuData.battery1[1].toFixed(2))
+        .arg((RobotData.mcuData.battery1[0] * RobotData.mcuData.battery1[1]).toFixed(2))
     }
 
     LabelText {
@@ -76,7 +91,10 @@ Pane {
     }
 
     LabelText {
-      text: qsTr("Voltage: 12.3 V, Current: 1.2 A, Power: 2.3 W")
+      text: qsTr("Voltage: %1 V, Current: %2 A, Power: %3 W")
+        .arg(RobotData.mcuData.battery2[0].toFixed(2))
+        .arg(RobotData.mcuData.battery2[1].toFixed(2))
+        .arg((RobotData.mcuData.battery2[0] * RobotData.mcuData.battery2[1]).toFixed(2))
     }
 
     LabelText {
@@ -85,7 +103,7 @@ Pane {
     }
 
     LabelText {
-      text: qsTr("Enabled")
+      text: RobotData.mcuData.softwareEmergencyStopEnabled ? qsTr("Enabled") : qsTr("Disabled")
     }
 
     LabelText {
@@ -94,7 +112,7 @@ Pane {
     }
 
     LabelText {
-      text: qsTr("Enabled")
+      text: RobotData.mcuData.hardwareEmergencyStopEnabled ? qsTr("Enabled") : qsTr("Disabled")
     }
   }
 }

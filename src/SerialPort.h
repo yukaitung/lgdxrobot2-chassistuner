@@ -5,10 +5,10 @@
 #include <QQmlEngine>
 #include <QSerialPort>
 #include <QSerialPortInfo>
+#include <QString>
 #include <QVector>
-#include <QtCore/qstringview.h>
 
-#include "lgdxrobot2.h"
+#include "RobotData.h"
 
 class SerialPort: public QObject
 {
@@ -17,12 +17,13 @@ class SerialPort: public QObject
 	Q_PROPERTY(bool isConnected MEMBER isConnected NOTIFY connectionStatusChanged)
 
 	private:
+		static SerialPort *instance;
+		static RobotData *robotData;
 		QSerialPort serial;
 
+		QVector<QString> deviceList;
 		bool isConnected = false;
 		QByteArray buffer;
-
-		QVector<QString> deviceList;
 
 		explicit SerialPort(QObject *parent = nullptr);
 
@@ -30,7 +31,7 @@ class SerialPort: public QObject
 		void read();
 
 	public:
-		static QObject *getInstance(QQmlEngine *engine, QJSEngine *scriptEngine);
+		static SerialPort *getInstance();
 
 	public slots:
 		void updateDeviceList();
