@@ -1,0 +1,1 @@
+var maxWidth = 800

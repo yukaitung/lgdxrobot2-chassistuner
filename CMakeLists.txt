@@ -7,16 +7,25 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 find_package(Qt6 REQUIRED COMPONENTS Quick)
 
 qt_standard_project_setup(REQUIRES 6.8)
+set(CMAKE_AUTORCC ON)
 
 qt_add_executable(appLGDXRobot2ChassisTuner
-    main.cpp
+    application.qrc
+    src/main.cpp
 )
 
 qt_add_qml_module(appLGDXRobot2ChassisTuner
     URI LGDXRobot2ChassisTuner
     VERSION 1.0
     QML_FILES
-        Main.qml
+        qml/Main.qml
+        qml/shared/LabelHeading.qml
+        qml/shared/LabelText.qml
+        qml/pages/PidTuner.qml
+        qml/pages/RobotData.qml
+        qml/pages/components/RobotDataPane.qml
+        qml/pages/components/HardwareTestingPane.qml
+        qml/global.js
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.

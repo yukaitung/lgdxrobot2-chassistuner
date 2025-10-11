@@ -68,3 +68,4 @@ _deps
 build
 .qmlls.ini
 .cache/**
+.DS_Store
