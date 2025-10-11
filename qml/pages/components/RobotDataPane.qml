@@ -40,37 +40,78 @@ Pane {
       font.bold: true
     }
 
-    LabelText {
-      text: qsTr("X: %1 m, Y: %2 m, Rotation: %3 rad/s")
-        .arg(RobotData.mcuData.transform[0].toFixed(4))
-        .arg(RobotData.mcuData.transform[1].toFixed(4))
-        .arg(RobotData.mcuData.transform[2].toFixed(4))
+    Row {
+      Layout.fillWidth: true
+      LabelText {
+        text: qsTr("X: %1 m").arg(RobotData.mcuData.transform[0].toFixed(4))
+        width: parent.width / 3
+      }
+
+      LabelText {
+        text: qsTr("Y: %1 m").arg(RobotData.mcuData.transform[1].toFixed(4))
+        width: parent.width / 3
+      }
+
+      LabelText {
+        text: qsTr("Rotation: %1 rad").arg(RobotData.mcuData.transform[2].toFixed(4))
+        width: parent.width / 3
+      }
     }
 
     LabelText {
-      text: qsTr("Target Motors Velocity")
+      text: qsTr("Target Motors Velocity (rad/s)")
       font.bold: true
     }
 
-    LabelText {
-      text: qsTr("Motor 1: %1 m/s, Motor 2: %2 m/s, Motor 3: %3 m/s, Motor 4: %4 m/s")
-        .arg(RobotData.mcuData.motorsTargetVelocity[0].toFixed(4))
-        .arg(RobotData.mcuData.motorsTargetVelocity[1].toFixed(4))
-        .arg(RobotData.mcuData.motorsTargetVelocity[2].toFixed(4))
-        .arg(RobotData.mcuData.motorsTargetVelocity[3].toFixed(4))
+    Row {
+      Layout.fillWidth: true
+      LabelText {
+        text: qsTr("Motor 1: %1").arg(RobotData.mcuData.motorsTargetVelocity[0].toFixed(4))
+        width: parent.width / 4
+      }
+
+      LabelText {
+        text: qsTr("Motor 2: %1").arg(RobotData.mcuData.motorsTargetVelocity[1].toFixed(4))
+        width: parent.width / 4
+      }
+
+      LabelText {
+        text: qsTr("Motor 3: %1").arg(RobotData.mcuData.motorsTargetVelocity[2].toFixed(4))
+        width: parent.width / 4
+      }
+      
+      LabelText {
+        text: qsTr("Motor 4: %1").arg(RobotData.mcuData.motorsTargetVelocity[3].toFixed(4))
+        width: parent.width / 4
+      }
     }
 
     LabelText {
-      text: "Measured Motors Velocity"
+      text: "Measured Motors Velocity (rad/s)"
       font.bold: true
     }
 
-    LabelText {
-      text: qsTr("Motor 1: %1 m/s, Motor 2: %2 m/s, Motor 3: %3 m/s, Motor 4: %4 m/s")
-        .arg(RobotData.mcuData.motorsActualVelocity[0].toFixed(4))
-        .arg(RobotData.mcuData.motorsActualVelocity[1].toFixed(4))
-        .arg(RobotData.mcuData.motorsActualVelocity[2].toFixed(4))
-        .arg(RobotData.mcuData.motorsActualVelocity[3].toFixed(4))
+    Row {
+      Layout.fillWidth: true
+      LabelText {
+        text: qsTr("Motor 1: %1").arg(RobotData.mcuData.motorsActualVelocity[0].toFixed(4))
+        width: parent.width / 4
+      }
+
+      LabelText {
+        text: qsTr("Motor 2: %1").arg(RobotData.mcuData.motorsActualVelocity[1].toFixed(4))
+        width: parent.width / 4
+      }
+
+      LabelText {
+        text: qsTr("Motor 3: %1").arg(RobotData.mcuData.motorsActualVelocity[2].toFixed(4))
+        width: parent.width / 4
+      }
+
+      LabelText {
+        text: qsTr("Motor 4: %1").arg(RobotData.mcuData.motorsActualVelocity[3].toFixed(4))
+        width: parent.width / 4
+      }
     }
 
     LabelText {
@@ -78,11 +119,22 @@ Pane {
       font.bold: true
     }
 
-    LabelText {
-      text: qsTr("Voltage: %1 V, Current: %2 A, Power: %3 W")
-        .arg(RobotData.mcuData.battery1[0].toFixed(2))
-        .arg(RobotData.mcuData.battery1[1].toFixed(2))
-        .arg((RobotData.mcuData.battery1[0] * RobotData.mcuData.battery1[1]).toFixed(2))
+    Row {
+      Layout.fillWidth: true
+      LabelText {
+        text: qsTr("Voltage: %1 V").arg(RobotData.mcuData.battery1[0].toFixed(2))
+        width: parent.width / 4
+      }
+
+      LabelText {
+        text: qsTr("Current: %1 A").arg(RobotData.mcuData.battery1[1].toFixed(2))
+        width: parent.width / 4
+      }
+
+      LabelText {
+        text: qsTr("Power: %1 W").arg((RobotData.mcuData.battery1[0] * RobotData.mcuData.battery1[1]).toFixed(2))
+        width: parent.width / 4
+      }
     }
 
     LabelText {
@@ -90,11 +142,22 @@ Pane {
       font.bold: true
     }
 
-    LabelText {
-      text: qsTr("Voltage: %1 V, Current: %2 A, Power: %3 W")
-        .arg(RobotData.mcuData.battery2[0].toFixed(2))
-        .arg(RobotData.mcuData.battery2[1].toFixed(2))
-        .arg((RobotData.mcuData.battery2[0] * RobotData.mcuData.battery2[1]).toFixed(2))
+    Row {
+      Layout.fillWidth: true
+      LabelText {
+        text: qsTr("Voltage: %1 V").arg(RobotData.mcuData.battery2[0].toFixed(2))
+        width: parent.width / 4
+      }
+
+      LabelText {
+        text: qsTr("Current: %1 A").arg(RobotData.mcuData.battery2[1].toFixed(2))
+        width: parent.width / 4
+      }
+
+      LabelText {
+        text: qsTr("Power: %1 W").arg((RobotData.mcuData.battery2[0] * RobotData.mcuData.battery2[1]).toFixed(2))
+        width: parent.width / 4
+      }
     }
 
     LabelText {

@@ -40,6 +40,7 @@ ApplicationWindow {
 				icon.source: Qt.resolvedUrl("qrc:/qml/img/refresh.svg")
 				icon.color: "white"
 				onClicked: SerialPort.updateDeviceList()
+				enabled: !SerialPort.isConnected
 			}
 
 			ComboBox {
@@ -52,6 +53,7 @@ ApplicationWindow {
 					border.color: "white"
 					radius: 4
 				}
+				enabled: !SerialPort.isConnected
 			}
 
 			ToolButton {
