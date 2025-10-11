@@ -1,5 +1,8 @@
 import QtQuick
 import QtQuick.Controls
+import QtQuick.Controls.Material
+import "components"
+import "../shared"
 import "../global.js" as Global
 
 Flickable {
@@ -14,6 +17,30 @@ Flickable {
       width: Math.min(parent.width, Global.maxWidth)
       anchors.horizontalCenter: parent.horizontalCenter
       spacing: 16
+
+      LabelHeading {
+        text: qsTr("PID Configuration")
+      }
+
+      PidConfigurationPane {
+        width: parent.width
+      }
+
+      LabelHeading {
+        text: qsTr("PID Test")
+      }
+
+      PidTestPane {
+        width: parent.width
+      }
+
+      LabelHeading {
+        text: qsTr("Chart")
+      }
+
+      PidChartPane {
+        width: parent.width
+      }
     }
   }
 

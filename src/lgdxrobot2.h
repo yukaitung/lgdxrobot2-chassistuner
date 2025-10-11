@@ -1,5 +1,5 @@
-#ifndef LGDXROBOT2_H
-#define LGDXROBOT2_H
+#ifndef __LGDXROBOT2_H
+#define __LGDXROBOT2_H
 
 #include <stdint.h>
 #include <stdbool.h>
@@ -18,6 +18,7 @@
 #define MCU_SOFTWARE_EMERGENCY_STOP_COMMAND_TYPE 'E'
 #define MCU_INVERSE_KINEMATICS_COMMAND_TYPE 'I'
 #define MCU_MOTOR_COMMAND_TYPE 'M'
+#define MCU_SET_LEVEL_VELOCITY_COMMAND_TYPE 'L'
 #define MCU_GET_PID_COMMAND_TYPE 'P'
 #define MCU_SET_PID_COMMAND_TYPE 'Q'
 #define MCU_SAVE_PID_COMMAND_TYPE 'R'
@@ -67,6 +68,7 @@ typedef struct {
   uint8_t header1;
   uint8_t header2;
   char type;
+  float level_velocity[PID_LEVEL];
   float p[API_MOTOR_COUNT][PID_LEVEL];
   float i[API_MOTOR_COUNT][PID_LEVEL];
   float d[API_MOTOR_COUNT][PID_LEVEL];
@@ -95,6 +97,11 @@ typedef struct {
 } McuMotorCommand;
 
 // PID control
+typedef struct {
+  char command;
+  float level_velocity[PID_LEVEL];
+} McuSetLevelVelocityCommand;
+
 typedef struct {
   char command;
 } McuGetPidCommand;

@@ -4,7 +4,7 @@ project(LGDXRobot2ChassisTuner VERSION 0.1 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(Qt6 REQUIRED COMPONENTS Quick)
+find_package(Qt6 REQUIRED COMPONENTS Quick Graphs)
 
 qt_standard_project_setup(REQUIRES 6.8)
 set(CMAKE_AUTORCC ON)
@@ -18,14 +18,17 @@ qt_add_qml_module(appLGDXRobot2ChassisTuner
     URI LGDXRobot2ChassisTuner
     VERSION 1.0
     QML_FILES
+        qml/global.js
         qml/Main.qml
-        qml/shared/LabelHeading.qml
-        qml/shared/LabelText.qml
+        qml/pages/components/HardwareTestingPane.qml
+        qml/pages/components/PidChartPane.qml
+        qml/pages/components/PidConfigurationPane.qml
+        qml/pages/components/PidTestPane.qml
+        qml/pages/components/RobotDataPane.qml
         qml/pages/PidTuner.qml
         qml/pages/RobotData.qml
-        qml/pages/components/RobotDataPane.qml
-        qml/pages/components/HardwareTestingPane.qml
-        qml/global.js
+        qml/shared/LabelHeading.qml
+        qml/shared/LabelText.qml
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
@@ -40,7 +43,7 @@ set_target_properties(appLGDXRobot2ChassisTuner PROPERTIES
 )
 
 target_link_libraries(appLGDXRobot2ChassisTuner
-    PRIVATE Qt6::Quick
+    PRIVATE Qt6::Quick Qt::Graphs
 )
 
 include(GNUInstallDirs)

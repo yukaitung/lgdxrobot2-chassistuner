@@ -11,7 +11,7 @@ Pane {
   GridLayout {
     width: parent.width
     columns: 3
-    rowSpacing: 16
+    rowSpacing: 8
     columnSpacing: 8
 
     LabelText {
