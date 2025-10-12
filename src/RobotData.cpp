@@ -1,6 +1,4 @@
 #include "RobotData.h"
-#include <QtCore/qobject.h>
-#include <QtCore/qtmetamacros.h>
 
 RobotData* RobotData::instance = nullptr;
 
@@ -44,6 +42,13 @@ void RobotData::updateMcuData(const McuData &mcuData)
 	this->mcuData->hardwareEmergencyStopEnabled = mcuData.hardware_emergency_stop_enabled;	
 	this->mcuData->betteryLowEmergencyStopEnabled = mcuData.bettery_low_emergency_stop_enabled;
 	emit mcuDataUpdated();
+
+	if (this->pidChartEnabled)
+	{
+		QTime now = QTime::currentTime();
+		float timeDiff = pidChartStartTime.msecsTo(now);
+		emit pidChartUpdated(timeDiff, mcuData.motors_actual_velocity[currentMotor], pidChartTargetVelocity);
+	}
 }
 
 void RobotData::updateMcuSerialNumber(const McuSerialNumber &mcuSerialNumber)
@@ -70,4 +75,24 @@ void RobotData::updateMcuPid(const McuPid &mcuPid)
 		}
 	}
 	emit mcuPidUpdated();
+}
+
+void RobotData::startPidChart(int motor, QString targetVelocity)
+{
+	if (!this->pidChartEnabled)
+	{
+		this->currentMotor = motor;
+		this->pidChartEnabled = true;
+		this->pidChartStartTime = QTime::currentTime();
+		emit pidChartClear();
+		emit pidChartEnabledUpdated();
+	}
+	this->pidChartTargetVelocity = targetVelocity.toFloat();
+	emit pidChartSetTargetVelocity(targetVelocity.toFloat());
+}
+
+void RobotData::stopPidChart()
+{
+	this->pidChartEnabled = false;
+	emit pidChartEnabledUpdated();
 }

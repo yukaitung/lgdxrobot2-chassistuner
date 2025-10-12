@@ -29,7 +29,7 @@ Pane {
         model: [qsTr("Motor 1"), qsTr("Motor 2"), qsTr("Motor 3"), qsTr("Motor 4")]
         Layout.preferredWidth: 150
         Layout.preferredHeight: 36
-        enabled: SerialPort.isConnected
+        enabled: (SerialPort.isConnected && !RobotData.pidChartEnabled)
       }
 
       ComboBox {
@@ -151,6 +151,7 @@ Pane {
           if (reverseDirectionCheckBox.checked)
             velocity = "-" + velocity;
           SerialPort.setMotor(motorComboBox.currentIndex, velocity);
+          RobotData.startPidChart(motorComboBox.currentIndex, velocity);
         }
       }
 
@@ -160,7 +161,10 @@ Pane {
         Material.background: Material.accent
         height: 48
         enabled: SerialPort.isConnected
-        onClicked: SerialPort.setInverseKinematics(0, 0, 0)
+        onClicked: {
+          SerialPort.setInverseKinematics(0, 0, 0);
+          RobotData.stopPidChart();
+        }
       }
     }
   }

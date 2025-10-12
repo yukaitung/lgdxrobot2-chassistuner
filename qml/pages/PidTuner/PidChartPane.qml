@@ -3,6 +3,7 @@ import QtQuick.Controls
 import QtQuick.Controls.Material
 import QtQuick.Layouts
 import QtGraphs
+import RobotData
 import "../../shared"
 
 Pane {
@@ -10,6 +11,43 @@ Pane {
   Material.elevation: 2
   width: parent.width
   height: graphView.height + (pane.padding * 2)
+
+  Connections {
+    target: RobotData
+    function onPidChartClear() 
+    {
+      targetSeries.clear();
+      measurementSeries.clear();
+      axisX.min = 0;
+      axisX.max = 1;
+      axisY.min = 0;
+      axisY.max = 1;
+    }
+
+    function onPidChartSetTargetVelocity(velocity) 
+    {
+      if (velocity > axisY.max)
+      {
+        axisY.max = velocity + 1;
+      }
+      if (velocity < axisY.min)
+      {
+        axisY.min = velocity - 1;
+      }
+      targetSeries.clear();
+      targetSeries.append(0, velocity);
+      targetSeries.append(axisX.max, velocity);
+    }
+
+    function onPidChartUpdated(time, velocity, targetVelocity)
+    {
+      measurementSeries.append(time, velocity)
+      axisX.max = time;
+      targetSeries.clear();
+      targetSeries.append(0, targetVelocity);
+      targetSeries.append(axisX.max, targetVelocity);
+    }
+  }
 
   GraphsView {
     id: graphView
@@ -22,7 +60,7 @@ Pane {
       readonly property color c2: "#EFF0F3"
       readonly property color c3: "#E0E1E6"
       colorScheme: GraphsTheme.ColorScheme.Light
-      seriesColors: ["#821B1D", "#B94B46"]
+      seriesColors: ["#821B1D", "green"]
       grid.mainColor: c3
       grid.subColor: c2
       axisX.mainColor: c3
@@ -35,35 +73,25 @@ Pane {
 
     // Axis
     axisX: ValueAxis {
-      max: 5
-      tickInterval: 1
-      subTickCount: 5
-      labelDecimals: 1
+      id: axisX
+      max: 1
+      min: 0
     }
 
     axisY: ValueAxis {
-      max: 10
-      tickInterval: 1
-      subTickCount: 5
-      labelDecimals: 1
+      id: axisY
+      max: 1
+      min: 0
     }
 
     LineSeries {
-      id: lineSeries1
+      id: measurementSeries
       width: 2
-      XYPoint { x: 0; y: 0 }
-      XYPoint { x: 1; y: 2.1 }
-      XYPoint { x: 2; y: 3.3 }
-      XYPoint { x: 3; y: 2.1 }
-      XYPoint { x: 4; y: 4.9 }
-      XYPoint { x: 5; y: 3.0 }
     }
 
     LineSeries {
-      id: lineSeries2
+      id: targetSeries
       width: 2
-      XYPoint { x: 0; y: 9.0 }
-      XYPoint { x: 5; y: 9.0 }
     }
   }
 }

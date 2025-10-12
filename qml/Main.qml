@@ -12,6 +12,8 @@ ApplicationWindow {
 	id: window
 	width: 1280
 	height: 720
+	minimumWidth: 1280
+	minimumHeight: 720
 	visible: true
 	title: qsTr("LGDXRobot2 ChassisTuner")
 
