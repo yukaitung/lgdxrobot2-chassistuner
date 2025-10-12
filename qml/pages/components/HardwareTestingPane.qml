@@ -26,6 +26,7 @@ Pane {
       Material.background: Material.accent
       Layout.columnSpan: 2
       onClicked: SerialPort.getSerialNumber()
+      enabled: SerialPort.isConnected
     }
 
     LabelText {
@@ -39,6 +40,7 @@ Pane {
       Material.background: Material.accent
       Layout.columnSpan: 2
       onClicked: SerialPort.resetTransform()
+      enabled: SerialPort.isConnected
     }
 
     LabelText {
@@ -82,6 +84,7 @@ Pane {
         Material.foreground: "white"
         Material.background: Material.accent
         onClicked: SerialPort.setInverseKinematics(ikXTextField.text, ikYTextField.text, ikRotationTextField.text)
+        enabled: SerialPort.isConnected
       }
 
       Button {
@@ -89,6 +92,7 @@ Pane {
         Material.foreground: "white"
         Material.background: Material.accent
         onClicked: SerialPort.setInverseKinematics(0, 0, 0)
+        enabled: SerialPort.isConnected
       }
     }
 
@@ -123,6 +127,7 @@ Pane {
         Material.foreground: "white"
         Material.background: Material.accent
         onClicked: SerialPort.setMotor(motorComboBox.currentIndex, motorVelocityTextField.text)
+        enabled: SerialPort.isConnected
       }
 
       Button {
@@ -130,6 +135,7 @@ Pane {
         Material.foreground: "white"
         Material.background: Material.accent
         onClicked: SerialPort.setInverseKinematics(0, 0, 0)
+        enabled: SerialPort.isConnected
       }
     }
 
@@ -147,6 +153,7 @@ Pane {
         Material.foreground: "white"
         Material.background: Material.accent
         onClicked: SerialPort.setSoftEmergencyStop(true)
+        enabled: SerialPort.isConnected
       }
 
       Button {
@@ -154,6 +161,7 @@ Pane {
         Material.foreground: "white"
         Material.background: Material.accent
         onClicked: SerialPort.setSoftEmergencyStop(false)
+        enabled: SerialPort.isConnected
       }
     }
   }
