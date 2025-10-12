@@ -36,5 +36,24 @@ class QmlMcuData : public QObject
     void updated();
 };
 
+class QmlPidData : public QObject
+{
+  Q_OBJECT
+  Q_PROPERTY(QVector<float> levelVelocity MEMBER levelVelocity NOTIFY updated)
+  Q_PROPERTY(QVector<QVector<float>> p MEMBER p NOTIFY updated)
+  Q_PROPERTY(QVector<QVector<float>> i MEMBER i NOTIFY updated)
+  Q_PROPERTY(QVector<QVector<float>> d MEMBER d NOTIFY updated)
+
+  public:
+    explicit QmlPidData(QObject *parent = nullptr);
+    QVector<float> levelVelocity = {0.0f, 0.0f, 0.0f}; // level 1, level 2, level 3
+    QVector<QVector<float>> p = { {0.0f, 0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f, 0.0f} };
+    QVector<QVector<float>> i = { {0.0f, 0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f, 0.0f} };
+    QVector<QVector<float>> d = { {0.0f, 0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f, 0.0f} };
+
+  signals:
+    void updated();
+};
+
 #endif // ROBOTD_H
 

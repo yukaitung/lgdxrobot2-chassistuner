@@ -3,6 +3,7 @@ import QtQuick.Controls
 import QtQuick.Controls.Material
 import QtQuick.Layouts
 import SerialPort
+import RobotData
 import "global.js" as Global
 import "pages"
 import "shared"

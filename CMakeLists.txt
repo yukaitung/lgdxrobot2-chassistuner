@@ -28,6 +28,7 @@ qt_add_qml_module(appLGDXRobot2ChassisTuner
 		qml/pages/components/PidConfigurationPane.qml
 		qml/pages/components/PidTestPane.qml
 		qml/pages/components/RobotDataPane.qml
+		qml/pages/components/PidTable.qml
 		qml/pages/PidTuner.qml
 		qml/pages/RobotData.qml
 		qml/shared/LabelHeading.qml

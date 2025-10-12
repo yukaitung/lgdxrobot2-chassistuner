@@ -38,6 +38,11 @@ void SerialPort::read()
 						memcpy(&mcuSerialNumber, frame.data(), sizeof(McuSerialNumber));
 						robotData->updateMcuSerialNumber(mcuSerialNumber);
 						break;
+					case MCU_PID_TYPE:
+						McuPid mcuPid;
+						memcpy(&mcuPid, frame.data(), sizeof(McuPid));
+						robotData->updateMcuPid(mcuPid);
+						break;
 					default:
 						break;
 				}
@@ -98,6 +103,17 @@ void SerialPort::getSerialNumber()
 		McuGetSerialNumberCommand command;
 		command.command = MCU_GET_SERIAL_NUMBER_COMMAND_TYPE;
 		QByteArray ba(reinterpret_cast<const char*>(&command), sizeof(McuGetSerialNumberCommand));
+		serial.write(ba);
+	}
+}
+
+void SerialPort::getPid()
+{
+	if (serial.isOpen())
+	{
+		McuGetPidCommand command;
+		command.command = MCU_GET_PID_COMMAND_TYPE;
+		QByteArray ba(reinterpret_cast<const char*>(&command), sizeof(McuGetPidCommand));
 		serial.write(ba);
 	}
 }

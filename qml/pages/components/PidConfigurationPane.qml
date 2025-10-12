@@ -2,6 +2,8 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Controls.Material
 import QtQuick.Layouts
+import RobotData
+import SerialPort
 import "../../shared"
 
 Pane {
@@ -13,151 +15,32 @@ Pane {
     spacing: 8
     
     // 1. PID
-    GridLayout {
+    PidTable {
       width: parent.width
-      columns: 5
-      rowSpacing: 4
-
-      LabelText {
-        text: ""
-      }
-
-      LabelText {
-        text: qsTr("Motor 1")
-        font.bold: true
-      }
-
-      LabelText {
-        text: qsTr("Motor 2")
-        font.bold: true
-      }
-
-      LabelText {
-        text: qsTr("Motor 3")
-        font.bold: true
-      }
-
-      LabelText {
-        text: qsTr("Motor 4")
-        font.bold: true
-      }
-
-      LabelText {
-        text: qsTr("P")
-        font.bold: true
-      }
-
-      LabelText {
-        text: "0.1"
-      }
-
-      LabelText {
-        text: "0.1"
-      }
-
-      LabelText {
-        text: "0.1"
-      }
-
-      LabelText {
-        text: "0.1"
-      }
-      
-      LabelText {
-        text: qsTr("I")
-        font.bold: true
-      }
-
-      LabelText {
-        text: "0.1"
-      }
-
-      LabelText {
-        text: "0.1"
-      }
-
-      LabelText {
-        text: "0.1"
-      }
-
-      LabelText {
-        text: "0.1"
-      }
-
-      LabelText {
-        text: qsTr("D")
-        font.bold: true
-      }
-
-      LabelText {
-        text: "0.1"
-      }
-
-      LabelText {
-        text: "0.1"
-      }
-
-      LabelText {
-        text: "0.1"
-      }
-
-      LabelText {
-        text: "0.1"
-      }
+      level: 0
     }
 
-    // 2. Level velocity setting
-    GridLayout {
+    PidTable {
       width: parent.width
-      columns: 4
-      rowSpacing: 4
-
-      LabelText {
-        text: ""
-      }
-
-      LabelText {
-        text: qsTr("Level 1")
-        font.bold: true
-      }
-
-      LabelText {
-        text: qsTr("Level 2")
-        font.bold: true
-      }
-
-      LabelText {
-        text: qsTr("Level 3")
-        font.bold: true
-      }
-
-      LabelText {
-        text: qsTr("Velocity (m/s)")
-        font.bold: true
-      }
-
-      LabelText {
-        text: "0.1"
-      }
-      
-      LabelText {
-        text: "0.1"
-      }      
-      
-      LabelText {
-        text: "0.1"
-      }
+      level: 1
     }
 
-    // 3. Refresh
+    PidTable {
+      width: parent.width
+      level: 2
+    }
+
+    // 2. Refresh
     Button {
       text: qsTr("Refresh")
       Material.foreground: "white"
       Material.background: Material.accent
       Layout.alignment: Qt.AlignRight
+      enabled: SerialPort.isConnected
+      onClicked: SerialPort.getPid()
     }
 
-    // 4. Velocity setting
+    // 3. Velocity setting
     RowLayout {
       width: parent.width
       spacing: 8
@@ -195,6 +78,7 @@ Pane {
         Material.foreground: "white"
         Material.background: Material.accent
         Layout.alignment: Qt.AlignRight
+        enabled: SerialPort.isConnected
       }
     }
   }
