@@ -47,14 +47,13 @@ Pane {
       LabelText {
         text: qsTr("Set Level Velocity")
         font.bold: true
-        Layout.fillWidth: true
       }
 
       TextField {
         id: level1Field
         placeholderText: qsTr("Level 1")
         Layout.preferredWidth: 150
-        Layout.preferredHeight: 48
+        Layout.preferredHeight: 36
         validator: DoubleValidator {}
       }
 
@@ -62,7 +61,7 @@ Pane {
         id: level2Field
         placeholderText: qsTr("Level 2")
         Layout.preferredWidth: 150
-        Layout.preferredHeight: 48
+        Layout.preferredHeight: 36
         validator: DoubleValidator {}
       }
 
@@ -70,7 +69,7 @@ Pane {
         id: level3Field
         placeholderText: qsTr("Level 3")
         Layout.preferredWidth: 150
-        Layout.preferredHeight: 48
+        Layout.preferredHeight: 36
         validator: DoubleValidator {}
       }
 
@@ -85,6 +84,7 @@ Pane {
         Layout.alignment: Qt.AlignRight
         enabled: SerialPort.isConnected
         onClicked: SerialPort.setLevelVelocity(0, level1Field.text, level2Field.text, level3Field.text)
+        Layout.preferredHeight: 48
       }
     }
 
@@ -97,6 +97,7 @@ Pane {
       Layout.alignment: Qt.AlignRight
       enabled: SerialPort.isConnected
       onClicked: SerialPort.getPid()
+      Layout.preferredHeight: 48
     }
   }
 }

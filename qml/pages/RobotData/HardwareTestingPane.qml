@@ -25,6 +25,7 @@ Pane {
       Material.foreground: "white"
       Material.background: Material.accent
       Layout.columnSpan: 2
+      Layout.preferredHeight: 48
       onClicked: SerialPort.getSerialNumber()
       enabled: SerialPort.isConnected
     }
@@ -39,6 +40,7 @@ Pane {
       Material.foreground: "white"
       Material.background: Material.accent
       Layout.columnSpan: 2
+      Layout.preferredHeight: 48
       onClicked: SerialPort.resetTransform()
       enabled: SerialPort.isConnected
     }
@@ -54,7 +56,7 @@ Pane {
         id: ikXTextField
         placeholderText: qsTr("X (m/s)")
         width: 100
-        height: 48
+        height: 36
         validator: DoubleValidator {}
       }
 
@@ -62,7 +64,7 @@ Pane {
         id: ikYTextField
         placeholderText: qsTr("Y (m/s)")
         width: 100
-        height: 48
+        height: 36
         validator: DoubleValidator {}
       }
 
@@ -70,7 +72,7 @@ Pane {
         id: ikRotationTextField
         placeholderText: qsTr("Rotation (rad/s)")
         width: 150
-        height: 48
+        height: 36
         validator: DoubleValidator {}
       }
     }
@@ -83,6 +85,7 @@ Pane {
         text: qsTr("Send")
         Material.foreground: "white"
         Material.background: Material.accent
+        height: 48
         onClicked: SerialPort.setInverseKinematics(ikXTextField.text, ikYTextField.text, ikRotationTextField.text)
         enabled: SerialPort.isConnected
       }
@@ -91,6 +94,7 @@ Pane {
         text: qsTr("Stop")
         Material.foreground: "white"
         Material.background: Material.accent
+        height: 48
         onClicked: SerialPort.setInverseKinematics(0, 0, 0)
         enabled: SerialPort.isConnected
       }
@@ -107,14 +111,14 @@ Pane {
         id: motorComboBox
         model: [qsTr("Motor 1"), qsTr("Motor 2"), qsTr("Motor 3"), qsTr("Motor 4")]
         width: 150
-        height: 48
+        height: 36
       }
 
       TextField {
         id: motorVelocityTextField
         placeholderText: qsTr("Velocity (m/s)")
         width: 150
-        height: 48
+        height: 36
       }
     }
 
@@ -128,6 +132,7 @@ Pane {
         Material.background: Material.accent
         onClicked: SerialPort.setMotor(motorComboBox.currentIndex, motorVelocityTextField.text)
         enabled: SerialPort.isConnected
+        height: 48
       }
 
       Button {
@@ -136,6 +141,7 @@ Pane {
         Material.background: Material.accent
         onClicked: SerialPort.setInverseKinematics(0, 0, 0)
         enabled: SerialPort.isConnected
+        height: 48
       }
     }
 
@@ -154,6 +160,7 @@ Pane {
         Material.background: Material.accent
         onClicked: SerialPort.setSoftEmergencyStop(true)
         enabled: SerialPort.isConnected
+        height: 48
       }
 
       Button {
@@ -162,6 +169,7 @@ Pane {
         Material.background: Material.accent
         onClicked: SerialPort.setSoftEmergencyStop(false)
         enabled: SerialPort.isConnected
+        height: 48
       }
     }
   }
