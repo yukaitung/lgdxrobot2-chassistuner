@@ -39,18 +39,17 @@ class QmlMcuData : public QObject
 class QmlPidData : public QObject
 {
   Q_OBJECT
-  Q_PROPERTY(QVector<float> levelVelocity MEMBER levelVelocity NOTIFY updated)
-  Q_PROPERTY(QVector<QVector<float>> p MEMBER p NOTIFY updated)
-  Q_PROPERTY(QVector<QVector<float>> i MEMBER i NOTIFY updated)
-  Q_PROPERTY(QVector<QVector<float>> d MEMBER d NOTIFY updated)
+  Q_PROPERTY(QVector<QString> levelVelocity MEMBER levelVelocity NOTIFY updated)
+  Q_PROPERTY(QVector<QVector<QString>> p MEMBER p NOTIFY updated)
+  Q_PROPERTY(QVector<QVector<QString>> i MEMBER i NOTIFY updated)
+  Q_PROPERTY(QVector<QVector<QString>> d MEMBER d NOTIFY updated)
 
   public:
     explicit QmlPidData(QObject *parent = nullptr);
-    QVector<float> levelVelocity = {0.0f, 0.0f, 0.0f}; // level 1, level 2, level 3
-    QVector<QVector<float>> p = { {0.0f, 0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f, 0.0f} };
-    QVector<QVector<float>> i = { {0.0f, 0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f, 0.0f} };
-    QVector<QVector<float>> d = { {0.0f, 0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f, 0.0f} };
-
+    QVector<QString> levelVelocity = {"-", "-", "-"}; // level 1, level 2, level 3
+    QVector<QVector<QString>> p = { {"-", "-", "-", "-"}, {"-", "-", "-", "-"}, {"-", "-", "-", "-"} };
+    QVector<QVector<QString>> i = { {"-", "-", "-", "-"}, {"-", "-", "-", "-"}, {"-", "-", "-", "-"} };
+    QVector<QVector<QString>> d = { {"-", "-", "-", "-"}, {"-", "-", "-", "-"}, {"-", "-", "-", "-"} };
   signals:
     void updated();
 };

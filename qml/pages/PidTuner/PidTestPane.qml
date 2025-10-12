@@ -108,7 +108,7 @@ Pane {
 
       LabelText {
         text: qsTr("Using velocity of %1 rad/s from level %2")
-          .arg(RobotData.pidData.levelVelocity[levelComboBox.currentIndex].toFixed(2))
+          .arg(RobotData.pidData.levelVelocity[levelComboBox.currentIndex])
           .arg(levelComboBox.currentIndex + 1)
         height: parent.height
         verticalAlignment: Text.AlignVCenter
@@ -117,7 +117,6 @@ Pane {
       }
     }
     
-
     // 3. Direction check box
     CheckBox {
       id: reverseDirectionCheckBox
