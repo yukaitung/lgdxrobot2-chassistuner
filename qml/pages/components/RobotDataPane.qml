@@ -24,6 +24,7 @@ Pane {
     LabelText {
       text: SerialPort.isConnected ? qsTr("Connected") : qsTr("Disconnected")
       color: SerialPort.isConnected ? "green" : "red"
+      font.bold: true
     }
 
     LabelText {
@@ -223,6 +224,8 @@ Pane {
 
     LabelText {
       text: RobotData.mcuData.softwareEmergencyStopEnabled ? qsTr("Enabled") : qsTr("Disabled")
+      color: RobotData.mcuData.softwareEmergencyStopEnabled ? "red" : "green"
+      font.bold: true
     }
 
     LabelText {
@@ -232,6 +235,19 @@ Pane {
 
     LabelText {
       text: RobotData.mcuData.hardwareEmergencyStopEnabled ? qsTr("Enabled") : qsTr("Disabled")
+      color: RobotData.mcuData.hardwareEmergencyStopEnabled ? "red" : "green"
+      font.bold: true
+    }
+
+    LabelText {
+      text: "Bettery Low Emergency Stop"
+      font.bold: true
+    }
+
+    LabelText {
+      text: RobotData.mcuData.betteryLowEmergencyStopEnabled ? qsTr("Enabled") : qsTr("Disabled")
+      color: RobotData.mcuData.betteryLowEmergencyStopEnabled ? "red" : "green"
+      font.bold: true
     }
   }
 }

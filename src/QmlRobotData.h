@@ -17,6 +17,7 @@ class QmlMcuData : public QObject
   Q_PROPERTY(QVector<float> battery2 MEMBER battery2 NOTIFY updated)
   Q_PROPERTY(bool softwareEmergencyStopEnabled MEMBER softwareEmergencyStopEnabled NOTIFY updated)
   Q_PROPERTY(bool hardwareEmergencyStopEnabled MEMBER hardwareEmergencyStopEnabled NOTIFY updated)
+  Q_PROPERTY(bool betteryLowEmergencyStopEnabled MEMBER betteryLowEmergencyStopEnabled NOTIFY updated)
 
   public:
     explicit QmlMcuData(QObject *parent = nullptr);
@@ -29,6 +30,7 @@ class QmlMcuData : public QObject
     QVector<float> battery2 = {0.0f, 0.0f}; // voltage, current
     bool softwareEmergencyStopEnabled = false;
     bool hardwareEmergencyStopEnabled = false;
+    bool betteryLowEmergencyStopEnabled = false;
 
   signals:
     void updated();

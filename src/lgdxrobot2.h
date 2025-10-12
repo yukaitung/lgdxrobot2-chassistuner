@@ -57,6 +57,7 @@ typedef struct {
   McuPower battery2;
   bool software_emergency_stop_enabled;
   bool hardware_emergency_stop_enabled;
+  bool bettery_low_emergency_stop_enabled;
   uint8_t header3;
   uint8_t header4;
 } McuData;

@@ -48,6 +48,7 @@ void RobotData::updateMcuData(const McuData &mcuData)
 	this->mcuData->motorsCcr[3] = mcuData.motors_ccr[3];
 	this->mcuData->softwareEmergencyStopEnabled = mcuData.software_emergency_stop_enabled;
 	this->mcuData->hardwareEmergencyStopEnabled = mcuData.hardware_emergency_stop_enabled;	
+	this->mcuData->betteryLowEmergencyStopEnabled = mcuData.bettery_low_emergency_stop_enabled;
 	emit mcuDataUpdated();
 }
 
