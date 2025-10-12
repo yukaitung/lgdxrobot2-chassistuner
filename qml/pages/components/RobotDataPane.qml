@@ -32,7 +32,7 @@ Pane {
     }
 
     LabelText {
-      text: RobotData.serialNumber
+      text: RobotData.mcuSerialNumber
     }
 
     LabelText {
@@ -87,6 +87,33 @@ Pane {
     }
 
     LabelText {
+      text: qsTr("Desired Motors Velocity (rad/s)")
+    }
+
+    Row {
+      Layout.fillWidth: true
+      LabelText {
+        text: qsTr("Motor 1: %1").arg(RobotData.mcuData.motorsDesireVelocity[0].toFixed(4))
+        width: parent.width / 4
+      }
+
+      LabelText {
+        text: qsTr("Motor 2: %1").arg(RobotData.mcuData.motorsDesireVelocity[1].toFixed(4))
+        width: parent.width / 4
+      }
+
+      LabelText {
+        text: qsTr("Motor 3: %1").arg(RobotData.mcuData.motorsDesireVelocity[2].toFixed(4))
+        width: parent.width / 4
+      }
+      
+      LabelText {
+        text: qsTr("Motor 4: %1").arg(RobotData.mcuData.motorsDesireVelocity[3].toFixed(4))
+        width: parent.width / 4
+      }
+    }
+
+    LabelText {
       text: "Measured Motors Velocity (rad/s)"
       font.bold: true
     }
@@ -110,6 +137,62 @@ Pane {
 
       LabelText {
         text: qsTr("Motor 4: %1").arg(RobotData.mcuData.motorsActualVelocity[3].toFixed(4))
+        width: parent.width / 4
+      }
+    }
+
+    LabelText {
+      text: qsTr("Motor CCR")
+      font.bold: true
+    }
+
+    Row {
+      Layout.fillWidth: true
+      LabelText {
+        text: qsTr("Motor 1: %1").arg(RobotData.mcuData.motorsCcr[0])
+        width: parent.width / 4
+      }
+
+      LabelText {
+        text: qsTr("Motor 2: %1").arg(RobotData.mcuData.motorsCcr[1])
+        width: parent.width / 4
+      }
+
+      LabelText {
+        text: qsTr("Motor 3: %1").arg(RobotData.mcuData.motorsCcr[2])
+        width: parent.width / 4
+      }
+      
+      LabelText {
+        text: qsTr("Motor 4: %1").arg(RobotData.mcuData.motorsCcr[3])
+        width: parent.width / 4
+      }
+    }
+
+    LabelText {
+      text: qsTr("PID Output")
+      font.bold: true
+    }
+
+    Row {
+      Layout.fillWidth: true
+      LabelText {
+        text: qsTr("Motor 1: %1").arg(RobotData.mcuData.pidOutput[0].toFixed(4))
+        width: parent.width / 4
+      }
+
+      LabelText {
+        text: qsTr("Motor 2: %1").arg(RobotData.mcuData.pidOutput[1].toFixed(4))
+        width: parent.width / 4
+      }
+
+      LabelText {
+        text: qsTr("Motor 3: %1").arg(RobotData.mcuData.pidOutput[2].toFixed(4))
+        width: parent.width / 4
+      }
+      
+      LabelText {
+        text: qsTr("Motor 4: %1").arg(RobotData.mcuData.pidOutput[3].toFixed(4))
         width: parent.width / 4
       }
     }

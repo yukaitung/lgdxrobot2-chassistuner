@@ -7,6 +7,7 @@
 #include <QSerialPortInfo>
 #include <QString>
 #include <QVector>
+#include <QtCore/qobject.h>
 
 #include "RobotData.h"
 
@@ -37,6 +38,11 @@ class SerialPort: public QObject
 		void updateDeviceList();
 		void connect(QString portName);
 		void disconnect();
+
+		void getSerialNumber();
+		void setInverseKinematics(QString x, QString y, QString rotation);
+		void setMotor(int motor, QString velocity);
+		void setSoftEmergencyStop(bool enable);
 
 	signals:
 		void deviceListUpdated();

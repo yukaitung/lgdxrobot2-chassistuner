@@ -1,6 +1,5 @@
 #include "SerialPort.h"
 #include "src/lgdxrobot2.h"
-#include <QtSerialPort/qserialport.h>
 
 RobotData* SerialPort::robotData = nullptr;
 SerialPort* SerialPort::instance = nullptr; 
@@ -9,6 +8,50 @@ SerialPort::SerialPort(QObject *parent) : QObject{parent}
 {
 	QObject::connect(&serial, &QSerialPort::readyRead, this, &SerialPort::read);
 	robotData = RobotData::getInstance();
+}
+
+void SerialPort::read()
+{
+	buffer.append(serial.readAll());
+
+	// Find the frame start
+	int start = buffer.indexOf("\xAA\x55");
+	if (start != -1)
+	{
+		// Find for start of next frame
+		int next = buffer.indexOf("\xAA\x55", start + 2);
+		if (next != -1)
+		{
+			// Found a frame
+			QByteArray frame = buffer.mid(start, next - start);
+			//qDebug().noquote() << "Frame:" << frame.toHex(' ').toUpper();
+			if (frame.size() > 3)
+			{
+				switch (frame[2])
+				{
+					case MCU_DATA_TYPE:
+						McuData mcuData;
+						memcpy(&mcuData, frame.data(), sizeof(McuData));
+						robotData->updateMcuData(mcuData);
+						break;
+					case MCU_SERIAL_NUMBER_TYPE:
+						qDebug() << "MCU_SERIAL_NUMBER_TYPE";
+						McuSerialNumber mcuSerialNumber;
+						memcpy(&mcuSerialNumber, frame.data(), sizeof(McuSerialNumber));
+						robotData->updateMcuSerialNumber(mcuSerialNumber);
+						break;
+					default:
+						break;
+				}
+			}
+			buffer.remove(0, next );
+		}
+		else
+		{
+			// Next frame not found
+			buffer.remove(0, start);
+		}
+	}
 }
 
 SerialPort *SerialPort::getInstance()
@@ -50,43 +93,52 @@ void SerialPort::disconnect()
 	emit connectionStatusChanged();
 }
 
-void SerialPort::read()
+void SerialPort::getSerialNumber()
 {
-	buffer.append(serial.readAll());
-
-	// Find the frame start
-	int start = buffer.indexOf("\xAA\x55");
-	if (start != -1)
+	if (serial.isOpen())
 	{
-		// Find for start of next frame
-		int next = buffer.indexOf("\xAA\x55", start + 2);
-		if (next != -1)
-		{
-			// Found a frame
-			QByteArray frame = buffer.mid(start, next - start);
-			if (frame.size() > 3)
-			{
-				switch (frame[2])
-				{
-					case MCU_DATA_TYPE:
-						McuData mcuData;
-						memcpy(&mcuData, frame.data(), sizeof(McuData));
-						robotData->updateMcuData(mcuData);
-					case MCU_SERIAL_NUMBER_TYPE:
-						McuSerialNumber mcuSerialNumber;
-						memcpy(&mcuSerialNumber, frame.data(), sizeof(McuSerialNumber));
-						robotData->updateMcuSerialNumber(mcuSerialNumber);
-						break;
-					default:
-						break;
-				}
-			}
-			buffer.remove(0, next );
-		}
-		else
-		{
-			// Next frame not found
-			buffer.remove(0, start);
-		}
+		McuGetSerialNumberCommand command;
+		command.command = MCU_GET_SERIAL_NUMBER_COMMAND_TYPE;
+		QByteArray ba(reinterpret_cast<const char*>(&command), sizeof(McuGetSerialNumberCommand));
+		serial.write(ba);
+	}
+}
+
+void SerialPort::setInverseKinematics(QString x, QString y, QString rotation)
+{
+	if (serial.isOpen())
+	{
+		McuInverseKinematicsCommand command;
+		command.command = MCU_INVERSE_KINEMATICS_COMMAND_TYPE;
+		command.velocity.x = QString(x).toFloat();
+		command.velocity.y = QString(y).toFloat();
+		command.velocity.rotation = QString(rotation).toFloat();
+		QByteArray ba(reinterpret_cast<const char*>(&command), sizeof(McuInverseKinematicsCommand));
+		serial.write(ba);
+	}
+}
+
+void SerialPort::setMotor(int motor, QString velocity)
+{
+	if (serial.isOpen())
+	{
+		McuMotorCommand command;
+		command.command = MCU_MOTOR_COMMAND_TYPE;
+		command.motor = motor;
+		command.velocity = QString(velocity).toFloat();
+		QByteArray ba(reinterpret_cast<const char*>(&command), sizeof(McuMotorCommand));
+		serial.write(ba);
+	}
+}
+
+void SerialPort::setSoftEmergencyStop(bool enable)
+{
+	if (serial.isOpen())
+	{
+		McuSoftwareEmergencyStopCommand command;
+		command.command = MCU_SOFTWARE_EMERGENCY_STOP_COMMAND_TYPE;
+		command.enable = enable;
+		QByteArray ba(reinterpret_cast<const char*>(&command), sizeof(McuSoftwareEmergencyStopCommand));
+		serial.write(ba);
 	}
 }

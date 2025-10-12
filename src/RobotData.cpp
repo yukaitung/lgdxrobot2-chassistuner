@@ -1,4 +1,5 @@
 #include "RobotData.h"
+#include <QtCore/qobject.h>
 
 RobotData* RobotData::instance = nullptr;
 
@@ -29,6 +30,10 @@ void RobotData::updateMcuData(const McuData &mcuData)
 	this->mcuData->motorsTargetVelocity[1] = mcuData.motors_target_velocity[1];
 	this->mcuData->motorsTargetVelocity[2] = mcuData.motors_target_velocity[2];
 	this->mcuData->motorsTargetVelocity[3] = mcuData.motors_target_velocity[3];
+	this->mcuData->motorsDesireVelocity[0] = mcuData.motors_desire_velocity[0];
+	this->mcuData->motorsDesireVelocity[1] = mcuData.motors_desire_velocity[1];
+	this->mcuData->motorsDesireVelocity[2] = mcuData.motors_desire_velocity[2];
+	this->mcuData->motorsDesireVelocity[3] = mcuData.motors_desire_velocity[3];
 	this->mcuData->motorsActualVelocity[0] = mcuData.motors_actual_velocity[0];
 	this->mcuData->motorsActualVelocity[1] = mcuData.motors_actual_velocity[1];
 	this->mcuData->motorsActualVelocity[2] = mcuData.motors_actual_velocity[2];
@@ -37,6 +42,14 @@ void RobotData::updateMcuData(const McuData &mcuData)
 	this->mcuData->battery1[1] = mcuData.battery1.current;
 	this->mcuData->battery2[0] = mcuData.battery2.voltage;
 	this->mcuData->battery2[1] = mcuData.battery2.current;
+	this->mcuData->motorsCcr[0] = mcuData.motors_ccr[0];
+	this->mcuData->motorsCcr[1] = mcuData.motors_ccr[1];
+	this->mcuData->motorsCcr[2] = mcuData.motors_ccr[2];
+	this->mcuData->motorsCcr[3] = mcuData.motors_ccr[3];
+	this->mcuData->pidOutput[0] = mcuData.pid_output[0];
+	this->mcuData->pidOutput[1] = mcuData.pid_output[1];
+	this->mcuData->pidOutput[2] = mcuData.pid_output[2];
+	this->mcuData->pidOutput[3] = mcuData.pid_output[3];
 	this->mcuData->softwareEmergencyStopEnabled = mcuData.software_emergency_stop_enabled;
 	this->mcuData->hardwareEmergencyStopEnabled = mcuData.hardware_emergency_stop_enabled;	
 	emit mcuDataUpdated();
@@ -44,10 +57,11 @@ void RobotData::updateMcuData(const McuData &mcuData)
 
 void RobotData::updateMcuSerialNumber(const McuSerialNumber &mcuSerialNumber)
 {
-	this->mcuSerialNumber = QString("%1%2%3")
+	QString serialNumber = QString("%1%2%3")
 		.arg(mcuSerialNumber.serial_number1, 8, 16, QLatin1Char('0'))
 		.arg(mcuSerialNumber.serial_number2, 8, 16, QLatin1Char('0'))
 		.arg(mcuSerialNumber.serial_number3, 8, 16, QLatin1Char('0'))
 		.toUpper();
+	this->mcuSerialNumber = serialNumber;
 	emit mcuSerialNumberUpdated();
 }

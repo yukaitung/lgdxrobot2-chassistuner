@@ -48,7 +48,10 @@ typedef struct {
   char type;
   McuDof transform;
   float motors_target_velocity[API_MOTOR_COUNT];
+  float motors_desire_velocity[API_MOTOR_COUNT];
   float motors_actual_velocity[API_MOTOR_COUNT];
+  int motors_ccr[API_MOTOR_COUNT];
+  float pid_output[API_MOTOR_COUNT];
   McuPower battery1;
   McuPower battery2;
   bool software_emergency_stop_enabled;
