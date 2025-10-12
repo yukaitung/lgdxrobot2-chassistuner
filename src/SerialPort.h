@@ -7,7 +7,6 @@
 #include <QSerialPortInfo>
 #include <QString>
 #include <QVector>
-#include <QtCore/qobject.h>
 
 #include "RobotData.h"
 

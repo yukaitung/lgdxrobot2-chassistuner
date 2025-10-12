@@ -26,17 +26,14 @@ Pane {
 
     function onPidChartSetTargetVelocity(velocity) 
     {
-      if (velocity > axisY.max)
+      if (velocity >= axisY.max)
       {
         axisY.max = velocity + 1;
       }
-      if (velocity < axisY.min)
+      if (velocity <= axisY.min)
       {
         axisY.min = velocity - 1;
       }
-      targetSeries.clear();
-      targetSeries.append(0, velocity);
-      targetSeries.append(axisX.max, velocity);
     }
 
     function onPidChartUpdated(time, velocity, targetVelocity)

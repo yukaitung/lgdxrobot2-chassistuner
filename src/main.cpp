@@ -1,6 +1,5 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
-#include <QtCore/qobject.h>
 
 #include "RobotData.h"
 #include "SerialPort.h"
