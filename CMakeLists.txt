@@ -23,12 +23,12 @@ qt_add_qml_module(appLGDXRobot2ChassisTuner
 	QML_FILES
 		qml/global.js
 		qml/Main.qml
-		qml/pages/components/HardwareTestingPane.qml
-		qml/pages/components/PidChartPane.qml
-		qml/pages/components/PidConfigurationPane.qml
-		qml/pages/components/PidTestPane.qml
-		qml/pages/components/RobotDataPane.qml
-		qml/pages/components/PidTable.qml
+		qml/pages/PidTuner/PidChartPane.qml
+		qml/pages/PidTuner/PidConfigurationPane.qml
+		qml/pages/PidTuner/PidTestPane.qml
+		qml/pages/PidTuner/PidTable.qml
+		qml/pages/RobotData/HardwareTestingPane.qml
+		qml/pages/RobotData/RobotDataPane.qml
 		qml/pages/PidTuner.qml
 		qml/pages/RobotData.qml
 		qml/shared/LabelHeading.qml

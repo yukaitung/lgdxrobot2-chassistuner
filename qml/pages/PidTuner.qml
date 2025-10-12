@@ -1,7 +1,7 @@
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Controls.Material
-import "components"
+import "PidTuner"
 import "../shared"
 import "../global.js" as Global
 
