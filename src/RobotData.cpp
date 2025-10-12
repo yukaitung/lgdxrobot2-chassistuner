@@ -1,4 +1,5 @@
 #include "RobotData.h"
+#include "src/lgdxrobot2.h"
 
 RobotData* RobotData::instance = nullptr;
 
@@ -64,15 +65,18 @@ void RobotData::updateMcuSerialNumber(const McuSerialNumber &mcuSerialNumber)
 
 void RobotData::updateMcuPid(const McuPid &mcuPid)
 {
-	for (int i = 0; i < PID_LEVEL; i++)
+	for (int i = 0; i < API_MOTOR_COUNT; i++)
 	{
-		this->pidData->levelVelocity[i] = QString::number(mcuPid.level_velocity[i]);
-		for (int j = 0; j < API_MOTOR_COUNT; j++)
+		for (int j = 0; j < PID_LEVEL; j++)
 		{
 			this->pidData->p[i][j] = QString::number(mcuPid.p[i][j]);
 			this->pidData->i[i][j] = QString::number(mcuPid.i[i][j]);
 			this->pidData->d[i][j] = QString::number(mcuPid.d[i][j]);
 		}
+	}
+	for (int i = 0; i < PID_LEVEL; i++)
+	{
+		this->pidData->levelVelocity[i] = QString::number(mcuPid.level_velocity[i]);
 	}
 	emit mcuPidUpdated();
 }
