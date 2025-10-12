@@ -157,6 +157,20 @@ void SerialPort::setSoftEmergencyStop(bool enable)
 	}
 }
 
+void SerialPort::setLevelVelocity(int level, QString level1, QString level2, QString level3)
+{
+	if (serial.isOpen())
+	{
+		McuSetLevelVelocityCommand command;
+		command.command = MCU_SET_LEVEL_VELOCITY_COMMAND_TYPE;
+		command.level_velocity[0] = level1.toFloat();
+		command.level_velocity[1] = level2.toFloat();
+		command.level_velocity[2] = level3.toFloat();
+		QByteArray ba(reinterpret_cast<const char*>(&command), sizeof(McuSetLevelVelocityCommand));
+		serial.write(ba);
+	}
+}
+
 void SerialPort::resetTransform()
 {
 	if (serial.isOpen())

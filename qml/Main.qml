@@ -19,7 +19,6 @@ ApplicationWindow {
 		SerialPort.updateDeviceList();
 	}
 
-
 	header: ToolBar {
 		id: toolBar
 
@@ -95,11 +94,13 @@ ApplicationWindow {
 		currentIndex: tabBar.currentIndex
 
 		RobotData {
-			anchors.fill: parent
+			Layout.fillWidth: true
+			Layout.fillHeight: true
 		}
 
 		PidTuner {
-			anchors.fill: parent
+			Layout.fillWidth: true
+			Layout.fillHeight: true
 		}
 	}
 }

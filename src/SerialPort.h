@@ -45,6 +45,7 @@ class SerialPort: public QObject
 		void setInverseKinematics(QString x, QString y, QString rotation);
 		void setMotor(int motor, QString velocity);
 		void setSoftEmergencyStop(bool enable);
+		void setLevelVelocity(int level, QString level1, QString level2, QString level3);
 
 		void resetTransform();
 
