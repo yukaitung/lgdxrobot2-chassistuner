@@ -82,7 +82,7 @@ Pane {
       }
 
       Button {
-        text: qsTr("Send")
+        text: qsTr("Update")
         Material.foreground: "white"
         Material.background: Material.accent
         Layout.alignment: Qt.AlignRight
