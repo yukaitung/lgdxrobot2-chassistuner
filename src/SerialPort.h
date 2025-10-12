@@ -40,9 +40,12 @@ class SerialPort: public QObject
 		void disconnect();
 
 		void getSerialNumber();
+
 		void setInverseKinematics(QString x, QString y, QString rotation);
 		void setMotor(int motor, QString velocity);
 		void setSoftEmergencyStop(bool enable);
+
+		void resetTransform();
 
 	signals:
 		void deviceListUpdated();

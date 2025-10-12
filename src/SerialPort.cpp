@@ -23,8 +23,7 @@ void SerialPort::read()
 		if (next != -1)
 		{
 			// Found a frame
-			QByteArray frame = buffer.mid(start, next - start);
-			//qDebug().noquote() << "Frame:" << frame.toHex(' ').toUpper();
+			QByteArray frame = buffer.mid(start, (next - start) + 2);
 			if (frame.size() > 3)
 			{
 				switch (frame[2])
@@ -138,6 +137,17 @@ void SerialPort::setSoftEmergencyStop(bool enable)
 		command.command = MCU_SOFTWARE_EMERGENCY_STOP_COMMAND_TYPE;
 		command.enable = enable;
 		QByteArray ba(reinterpret_cast<const char*>(&command), sizeof(McuSoftwareEmergencyStopCommand));
+		serial.write(ba);
+	}
+}
+
+void SerialPort::resetTransform()
+{
+	if (serial.isOpen())
+	{
+		McuResetTransformCommand command;
+		command.command = MCU_RESET_TRANSFORM_COMMAND_TYPE;
+		QByteArray ba(reinterpret_cast<const char*>(&command), sizeof(McuResetTransformCommand));
 		serial.write(ba);
 	}
 }

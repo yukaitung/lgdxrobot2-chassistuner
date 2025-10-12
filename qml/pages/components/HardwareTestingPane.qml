@@ -29,6 +29,19 @@ Pane {
     }
 
     LabelText {
+      text: qsTr("Reset Transform")
+      font.bold: true
+    }
+
+    Button {
+      text: qsTr("Reset")
+      Material.foreground: "white"
+      Material.background: Material.accent
+      Layout.columnSpan: 2
+      onClicked: SerialPort.resetTransform()
+    }
+
+    LabelText {
       text: qsTr("Inverse Kinematics")
       font.bold: true
     }
