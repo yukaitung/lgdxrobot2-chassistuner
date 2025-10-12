@@ -29,6 +29,7 @@ Pane {
         model: [qsTr("Motor 1"), qsTr("Motor 2"), qsTr("Motor 3"), qsTr("Motor 4")]
         Layout.preferredWidth: 150
         Layout.preferredHeight: 36
+        enabled: SerialPort.isConnected
       }
 
       ComboBox {
@@ -36,6 +37,7 @@ Pane {
         model: [qsTr("Level 1"), qsTr("Level 2"), qsTr("Level 3")]
         Layout.preferredWidth: 150
         Layout.preferredHeight: 36
+        enabled: SerialPort.isConnected
       }
     }
 
@@ -54,6 +56,7 @@ Pane {
         Layout.preferredWidth: 150
         Layout.preferredHeight: 36
         validator: DoubleValidator {}
+        enabled: SerialPort.isConnected
       }
 
       TextField {
@@ -62,6 +65,7 @@ Pane {
         Layout.preferredWidth: 150
         Layout.preferredHeight: 36
         validator: DoubleValidator {}
+        enabled: SerialPort.isConnected
       }
 
       TextField {
@@ -70,6 +74,7 @@ Pane {
         Layout.preferredWidth: 150
         Layout.preferredHeight: 36
         validator: DoubleValidator {}
+        enabled: SerialPort.isConnected
       }
 
       Item {
@@ -92,6 +97,7 @@ Pane {
       id: customVelocityCheckBox
       text: qsTr("Custom Velocity")
       font.bold: true
+      enabled: SerialPort.isConnected
     }
 
     Row {
@@ -123,6 +129,7 @@ Pane {
       Layout.columnSpan: 2
       text: qsTr("Reverse Direction")
       font.bold: true
+      enabled: SerialPort.isConnected
     }
 
     // 4. Send button

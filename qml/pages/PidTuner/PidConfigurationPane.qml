@@ -55,6 +55,7 @@ Pane {
         Layout.preferredWidth: 150
         Layout.preferredHeight: 36
         validator: DoubleValidator {}
+        enabled: SerialPort.isConnected
       }
 
       TextField {
@@ -63,6 +64,7 @@ Pane {
         Layout.preferredWidth: 150
         Layout.preferredHeight: 36
         validator: DoubleValidator {}
+        enabled: SerialPort.isConnected
       }
 
       TextField {
@@ -71,6 +73,7 @@ Pane {
         Layout.preferredWidth: 150
         Layout.preferredHeight: 36
         validator: DoubleValidator {}
+        enabled: SerialPort.isConnected
       }
 
       Item {

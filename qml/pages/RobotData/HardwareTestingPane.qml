@@ -58,6 +58,7 @@ Pane {
         width: 100
         height: 36
         validator: DoubleValidator {}
+        enabled: SerialPort.isConnected
       }
 
       TextField {
@@ -66,6 +67,7 @@ Pane {
         width: 100
         height: 36
         validator: DoubleValidator {}
+        enabled: SerialPort.isConnected
       }
 
       TextField {
@@ -74,6 +76,7 @@ Pane {
         width: 150
         height: 36
         validator: DoubleValidator {}
+        enabled: SerialPort.isConnected
       }
     }
 
@@ -112,6 +115,7 @@ Pane {
         model: [qsTr("Motor 1"), qsTr("Motor 2"), qsTr("Motor 3"), qsTr("Motor 4")]
         width: 150
         height: 36
+        enabled: SerialPort.isConnected
       }
 
       TextField {
@@ -119,6 +123,7 @@ Pane {
         placeholderText: qsTr("Velocity (m/s)")
         width: 150
         height: 36
+        enabled: SerialPort.isConnected
       }
     }
 
