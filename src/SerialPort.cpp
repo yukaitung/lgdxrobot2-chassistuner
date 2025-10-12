@@ -171,6 +171,22 @@ void SerialPort::setLevelVelocity(int level, QString level1, QString level2, QSt
 	}
 }
 
+void SerialPort::setPid(int motor, int level, QString p, QString i, QString d)
+{
+	if (serial.isOpen())
+	{
+		McuSetPidCommand command;
+		command.command = MCU_SET_PID_COMMAND_TYPE;
+		command.motor = motor;
+		command.level = level;
+		command.p = p.toFloat();
+		command.i = i.toFloat();
+		command.d = d.toFloat();
+		QByteArray ba(reinterpret_cast<const char*>(&command), sizeof(McuSetPidCommand));
+		serial.write(ba);
+	}
+}
+
 void SerialPort::resetTransform()
 {
 	if (serial.isOpen())

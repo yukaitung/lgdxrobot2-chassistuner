@@ -10,7 +10,7 @@ GridLayout {
   property int level: 0
 
   LabelText {
-    text: qsTr("Level %1, %2 m/s")
+    text: qsTr("Level %1, %2 rad/s")
       .arg(grid.level + 1)
       .arg(RobotData.pidData.levelVelocity[grid.level].toFixed(2))
     font.bold: true
