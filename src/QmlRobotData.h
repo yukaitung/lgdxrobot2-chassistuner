@@ -13,7 +13,6 @@ class QmlMcuData : public QObject
   Q_PROPERTY(QVector<float> motorsDesireVelocity MEMBER motorsDesireVelocity NOTIFY updated)
   Q_PROPERTY(QVector<float> motorsActualVelocity MEMBER motorsActualVelocity NOTIFY updated)
   Q_PROPERTY(QVector<int> motorsCcr MEMBER motorsCcr NOTIFY updated)
-  Q_PROPERTY(QVector<float> pidOutput MEMBER pidOutput NOTIFY updated)
   Q_PROPERTY(QVector<float> battery1 MEMBER battery1 NOTIFY updated)
   Q_PROPERTY(QVector<float> battery2 MEMBER battery2 NOTIFY updated)
   Q_PROPERTY(bool softwareEmergencyStopEnabled MEMBER softwareEmergencyStopEnabled NOTIFY updated)
@@ -26,7 +25,6 @@ class QmlMcuData : public QObject
     QVector<float> motorsDesireVelocity = {0.0f, 0.0f, 0.0f, 0.0f}; // motor 1, motor 2, motor 3, motor 4
     QVector<float> motorsActualVelocity = {0.0f, 0.0f, 0.0f, 0.0f}; // motor 1, motor 2, motor 3, motor 4
     QVector<int> motorsCcr = {0, 0, 0, 0}; // motor 1, motor 2, motor 3, motor 4
-    QVector<float> pidOutput = {0.0f, 0.0f, 0.0f, 0.0f}; // motor 1, motor 2, motor 3, motor 4
     QVector<float> battery1 = {0.0f, 0.0f}; // voltage, current
     QVector<float> battery2 = {0.0f, 0.0f}; // voltage, current
     bool softwareEmergencyStopEnabled = false;

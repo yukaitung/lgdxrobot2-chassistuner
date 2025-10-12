@@ -10,6 +10,8 @@
 
 #define MCU_HEADER1 0xAA
 #define MCU_HEADER2 0x55
+#define MCU_HEADER3 0xA5
+#define MCU_HEADER4 0x5A
 
 #define MCU_DATA_TYPE 'D'
 #define MCU_SERIAL_NUMBER_TYPE 'S'
@@ -51,11 +53,12 @@ typedef struct {
   float motors_desire_velocity[API_MOTOR_COUNT];
   float motors_actual_velocity[API_MOTOR_COUNT];
   int motors_ccr[API_MOTOR_COUNT];
-  float pid_output[API_MOTOR_COUNT];
   McuPower battery1;
   McuPower battery2;
   bool software_emergency_stop_enabled;
   bool hardware_emergency_stop_enabled;
+  uint8_t header3;
+  uint8_t header4;
 } McuData;
 
 typedef struct {
@@ -65,6 +68,8 @@ typedef struct {
   uint32_t serial_number1;
   uint32_t serial_number2;
   uint32_t serial_number3;
+  uint8_t header3;
+  uint8_t header4;
 } McuSerialNumber;
 
 typedef struct {
@@ -75,6 +80,8 @@ typedef struct {
   float p[API_MOTOR_COUNT][PID_LEVEL];
   float i[API_MOTOR_COUNT][PID_LEVEL];
   float d[API_MOTOR_COUNT][PID_LEVEL];
+  uint8_t header3;
+  uint8_t header4;
 } McuPid;
 
 /*

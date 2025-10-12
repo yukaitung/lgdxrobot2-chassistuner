@@ -88,6 +88,7 @@ Pane {
 
     LabelText {
       text: qsTr("Desired Motors Velocity (rad/s)")
+      font.bold: true
     }
 
     Row {
@@ -165,34 +166,6 @@ Pane {
       
       LabelText {
         text: qsTr("Motor 4: %1").arg(RobotData.mcuData.motorsCcr[3])
-        width: parent.width / 4
-      }
-    }
-
-    LabelText {
-      text: qsTr("PID Output")
-      font.bold: true
-    }
-
-    Row {
-      Layout.fillWidth: true
-      LabelText {
-        text: qsTr("Motor 1: %1").arg(RobotData.mcuData.pidOutput[0].toFixed(4))
-        width: parent.width / 4
-      }
-
-      LabelText {
-        text: qsTr("Motor 2: %1").arg(RobotData.mcuData.pidOutput[1].toFixed(4))
-        width: parent.width / 4
-      }
-
-      LabelText {
-        text: qsTr("Motor 3: %1").arg(RobotData.mcuData.pidOutput[2].toFixed(4))
-        width: parent.width / 4
-      }
-      
-      LabelText {
-        text: qsTr("Motor 4: %1").arg(RobotData.mcuData.pidOutput[3].toFixed(4))
         width: parent.width / 4
       }
     }

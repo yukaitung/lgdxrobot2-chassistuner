@@ -18,8 +18,8 @@ void SerialPort::read()
 	int start = buffer.indexOf("\xAA\x55");
 	if (start != -1)
 	{
-		// Find for start of next frame
-		int next = buffer.indexOf("\xAA\x55", start + 2);
+		// Find for start of end of frame
+		int next = buffer.indexOf("\xA5\x5A", start + 2);
 		if (next != -1)
 		{
 			// Found a frame
@@ -35,7 +35,6 @@ void SerialPort::read()
 						robotData->updateMcuData(mcuData);
 						break;
 					case MCU_SERIAL_NUMBER_TYPE:
-						qDebug() << "MCU_SERIAL_NUMBER_TYPE";
 						McuSerialNumber mcuSerialNumber;
 						memcpy(&mcuSerialNumber, frame.data(), sizeof(McuSerialNumber));
 						robotData->updateMcuSerialNumber(mcuSerialNumber);
