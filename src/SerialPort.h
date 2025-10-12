@@ -32,6 +32,7 @@ class SerialPort: public QObject
 
 	public:
 		static SerialPort *getInstance();
+		bool getIsConnected() { return isConnected; }
 
 	public slots:
 		void updateDeviceList();

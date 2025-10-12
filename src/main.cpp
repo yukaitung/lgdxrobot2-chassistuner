@@ -35,5 +35,10 @@ int main(int argc, char *argv[])
 		Qt::QueuedConnection);
 	engine.loadFromModule("LGDXRobot2ChassisTuner", "Main");
 
+	QObject::connect(&app, &QCoreApplication::aboutToQuit, []() {
+		SerialPort *serialPort = SerialPort::getInstance();
+		serialPort->disconnect();
+	});
+
 	return app.exec();
 }

@@ -92,7 +92,18 @@ void SerialPort::connect(QString portName)
 void SerialPort::disconnect()
 {
 	if (serial.isOpen())
+	{
+		McuInverseKinematicsCommand command;
+		command.command = MCU_INVERSE_KINEMATICS_COMMAND_TYPE;
+		command.velocity.x = 0;
+		command.velocity.y = 0;
+		command.velocity.rotation = 0;
+		QByteArray ba(reinterpret_cast<const char*>(&command), sizeof(McuInverseKinematicsCommand));
+		serial.write(ba);
+		serial.waitForBytesWritten();
 		serial.close();
+	}
+		
 	isConnected = false;
 	emit connectionStatusChanged();
 }
