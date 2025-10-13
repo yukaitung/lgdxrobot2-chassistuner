@@ -76,6 +76,10 @@ void RobotData::updateMcuPid(const McuPid &mcuPid)
 			this->pidData->d[i][j] = QString::number(mcuPid.d[i][j]);
 		}
 	}
+	for (int i = 0; i < API_MOTOR_COUNT; i++)
+	{
+		this->pidData->motorMaximumSpeed[i] = QString::number(mcuPid.motors_maximum_speed[i]);
+	}
 	emit mcuPidUpdated();
 }
 

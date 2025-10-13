@@ -43,6 +43,7 @@ class QmlPidData : public QObject
   Q_PROPERTY(QVector<QVector<QString>> p MEMBER p NOTIFY updated)
   Q_PROPERTY(QVector<QVector<QString>> i MEMBER i NOTIFY updated)
   Q_PROPERTY(QVector<QVector<QString>> d MEMBER d NOTIFY updated)
+  Q_PROPERTY(QVector<QString> motorMaximumSpeed MEMBER motorMaximumSpeed NOTIFY updated)
 
   public:
     explicit QmlPidData(QObject *parent = nullptr);
@@ -50,6 +51,7 @@ class QmlPidData : public QObject
     QVector<QVector<QString>> p = { {"-", "-", "-", "-"}, {"-", "-", "-", "-"}, {"-", "-", "-", "-"} };
     QVector<QVector<QString>> i = { {"-", "-", "-", "-"}, {"-", "-", "-", "-"}, {"-", "-", "-", "-"} };
     QVector<QVector<QString>> d = { {"-", "-", "-", "-"}, {"-", "-", "-", "-"}, {"-", "-", "-", "-"} };
+    QVector<QString> motorMaximumSpeed = {"-", "-", "-", "-"};
   signals:
     void updated();
 };

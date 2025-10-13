@@ -26,6 +26,7 @@
 #define MCU_SAVE_PID_COMMAND_TYPE 'R'
 #define MCU_GET_SERIAL_NUMBER_COMMAND_TYPE 'S'
 #define MCU_RESET_TRANSFORM_COMMAND_TYPE 'T'
+#define MCU_SET_MOTOR_MAXIMUM_SPEED_COMMAND_TYPE 'U'
 
 #pragma pack(push, 1)
 
@@ -81,6 +82,7 @@ typedef struct {
   float p[PID_LEVEL][API_MOTOR_COUNT];
   float i[PID_LEVEL][API_MOTOR_COUNT];
   float d[PID_LEVEL][API_MOTOR_COUNT];
+  float motors_maximum_speed[API_MOTOR_COUNT];
   uint8_t header3;
   uint8_t header4;
 } McuPid;
@@ -129,6 +131,11 @@ typedef struct {
 typedef struct {
   char command;
 } McuSavePidCommand;
+
+typedef struct {
+  char command;
+  float speed[API_MOTOR_COUNT];
+} McuSetMotorMaximumSpeedCommand;
 
 // Other
 typedef struct {
