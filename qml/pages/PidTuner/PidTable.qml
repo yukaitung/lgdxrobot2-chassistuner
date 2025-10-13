@@ -47,19 +47,19 @@ GridLayout {
   }
 
   LabelText {
-    text: RobotData.pidData.p[0][grid.level]
+    text: RobotData.pidData.p[grid.level][0]
   }
 
   LabelText {
-    text: RobotData.pidData.p[1][grid.level]
+    text: RobotData.pidData.p[grid.level][1]
   }
 
   LabelText {
-    text: RobotData.pidData.p[2][grid.level]
+    text: RobotData.pidData.p[grid.level][2]
   }
 
   LabelText {
-    text: RobotData.pidData.p[3][grid.level]
+    text: RobotData.pidData.p[grid.level][3]
   }
   
   LabelText {
@@ -68,19 +68,19 @@ GridLayout {
   }
 
   LabelText {
-    text: RobotData.pidData.i[0][grid.level]
+    text: RobotData.pidData.i[grid.level][0]
   }
 
   LabelText {
-    text: RobotData.pidData.i[1][grid.level]
+    text: RobotData.pidData.i[grid.level][1]
   }
 
   LabelText {
-    text: RobotData.pidData.i[2][grid.level]
+    text: RobotData.pidData.i[grid.level][2]
   }
 
   LabelText {
-    text: RobotData.pidData.i[3][grid.level]
+    text: RobotData.pidData.i[grid.level][3]
   }
 
   LabelText {
@@ -89,18 +89,18 @@ GridLayout {
   }
 
   LabelText {
-    text: RobotData.pidData.d[0][grid.level]
+    text: RobotData.pidData.d[grid.level][0]
   }
 
   LabelText {
-    text: RobotData.pidData.d[1][grid.level]
+    text: RobotData.pidData.d[grid.level][1]
   }
 
   LabelText {
-    text: RobotData.pidData.d[2][grid.level]
+    text: RobotData.pidData.d[grid.level][2]
   }
 
   LabelText {
-    text: RobotData.pidData.d[3][grid.level]
+    text: RobotData.pidData.d[grid.level][3]
   }
 }

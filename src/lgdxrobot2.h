@@ -78,9 +78,9 @@ typedef struct {
   uint8_t header2;
   char type;
   float level_velocity[PID_LEVEL];
-  float p[API_MOTOR_COUNT][PID_LEVEL];
-  float i[API_MOTOR_COUNT][PID_LEVEL];
-  float d[API_MOTOR_COUNT][PID_LEVEL];
+  float p[PID_LEVEL][API_MOTOR_COUNT];
+  float i[PID_LEVEL][API_MOTOR_COUNT];
+  float d[PID_LEVEL][API_MOTOR_COUNT];
   uint8_t header3;
   uint8_t header4;
 } McuPid;

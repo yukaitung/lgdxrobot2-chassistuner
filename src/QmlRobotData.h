@@ -47,9 +47,9 @@ class QmlPidData : public QObject
   public:
     explicit QmlPidData(QObject *parent = nullptr);
     QVector<QString> levelVelocity = {"-", "-", "-"}; // level 1, level 2, level 3
-    QVector<QVector<QString>> p = { {"-", "-", "-"}, {"-", "-", "-"}, {"-", "-", "-"}, {"-", "-", "-"} };
-    QVector<QVector<QString>> i = { {"-", "-", "-"}, {"-", "-", "-"}, {"-", "-", "-"}, {"-", "-", "-"} };
-    QVector<QVector<QString>> d = { {"-", "-", "-"}, {"-", "-", "-"}, {"-", "-", "-"}, {"-", "-", "-"} };
+    QVector<QVector<QString>> p = { {"-", "-", "-", "-"}, {"-", "-", "-", "-"}, {"-", "-", "-", "-"} };
+    QVector<QVector<QString>> i = { {"-", "-", "-", "-"}, {"-", "-", "-", "-"}, {"-", "-", "-", "-"} };
+    QVector<QVector<QString>> d = { {"-", "-", "-", "-"}, {"-", "-", "-", "-"}, {"-", "-", "-", "-"} };
   signals:
     void updated();
 };
