@@ -25,25 +25,29 @@ RobotData *RobotData::getInstance()
 
 void RobotData::updateMcuData(const McuData &mcuData)
 {
-	this->mcuData->transform[0] = mcuData.transform.x;
-	this->mcuData->transform[1] = mcuData.transform.y;
-	this->mcuData->transform[2] = mcuData.transform.rotation;
-	for (int i = 0; i < API_MOTOR_COUNT; i++)
+	QTime now = QTime::currentTime();
+	if (lastReadTime.msecsTo(now) >= uiDelay)
 	{
-		this->mcuData->motorsTargetVelocity[i] = mcuData.motors_target_velocity[i];
-		this->mcuData->motorsDesireVelocity[i] = mcuData.motors_desire_velocity[i];
-		this->mcuData->motorsActualVelocity[i] = mcuData.motors_actual_velocity[i];
-		this->mcuData->motorsCcr[i] = mcuData.motors_ccr[i];
+		this->mcuData->transform[0] = mcuData.transform.x;
+		this->mcuData->transform[1] = mcuData.transform.y;
+		this->mcuData->transform[2] = mcuData.transform.rotation;
+		for (int i = 0; i < API_MOTOR_COUNT; i++)
+		{
+			this->mcuData->motorsTargetVelocity[i] = mcuData.motors_target_velocity[i];
+			this->mcuData->motorsDesireVelocity[i] = mcuData.motors_desire_velocity[i];
+			this->mcuData->motorsActualVelocity[i] = mcuData.motors_actual_velocity[i];
+			this->mcuData->motorsCcr[i] = mcuData.motors_ccr[i];
+		}
+		this->mcuData->battery1[0] = mcuData.battery1.voltage;
+		this->mcuData->battery1[1] = mcuData.battery1.current;
+		this->mcuData->battery2[0] = mcuData.battery2.voltage;
+		this->mcuData->battery2[1] = mcuData.battery2.current;
+		this->mcuData->softwareEmergencyStopEnabled = mcuData.software_emergency_stop_enabled;
+		this->mcuData->hardwareEmergencyStopEnabled = mcuData.hardware_emergency_stop_enabled;	
+		this->mcuData->betteryLowEmergencyStopEnabled = mcuData.bettery_low_emergency_stop_enabled;
+		emit mcuDataUpdated();
 	}
-	this->mcuData->battery1[0] = mcuData.battery1.voltage;
-	this->mcuData->battery1[1] = mcuData.battery1.current;
-	this->mcuData->battery2[0] = mcuData.battery2.voltage;
-	this->mcuData->battery2[1] = mcuData.battery2.current;
-	this->mcuData->softwareEmergencyStopEnabled = mcuData.software_emergency_stop_enabled;
-	this->mcuData->hardwareEmergencyStopEnabled = mcuData.hardware_emergency_stop_enabled;	
-	this->mcuData->betteryLowEmergencyStopEnabled = mcuData.bettery_low_emergency_stop_enabled;
-	emit mcuDataUpdated();
-
+	
 	if (this->pidChartEnabled)
 	{
 		QTime now = QTime::currentTime();

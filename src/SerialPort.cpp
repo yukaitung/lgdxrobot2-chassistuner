@@ -24,7 +24,6 @@ void SerialPort::read()
 		{
 			// Found a frame
 			QByteArray frame = buffer.mid(start, (next - start) + 2);
-			//qDebug() << frame.toHex(); 
 			if (frame.size() > 3)
 			{
 				switch (frame[2])
