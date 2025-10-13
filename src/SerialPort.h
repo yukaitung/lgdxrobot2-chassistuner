@@ -7,6 +7,7 @@
 #include <QSerialPortInfo>
 #include <QString>
 #include <QVector>
+#include <QTimer>
 
 #include "RobotData.h"
 
@@ -20,6 +21,8 @@ class SerialPort: public QObject
 		static SerialPort *instance;
 		static RobotData *robotData;
 		QSerialPort serial;
+
+		QTimer processTimer;
 
 		QVector<QString> deviceList;
 		bool isConnected = false;

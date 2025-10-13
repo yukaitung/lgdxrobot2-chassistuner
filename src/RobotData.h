@@ -4,7 +4,6 @@
 #include <QObject>
 #include <QQmlEngine>
 #include <QString>
-#include <QTime>
 
 #include "QmlRobotData.h"
 #include "lgdxrobot2.h"
@@ -22,9 +21,6 @@ class RobotData : public QObject
 		QmlMcuData *mcuData;
 		QmlPidData *pidData;
 		QString mcuSerialNumber;
-
-		QTime lastUpdateTime = QTime::currentTime();
-		int updateDelay = 100;
 
 		// Pid tuning
 		bool pidChartEnabled = false;

@@ -1,6 +1,5 @@
 #include "SerialPort.h"
 #include "src/lgdxrobot2.h"
-#include <QtCore/qlogging.h>
 
 RobotData* SerialPort::robotData = nullptr;
 SerialPort* SerialPort::instance = nullptr; 
@@ -15,47 +14,63 @@ void SerialPort::read()
 {
 	buffer.append(serial.readAll());
 
-	// Find the frame start
 	int start = buffer.indexOf("\xAA\x55");
-	if (start != -1)
+	if (start == -1)
 	{
-		// Find for start of end of frame
-		int next = buffer.indexOf("\xA5\x5A", start + 2);
-		if (next != -1)
+		// No frame start found, discard junk
+		buffer.clear();
+		return;
+	}
+
+	int next = buffer.indexOf("\xA5\x5A", start + 2);
+	if (next == -1)
+	{
+		// No frame end found
+		return;
+	}
+
+	int lastStart = start;
+	bool mcuDataFound = false;
+	// Handle frames unitl no complete frame is found
+	while (start != -1 && next != -1)
+	{
+		QByteArray frame = buffer.mid(start, (next + 2 - start));
+		if (frame.size() > 3)
 		{
-			// Found a frame
-			QByteArray frame = buffer.mid(start, (next - start) + 2);
-			if (frame.size() > 3)
+			switch (frame[2])
 			{
-				switch (frame[2])
-				{
-					case MCU_DATA_TYPE:
+				case MCU_DATA_TYPE:
+					if (!mcuDataFound)
+					{
 						McuData mcuData;
 						memcpy(&mcuData, frame.data(), sizeof(McuData));
 						robotData->updateMcuData(mcuData);
-						break;
-					case MCU_SERIAL_NUMBER_TYPE:
-						McuSerialNumber mcuSerialNumber;
-						memcpy(&mcuSerialNumber, frame.data(), sizeof(McuSerialNumber));
-						robotData->updateMcuSerialNumber(mcuSerialNumber);
-						break;
-					case MCU_PID_TYPE:
-						McuPid mcuPid;
-						memcpy(&mcuPid, frame.data(), sizeof(McuPid));
-						robotData->updateMcuPid(mcuPid);
-						break;
-					default:
-						break;
-				}
+						mcuDataFound = true;
+					}
+					break;
+				case MCU_SERIAL_NUMBER_TYPE:
+					McuSerialNumber mcuSerialNumber;
+					memcpy(&mcuSerialNumber, frame.data(), sizeof(McuSerialNumber));
+					robotData->updateMcuSerialNumber(mcuSerialNumber);
+					break;
+				case MCU_PID_TYPE:
+					McuPid mcuPid;
+					memcpy(&mcuPid, frame.data(), sizeof(McuPid));
+					robotData->updateMcuPid(mcuPid);
+					break;
+				default:
+					break;
 			}
-			buffer.remove(0, next );
 		}
-		else
-		{
-			// Next frame not found
-			buffer.remove(0, start);
-		}
+
+		lastStart = start;
+		// Find next frame start
+		start = buffer.indexOf("\xAA\x55", next + 2);
+		next = buffer.indexOf("\xA5\x5A", start + 2);
 	}
+
+	// Remove processed data from buffer
+	buffer.remove(0, lastStart);
 }
 
 SerialPort *SerialPort::getInstance()
