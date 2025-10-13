@@ -39,18 +39,8 @@ Flickable {
         text: qsTr("Save PID")
       }
 
-      Pane 
-      {
-        Material.elevation: 2
+      SavePidPane {
         width: parent.width
-
-        Button {
-          text: qsTr("Save PID")
-          Material.foreground: "white"
-          Material.background: Material.accent
-          enabled: SerialPort.isConnected
-          onClicked: SerialPort.savePid()
-        }
       }
     }
   }
