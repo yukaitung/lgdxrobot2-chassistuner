@@ -1,6 +1,7 @@
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Controls.Material
+import SerialPort
 import "PidTuner"
 import "../shared"
 import "../global.js" as Global
@@ -32,6 +33,24 @@ Flickable {
 
       PidTestPane {
         width: parent.width
+      }
+
+      LabelHeading {
+        text: qsTr("Save PID")
+      }
+
+      Pane 
+      {
+        Material.elevation: 2
+        width: parent.width
+
+        Button {
+          text: qsTr("Save PID")
+          Material.foreground: "white"
+          Material.background: Material.accent
+          enabled: SerialPort.isConnected
+          onClicked: SerialPort.savePid()
+        }
       }
     }
   }

@@ -215,6 +215,17 @@ void SerialPort::setPid(int motor, int level, QString p, QString i, QString d)
 	}
 }
 
+void SerialPort::savePid()
+{
+	if (serial.isOpen())
+	{
+		McuSavePidCommand command;
+		command.command = MCU_SAVE_PID_COMMAND_TYPE;
+		QByteArray ba(reinterpret_cast<const char*>(&command), sizeof(McuSavePidCommand));
+		serial.write(ba);
+	}
+}
+
 void SerialPort::resetTransform()
 {
 	if (serial.isOpen())
