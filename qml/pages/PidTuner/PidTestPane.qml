@@ -88,8 +88,6 @@ Pane {
       TextField {
         id: pTextField
         placeholderText: qsTr("P")
-        Layout.preferredWidth: 150
-        Layout.preferredHeight: 36
         validator: DoubleValidator {}
         enabled: SerialPort.isConnected
       }
@@ -97,8 +95,6 @@ Pane {
       TextField {
         id: iTextField
         placeholderText: qsTr("I")
-        Layout.preferredWidth: 150
-        Layout.preferredHeight: 36
         validator: DoubleValidator {}
         enabled: SerialPort.isConnected
       }
@@ -106,8 +102,6 @@ Pane {
       TextField {
         id: dTextField
         placeholderText: qsTr("D")
-        Layout.preferredWidth: 150
-        Layout.preferredHeight: 36
         validator: DoubleValidator {}
         enabled: SerialPort.isConnected
       }
@@ -142,8 +136,6 @@ Pane {
       TextField {
         id: customVelocityTextField
         placeholderText: qsTr("Velocity (rad/s)")
-        width: 150
-        height: 36
         enabled: customVelocityCheckBox.checked
       }
 
@@ -213,7 +205,7 @@ Pane {
 
     GraphsView {
       id: graphView
-      Layout.preferredWidth: 600
+      Layout.fillWidth: true
       Layout.preferredHeight: 600
       Layout.columnSpan: 2
       Layout.alignment: Qt.AlignHCenter

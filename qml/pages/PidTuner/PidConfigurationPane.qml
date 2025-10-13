@@ -52,8 +52,6 @@ Pane {
       TextField {
         id: level1Field
         placeholderText: qsTr("Level 1")
-        Layout.preferredWidth: 150
-        Layout.preferredHeight: 36
         validator: DoubleValidator {}
         enabled: SerialPort.isConnected
       }
@@ -61,8 +59,6 @@ Pane {
       TextField {
         id: level2Field
         placeholderText: qsTr("Level 2")
-        Layout.preferredWidth: 150
-        Layout.preferredHeight: 36
         validator: DoubleValidator {}
         enabled: SerialPort.isConnected
       }
@@ -70,8 +66,6 @@ Pane {
       TextField {
         id: level3Field
         placeholderText: qsTr("Level 3")
-        Layout.preferredWidth: 150
-        Layout.preferredHeight: 36
         validator: DoubleValidator {}
         enabled: SerialPort.isConnected
       }

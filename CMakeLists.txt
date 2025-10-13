@@ -32,6 +32,7 @@ qt_add_qml_module(appLGDXRobot2ChassisTuner
 		qml/pages/RobotData.qml
 		qml/shared/LabelHeading.qml
 		qml/shared/LabelText.qml
+		qml/shared/TextField.qml
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.

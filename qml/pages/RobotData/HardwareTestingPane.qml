@@ -56,7 +56,6 @@ Pane {
         id: ikXTextField
         placeholderText: qsTr("X (m/s)")
         width: 100
-        height: 36
         validator: DoubleValidator {}
         enabled: SerialPort.isConnected
       }
@@ -65,7 +64,6 @@ Pane {
         id: ikYTextField
         placeholderText: qsTr("Y (m/s)")
         width: 100
-        height: 36
         validator: DoubleValidator {}
         enabled: SerialPort.isConnected
       }
@@ -73,8 +71,6 @@ Pane {
       TextField {
         id: ikRotationTextField
         placeholderText: qsTr("Rotation (rad/s)")
-        width: 150
-        height: 36
         validator: DoubleValidator {}
         enabled: SerialPort.isConnected
       }
@@ -121,8 +117,6 @@ Pane {
       TextField {
         id: motorVelocityTextField
         placeholderText: qsTr("Velocity (m/s)")
-        width: 150
-        height: 36
         enabled: SerialPort.isConnected
       }
     }
