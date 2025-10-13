@@ -1,5 +1,6 @@
 #include "SerialPort.h"
 #include "src/lgdxrobot2.h"
+#include <QtCore/qlogging.h>
 
 RobotData* SerialPort::robotData = nullptr;
 SerialPort* SerialPort::instance = nullptr; 

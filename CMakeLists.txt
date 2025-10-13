@@ -23,7 +23,6 @@ qt_add_qml_module(appLGDXRobot2ChassisTuner
 	QML_FILES
 		qml/global.js
 		qml/Main.qml
-		qml/pages/PidTuner/PidChartPane.qml
 		qml/pages/PidTuner/PidConfigurationPane.qml
 		qml/pages/PidTuner/PidTestPane.qml
 		qml/pages/PidTuner/PidTable.qml

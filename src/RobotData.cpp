@@ -1,5 +1,6 @@
 #include "RobotData.h"
 #include "src/lgdxrobot2.h"
+#include <QtCore/qlogging.h>
 
 RobotData* RobotData::instance = nullptr;
 
@@ -26,7 +27,7 @@ RobotData *RobotData::getInstance()
 void RobotData::updateMcuData(const McuData &mcuData)
 {
 	QTime now = QTime::currentTime();
-	if (lastReadTime.msecsTo(now) >= uiDelay)
+	if (lastUpdateTime.msecsTo(now) >= updateDelay)
 	{
 		this->mcuData->transform[0] = mcuData.transform.x;
 		this->mcuData->transform[1] = mcuData.transform.y;
@@ -46,6 +47,8 @@ void RobotData::updateMcuData(const McuData &mcuData)
 		this->mcuData->hardwareEmergencyStopEnabled = mcuData.hardware_emergency_stop_enabled;	
 		this->mcuData->betteryLowEmergencyStopEnabled = mcuData.bettery_low_emergency_stop_enabled;
 		emit mcuDataUpdated();
+		lastUpdateTime = now;
+		qDebug() << lastUpdateTime.msecsSinceStartOfDay() << this->mcuData->motorsActualVelocity[0];
 	}
 	
 	if (this->pidChartEnabled)

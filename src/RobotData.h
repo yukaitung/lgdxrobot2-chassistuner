@@ -23,8 +23,8 @@ class RobotData : public QObject
 		QmlPidData *pidData;
 		QString mcuSerialNumber;
 
-		QTime lastReadTime = QTime::currentTime();
-		int uiDelay = 100;
+		QTime lastUpdateTime = QTime::currentTime();
+		int updateDelay = 100;
 
 		// Pid tuning
 		bool pidChartEnabled = false;

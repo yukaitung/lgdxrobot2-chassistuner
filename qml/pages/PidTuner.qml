@@ -33,14 +33,6 @@ Flickable {
       PidTestPane {
         width: parent.width
       }
-
-      LabelHeading {
-        text: qsTr("Chart")
-      }
-
-      PidChartPane {
-        width: parent.width
-      }
     }
   }
 

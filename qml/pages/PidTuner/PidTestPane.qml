@@ -1,14 +1,49 @@
+import QtGraphs
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Controls.Material
 import QtQuick.Layouts
-import SerialPort
 import RobotData
+import SerialPort
 import "../../shared"
 
 Pane {
   Material.elevation: 2
   width: parent.width
+
+  Connections {
+    target: RobotData
+    function onPidChartClear() 
+    {
+      targetSeries.clear();
+      measurementSeries.clear();
+      axisX.min = 0;
+      axisX.max = 1;
+      axisY.min = 0;
+      axisY.max = 1;
+    }
+
+    function onPidChartSetTargetVelocity(velocity) 
+    {
+      if (velocity >= axisY.max)
+      {
+        axisY.max = velocity + 1;
+      }
+      if (velocity <= axisY.min)
+      {
+        axisY.min = velocity - 1;
+      }
+    }
+
+    function onPidChartUpdated(time, velocity, targetVelocity)
+    {
+      measurementSeries.append(time, velocity)
+      axisX.max = time;
+      targetSeries.clear();
+      targetSeries.append(0, targetVelocity);
+      targetSeries.append(axisX.max, targetVelocity);
+    }
+  }
 
   GridLayout {
     width: parent.width
@@ -92,7 +127,7 @@ Pane {
       }
     }
 
-    // 2. Custom velocity check box
+    // 3. Custom velocity check box
     CheckBox {
       id: customVelocityCheckBox
       text: qsTr("Custom Velocity")
@@ -123,7 +158,7 @@ Pane {
       }
     }
     
-    // 3. Direction check box
+    // 4. Direction check box
     CheckBox {
       id: reverseDirectionCheckBox
       Layout.columnSpan: 2
@@ -132,7 +167,7 @@ Pane {
       enabled: SerialPort.isConnected
     }
 
-    // 4. Send button
+    // 5. Send button
     Row {
       width: parent.width
       spacing: 8
@@ -165,6 +200,61 @@ Pane {
           SerialPort.setInverseKinematics(0, 0, 0);
           RobotData.stopPidChart();
         }
+      }
+    }
+
+    // 6. Chart
+    LabelText {
+      text: qsTr("PID Chart, X-axis: Time (ms), Y-axis: Velocity (rad/s)")
+      font.bold: true
+      Layout.columnSpan: 2
+      Layout.alignment: Qt.AlignHCenter
+    }
+
+    GraphsView {
+      id: graphView
+      Layout.preferredWidth: 600
+      Layout.preferredHeight: 600
+      Layout.columnSpan: 2
+      Layout.alignment: Qt.AlignHCenter
+
+      theme: GraphsTheme {
+        readonly property color c1: "#1E1F24"
+        readonly property color c2: "#EFF0F3"
+        readonly property color c3: "#E0E1E6"
+        colorScheme: GraphsTheme.ColorScheme.Light
+        seriesColors: ["#821B1D", "green"]
+        grid.mainColor: c3
+        grid.subColor: c2
+        axisX.mainColor: c3
+        axisY.mainColor: c3
+        axisX.subColor: c2
+        axisY.subColor: c2
+        axisX.labelTextColor: c1
+        axisY.labelTextColor: c1
+      }
+
+      // Axis
+      axisX: ValueAxis {
+        id: axisX
+        max: 1
+        min: 0
+      }
+
+      axisY: ValueAxis {
+        id: axisY
+        max: 1
+        min: 0
+      }
+
+      LineSeries {
+        id: measurementSeries
+        width: 2
+      }
+
+      LineSeries {
+        id: targetSeries
+        width: 2
       }
     }
   }
