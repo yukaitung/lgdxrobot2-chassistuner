@@ -163,7 +163,7 @@ Pane {
         height: 48
         enabled: SerialPort.isConnected
         onClicked: {
-          var velocity = RobotData.pidData.levelVelocity[levelComboBox.currentIndex].toString();
+          var velocity = RobotData.pidData.pidSpeed[levelComboBox.currentIndex].toString();
           if (customVelocityCheckBox.checked)
             velocity = customVelocityTextField.text;
           SerialPort.setMotor(motorComboBox.currentIndex, velocity);
