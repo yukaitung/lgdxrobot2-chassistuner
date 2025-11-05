@@ -28,6 +28,15 @@ Pane {
     }
 
     LabelText {
+      text: qsTr("Response Time (ms)")
+      font.bold: true
+    }
+
+    LabelText {
+      text: RobotData.mcuData.responseTime
+    }
+
+    LabelText {
       text: qsTr("Serial Number")
       font.bold: true
     }

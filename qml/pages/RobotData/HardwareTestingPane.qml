@@ -116,7 +116,7 @@ Pane {
 
       TextField {
         id: motorVelocityTextField
-        placeholderText: qsTr("Velocity (m/s)")
+        placeholderText: qsTr("Velocity (rad/s)")
         enabled: SerialPort.isConnected
       }
     }

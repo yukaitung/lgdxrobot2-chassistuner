@@ -26,6 +26,7 @@ RobotData *RobotData::getInstance()
 
 void RobotData::updateMcuData(const McuData &mcuData)
 {
+	this->mcuData->responseTime = mcuData.response_time;
 	this->mcuData->transform[0] = mcuData.transform.x;
 	this->mcuData->transform[1] = mcuData.transform.y;
 	this->mcuData->transform[2] = mcuData.transform.rotation;
