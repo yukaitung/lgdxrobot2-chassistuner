@@ -17,9 +17,9 @@ Pane {
       motorMaximumSpeed2Field.text = RobotData.pidData.motorMaximumSpeed[1]
       motorMaximumSpeed3Field.text = RobotData.pidData.motorMaximumSpeed[2]
       motorMaximumSpeed4Field.text = RobotData.pidData.motorMaximumSpeed[3]
-      level1Field.text = RobotData.pidData.levelVelocity[0]
-      level2Field.text = RobotData.pidData.levelVelocity[1]
-      level3Field.text = RobotData.pidData.levelVelocity[2]
+      level1Field.text = RobotData.pidData.pidSpeed[0]
+      level2Field.text = RobotData.pidData.pidSpeed[1]
+      level3Field.text = RobotData.pidData.pidSpeed[2]
     }
   }
   
@@ -157,7 +157,7 @@ Pane {
       spacing: 8
 
       LabelText {
-        text: qsTr("Set Level Velocity")
+        text: qsTr("Set PID Speed")
         Layout.preferredWidth: 200
         font.bold: true
       }
@@ -196,7 +196,7 @@ Pane {
         Material.background: Material.accent
         Layout.alignment: Qt.AlignRight
         enabled: SerialPort.isConnected
-        onClicked: SerialPort.setLevelVelocity(0, level1Field.text, level2Field.text, level3Field.text)
+        onClicked: SerialPort.setPidSpeed(0, level1Field.text, level2Field.text, level3Field.text)
         Layout.preferredHeight: 48
       }
     }

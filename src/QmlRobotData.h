@@ -41,7 +41,7 @@ class QmlMcuData : public QObject
 class QmlPidData : public QObject
 {
   Q_OBJECT
-  Q_PROPERTY(QVector<QString> levelVelocity MEMBER levelVelocity NOTIFY updated)
+  Q_PROPERTY(QVector<QString> pidSpeed MEMBER pidSpeed NOTIFY updated)
   Q_PROPERTY(QVector<QVector<QString>> p MEMBER p NOTIFY updated)
   Q_PROPERTY(QVector<QVector<QString>> i MEMBER i NOTIFY updated)
   Q_PROPERTY(QVector<QVector<QString>> d MEMBER d NOTIFY updated)
@@ -49,7 +49,7 @@ class QmlPidData : public QObject
 
   public:
     explicit QmlPidData(QObject *parent = nullptr);
-    QVector<QString> levelVelocity = {"-", "-", "-"}; // level 1, level 2, level 3
+    QVector<QString> pidSpeed = {"-", "-", "-"}; // level 1, level 2, level 3
     QVector<QVector<QString>> p = { {"-", "-", "-", "-"}, {"-", "-", "-", "-"}, {"-", "-", "-", "-"} };
     QVector<QVector<QString>> i = { {"-", "-", "-", "-"}, {"-", "-", "-", "-"}, {"-", "-", "-", "-"} };
     QVector<QVector<QString>> d = { {"-", "-", "-", "-"}, {"-", "-", "-", "-"}, {"-", "-", "-", "-"} };

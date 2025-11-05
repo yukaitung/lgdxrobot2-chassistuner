@@ -141,7 +141,7 @@ Pane {
 
       LabelText {
         text: qsTr("Using velocity of %1 rad/s from level %2")
-          .arg(RobotData.pidData.levelVelocity[levelComboBox.currentIndex])
+          .arg(RobotData.pidData.pidSpeed[levelComboBox.currentIndex])
           .arg(levelComboBox.currentIndex + 1)
         height: parent.height
         verticalAlignment: Text.AlignVCenter
@@ -150,16 +150,7 @@ Pane {
       }
     }
     
-    // 4. Direction check box
-    CheckBox {
-      id: reverseDirectionCheckBox
-      Layout.columnSpan: 2
-      text: qsTr("Reverse Direction")
-      font.bold: true
-      enabled: SerialPort.isConnected
-    }
-
-    // 5. Send button
+    // 4. Send button
     Row {
       width: parent.width
       spacing: 8
@@ -175,8 +166,6 @@ Pane {
           var velocity = RobotData.pidData.levelVelocity[levelComboBox.currentIndex].toString();
           if (customVelocityCheckBox.checked)
             velocity = customVelocityTextField.text;
-          if (reverseDirectionCheckBox.checked)
-            velocity = "-" + velocity;
           SerialPort.setMotor(motorComboBox.currentIndex, velocity);
           RobotData.startPidChart(motorComboBox.currentIndex, velocity);
         }

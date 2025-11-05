@@ -69,7 +69,7 @@ void RobotData::updateMcuPid(const McuPid &mcuPid)
 {
 	for (int i = 0; i < PID_LEVEL; i++)
 	{
-		this->pidData->levelVelocity[i] = QString::number(mcuPid.level_velocity[i]);
+		this->pidData->pidSpeed[i] = QString::number(mcuPid.pid_speed[i]);
 		for (int j = 0; j < API_MOTOR_COUNT; j++)
 		{
 			this->pidData->p[i][j] = QString::number(mcuPid.p[i][j]);

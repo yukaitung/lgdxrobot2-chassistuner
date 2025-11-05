@@ -20,7 +20,7 @@
 #define MCU_SOFTWARE_EMERGENCY_STOP_COMMAND_TYPE 'E'
 #define MCU_INVERSE_KINEMATICS_COMMAND_TYPE 'I'
 #define MCU_MOTOR_COMMAND_TYPE 'M'
-#define MCU_SET_LEVEL_VELOCITY_COMMAND_TYPE 'L'
+#define MCU_SET_PID_SPEED_COMMAND_TYPE 'L'
 #define MCU_GET_PID_COMMAND_TYPE 'P'
 #define MCU_SET_PID_COMMAND_TYPE 'Q'
 #define MCU_SAVE_PID_COMMAND_TYPE 'R'
@@ -79,7 +79,7 @@ typedef struct {
   uint8_t header1;
   uint8_t header2;
   char type;
-  float level_velocity[PID_LEVEL];
+  float pid_speed[PID_LEVEL];
   float p[PID_LEVEL][API_MOTOR_COUNT];
   float i[PID_LEVEL][API_MOTOR_COUNT];
   float d[PID_LEVEL][API_MOTOR_COUNT];
@@ -113,8 +113,8 @@ typedef struct {
 // PID control
 typedef struct {
   char command;
-  float level_velocity[PID_LEVEL];
-} McuSetLevelVelocityCommand;
+  float pid_speed[PID_LEVEL];
+} McuSetPidSpeedCommand;
 
 typedef struct {
   char command;
