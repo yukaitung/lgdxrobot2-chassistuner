@@ -81,7 +81,7 @@ ApplicationWindow {
 		spacing: 0
 		
 		TabButton {
-			text: qsTr("Robot Data")
+			text: qsTr("Robot Testing")
 		}
 
 		TabButton {
@@ -95,7 +95,7 @@ ApplicationWindow {
 		width: parent.width
 		currentIndex: tabBar.currentIndex
 
-		RobotData {
+		RobotTesting {
 			Layout.fillWidth: true
 			Layout.fillHeight: true
 		}
