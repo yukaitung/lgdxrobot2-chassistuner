@@ -132,6 +132,7 @@ void SerialPort::getSerialNumber()
 		command.command = MCU_GET_SERIAL_NUMBER_COMMAND_TYPE;
 		QByteArray ba(reinterpret_cast<const char*>(&command), sizeof(McuGetSerialNumberCommand));
 		serial.write(ba);
+		serial.waitForBytesWritten();
 	}
 }
 
@@ -143,6 +144,7 @@ void SerialPort::getPid()
 		command.command = MCU_GET_PID_COMMAND_TYPE;
 		QByteArray ba(reinterpret_cast<const char*>(&command), sizeof(McuGetPidCommand));
 		serial.write(ba);
+		serial.waitForBytesWritten();
 	}
 }
 
@@ -157,6 +159,8 @@ void SerialPort::setInverseKinematics(QString x, QString y, QString rotation)
 		command.velocity.rotation = QString(rotation).toFloat();
 		QByteArray ba(reinterpret_cast<const char*>(&command), sizeof(McuInverseKinematicsCommand));
 		serial.write(ba);
+		serial.waitForBytesWritten();
+
 	}
 }
 
@@ -183,6 +187,7 @@ void SerialPort::setSoftEmergencyStop(bool enable)
 		command.enable = enable;
 		QByteArray ba(reinterpret_cast<const char*>(&command), sizeof(McuSoftwareEmergencyStopCommand));
 		serial.write(ba);
+		serial.waitForBytesWritten();
 	}
 }
 
@@ -197,6 +202,7 @@ void SerialPort::setPidSpeed(QString level1, QString level2, QString level3)
 		command.pid_speed[2] = level3.toFloat();
 		QByteArray ba(reinterpret_cast<const char*>(&command), sizeof(McuSetPidSpeedCommand));
 		serial.write(ba);
+		serial.waitForBytesWritten();
 	}
 }
 
@@ -213,6 +219,7 @@ void SerialPort::setPid(int motor, int level, QString p, QString i, QString d)
 		command.d = d.toFloat();
 		QByteArray ba(reinterpret_cast<const char*>(&command), sizeof(McuSetPidCommand));
 		serial.write(ba);
+		serial.waitForBytesWritten();
 	}
 }
 
@@ -240,6 +247,7 @@ void SerialPort::savePid()
 		command.command = MCU_SAVE_PID_COMMAND_TYPE;
 		QByteArray ba(reinterpret_cast<const char*>(&command), sizeof(McuSavePidCommand));
 		serial.write(ba);
+		serial.waitForBytesWritten();
 	}
 }
 
@@ -251,5 +259,6 @@ void SerialPort::resetTransform()
 		command.command = MCU_RESET_TRANSFORM_COMMAND_TYPE;
 		QByteArray ba(reinterpret_cast<const char*>(&command), sizeof(McuResetTransformCommand));
 		serial.write(ba);
+		serial.waitForBytesWritten();
 	}
 }

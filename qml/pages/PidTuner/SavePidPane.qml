@@ -20,7 +20,7 @@ Pane
     spacing: 16
 
     Button {
-      text: qsTr("Save PID")
+      text: qsTr("Save Configuration")
       Material.foreground: "white"
       Material.background: Material.accent
       enabled: SerialPort.isConnected

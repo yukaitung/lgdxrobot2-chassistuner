@@ -54,7 +54,7 @@ typedef struct {
   float motors_target_velocity[API_MOTOR_COUNT];
   float motors_desire_velocity[API_MOTOR_COUNT];
   float motors_actual_velocity[API_MOTOR_COUNT];
-  uint8_t motors_ccr[API_MOTOR_COUNT];
+  uint32_t motors_ccr[API_MOTOR_COUNT];
   McuPower battery1;
   McuPower battery2;
   bool software_emergency_stop_enabled;

@@ -11,8 +11,6 @@ Pane {
   width: parent.width
 
   property bool isAutoConfigRunning: false
-  property int autoConfigMotorIndex: 0
-  property list<string> motorTestMaxSpeed: ["0", "0", "0", "0"]
 
   Dialog {
     id: autoConfigDialog
@@ -23,46 +21,25 @@ Pane {
     width: 600
 
     contentItem: LabelText {
-      text: qsTr("This will test the maximum speed of the motors one by one and takes about 10 seconds. Pleas ensure that the robot is lifted and all emergency stop has been disabled.")
+      text: qsTr("This will test the maximum speed of the motors one by one and takes about 2 seconds. Please ensure that the robot is lifted and that all emergency stops have been disabled.")
       wrapMode: Text.WordWrap
     }
 
     onAccepted: {
-      autoConfigMotorIndex = 0;
       isAutoConfigRunning = true;
-      autoConfig();
+      SerialPort.setInverseKinematics("99.0", "0.0", "0.0");
+      autoConfigTimer.restart();
     }
   }
 
   Timer {
     id: autoConfigTimer
-    interval: 2500; 
+    interval: 2000; 
     repeat: false;
-    onTriggered: autoConfig();
-  }
-
-  function autoConfig() {
-    // Save Data for last motor
-    if (autoConfigMotorIndex > 0)
-    {
-      motorTestMaxSpeed[autoConfigMotorIndex - 1] = RobotData.mcuData.motorsActualVelocity[autoConfigMotorIndex - 1].toString();
-      SerialPort.setMotor(autoConfigMotorIndex - 1, "0");
-
-      if (autoConfigMotorIndex >= 4)
-      {
-        SerialPort.setMotorMaximumSpeed(motorTestMaxSpeed[0], motorTestMaxSpeed[1], motorTestMaxSpeed[2], motorTestMaxSpeed[3]);
-        SerialPort.getPid();
-        isAutoConfigRunning = false;
-        return;
-      }
+    onTriggered: {
+      SerialPort.setMotorMaximumSpeed(RobotData.mcuData.motorsActualVelocity[0].toString(), RobotData.mcuData.motorsActualVelocity[1].toString(), RobotData.mcuData.motorsActualVelocity[2].toString(), RobotData.mcuData.motorsActualVelocity[3].toString());
+      isAutoConfigRunning = false;
     }
-
-    // Start motor
-    SerialPort.setMotor(autoConfigMotorIndex, "999");
-    
-    // Send result to MCU
-    autoConfigMotorIndex++;
-    autoConfigTimer.restart();
   }
 
   Column {
@@ -205,7 +182,7 @@ Pane {
 
       LabelText {
         height: parent.height
-        text: qsTr("Auto Config In Progress: Motor %1").arg(autoConfigMotorIndex)
+        text: qsTr("Auto Config In Progress")
         font.bold: true
         visible: isAutoConfigRunning
         verticalAlignment: Text.AlignVCenter

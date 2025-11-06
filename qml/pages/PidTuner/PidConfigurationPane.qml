@@ -75,7 +75,7 @@ Pane {
         Material.background: Material.accent
         Layout.alignment: Qt.AlignRight
         enabled: SerialPort.isConnected
-        onClicked: SerialPort.setPidSpeed(0, level1Field.text, level2Field.text, level3Field.text)
+        onClicked: SerialPort.setPidSpeed(level1Field.text, level2Field.text, level3Field.text)
         Layout.preferredHeight: 48
       }
     }

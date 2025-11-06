@@ -44,7 +44,7 @@ Flickable {
       }
 
       LabelHeading {
-        text: qsTr("Save PID")
+        text: qsTr("Save Configuration")
       }
 
       SavePidPane {
