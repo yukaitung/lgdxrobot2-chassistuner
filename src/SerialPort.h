@@ -50,7 +50,7 @@ class SerialPort: public QObject
 		void setSoftEmergencyStop(bool enable);
 		void setPidSpeed(QString level1, QString level2, QString level3);
 		void setPid(int motor,int level, QString p, QString i, QString d);
-		void setMotorMaximumSpeed(int motor, QString speed1, QString speed2, QString speed3, QString speed4);
+		void setMotorMaximumSpeed(QString speed1, QString speed2, QString speed3, QString speed4);
 		
 		void savePid();
 		void resetTransform();

@@ -170,6 +170,7 @@ void SerialPort::setMotor(int motor, QString velocity)
 		command.velocity = QString(velocity).toFloat();
 		QByteArray ba(reinterpret_cast<const char*>(&command), sizeof(McuMotorCommand));
 		serial.write(ba);
+		serial.waitForBytesWritten();
 	}
 }
 
@@ -215,7 +216,7 @@ void SerialPort::setPid(int motor, int level, QString p, QString i, QString d)
 	}
 }
 
-void SerialPort::setMotorMaximumSpeed(int motor, QString speed1, QString speed2, QString speed3, QString speed4)
+void SerialPort::setMotorMaximumSpeed(QString speed1, QString speed2, QString speed3, QString speed4)
 {
 	if (serial.isOpen())
 	{
@@ -227,6 +228,7 @@ void SerialPort::setMotorMaximumSpeed(int motor, QString speed1, QString speed2,
 		command.speed[3] = speed4.toFloat();
 		QByteArray ba(reinterpret_cast<const char*>(&command), sizeof(McuSetMotorMaximumSpeedCommand));
 		serial.write(ba);
+		serial.waitForBytesWritten();
 	}
 }
 

@@ -20,6 +20,14 @@ Flickable {
       spacing: 16
 
       LabelHeading {
+        text: qsTr("Motors Maximum Speed")
+      }
+
+      MotorsMaxSpeed {
+        width: parent.width
+      }
+
+      LabelHeading {
         text: qsTr("PID Configuration")
       }
 
