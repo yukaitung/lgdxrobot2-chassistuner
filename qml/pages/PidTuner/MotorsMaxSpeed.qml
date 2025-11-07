@@ -21,7 +21,7 @@ Pane {
     width: 600
 
     contentItem: LabelText {
-      text: qsTr("This will test the maximum speed of the motors one by one and takes about 2 seconds. Please ensure that the robot is lifted and that all emergency stops have been disabled.")
+      text: qsTr("This will test the maximum speed of the motors and takes about 3 seconds. Please ensure that the robot is lifted and that all emergency stops have been disabled.")
       wrapMode: Text.WordWrap
     }
 
@@ -34,7 +34,7 @@ Pane {
 
   Timer {
     id: autoConfigTimer
-    interval: 2000; 
+    interval: 3000; 
     repeat: false;
     onTriggered: {
       SerialPort.setMotorMaximumSpeed(RobotData.mcuData.motorsActualVelocity[0].toString(), RobotData.mcuData.motorsActualVelocity[1].toString(), RobotData.mcuData.motorsActualVelocity[2].toString(), RobotData.mcuData.motorsActualVelocity[3].toString());
