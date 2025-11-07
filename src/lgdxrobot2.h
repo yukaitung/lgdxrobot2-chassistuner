@@ -51,6 +51,7 @@ typedef struct {
   char type;
   uint32_t response_time;
   McuDof transform;
+  McuDof forward_kinematic;
   float motors_target_velocity[API_MOTOR_COUNT];
   float motors_desire_velocity[API_MOTOR_COUNT];
   float motors_actual_velocity[API_MOTOR_COUNT];

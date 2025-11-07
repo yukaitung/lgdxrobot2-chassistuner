@@ -69,6 +69,29 @@ Pane {
     }
 
     LabelText {
+      text: qsTr("Forward Kinematic")
+      font.bold: true
+    }
+
+    Row {
+      Layout.fillWidth: true
+      LabelText {
+        text: qsTr("X: %1 m").arg(RobotData.mcuData.forwardKinematic[0].toFixed(4))
+        width: parent.width / 3
+      }
+
+      LabelText {
+        text: qsTr("Y: %1 m").arg(RobotData.mcuData.forwardKinematic[1].toFixed(4))
+        width: parent.width / 3
+      }
+
+      LabelText {
+        text: qsTr("Rotation: %1 rad").arg(RobotData.mcuData.forwardKinematic[2].toFixed(4))
+        width: parent.width / 3
+      }
+    }
+
+    LabelText {
       text: qsTr("Target Motors Velocity (rad/s)")
       font.bold: true
     }

@@ -30,6 +30,9 @@ void RobotData::updateMcuData(const McuData &mcuData)
 	this->mcuData->transform[0] = mcuData.transform.x;
 	this->mcuData->transform[1] = mcuData.transform.y;
 	this->mcuData->transform[2] = mcuData.transform.rotation;
+	this->mcuData->forwardKinematic[0] = mcuData.forward_kinematic.x;
+	this->mcuData->forwardKinematic[1] = mcuData.forward_kinematic.y;
+	this->mcuData->forwardKinematic[2] = mcuData.forward_kinematic.rotation;
 	for (int i = 0; i < API_MOTOR_COUNT; i++)
 	{
 		this->mcuData->motorsTargetVelocity[i] = mcuData.motors_target_velocity[i];

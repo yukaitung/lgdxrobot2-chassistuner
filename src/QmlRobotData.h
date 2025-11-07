@@ -4,12 +4,14 @@
 #include <QObject>
 #include <QMetaType>
 #include <QVector>
+#include <QtCore/qcontainerfwd.h>
 
 class QmlMcuData : public QObject
 {
   Q_OBJECT
   Q_PROPERTY(int responseTime MEMBER responseTime NOTIFY updated)
   Q_PROPERTY(QVector<float> transform MEMBER transform NOTIFY updated)
+  Q_PROPERTY(QVector<float> forwardKinematic MEMBER forwardKinematic NOTIFY updated)
   Q_PROPERTY(QVector<float> motorsTargetVelocity MEMBER motorsTargetVelocity NOTIFY updated)
   Q_PROPERTY(QVector<float> motorsDesireVelocity MEMBER motorsDesireVelocity NOTIFY updated)
   Q_PROPERTY(QVector<float> motorsActualVelocity MEMBER motorsActualVelocity NOTIFY updated)
@@ -24,6 +26,7 @@ class QmlMcuData : public QObject
     explicit QmlMcuData(QObject *parent = nullptr);
     int responseTime = 0;
     QVector<float> transform = {0.0f, 0.0f, 0.0f}; // x, y, rotation
+    QVector<float> forwardKinematic = {0.0f, 0.0f, 0.0f}; // x, y, rotation
     QVector<float> motorsTargetVelocity = {0.0f, 0.0f, 0.0f, 0.0f}; // motor 1, motor 2, motor 3, motor 4
     QVector<float> motorsDesireVelocity = {0.0f, 0.0f, 0.0f, 0.0f}; // motor 1, motor 2, motor 3, motor 4
     QVector<float> motorsActualVelocity = {0.0f, 0.0f, 0.0f, 0.0f}; // motor 1, motor 2, motor 3, motor 4
