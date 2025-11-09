@@ -110,6 +110,8 @@ void SerialPort::disconnect()
 	if (serial.isOpen())
 	{
 		McuInverseKinematicsCommand command;
+		command.header1 = MCU_HEADER1;
+		command.header2 = MCU_HEADER2;
 		command.command = MCU_INVERSE_KINEMATICS_COMMAND_TYPE;
 		command.velocity.x = 0;
 		command.velocity.y = 0;
@@ -129,6 +131,8 @@ void SerialPort::getSerialNumber()
 	if (serial.isOpen())
 	{
 		McuGetSerialNumberCommand command;
+		command.header1 = MCU_HEADER1;
+		command.header2 = MCU_HEADER2;
 		command.command = MCU_GET_SERIAL_NUMBER_COMMAND_TYPE;
 		QByteArray ba(reinterpret_cast<const char*>(&command), sizeof(McuGetSerialNumberCommand));
 		serial.write(ba);
@@ -141,6 +145,8 @@ void SerialPort::getPid()
 	if (serial.isOpen())
 	{
 		McuGetPidCommand command;
+		command.header1 = MCU_HEADER1;
+		command.header2 = MCU_HEADER2;
 		command.command = MCU_GET_PID_COMMAND_TYPE;
 		QByteArray ba(reinterpret_cast<const char*>(&command), sizeof(McuGetPidCommand));
 		serial.write(ba);
@@ -153,6 +159,8 @@ void SerialPort::setInverseKinematics(QString x, QString y, QString rotation)
 	if (serial.isOpen())
 	{
 		McuInverseKinematicsCommand command;
+		command.header1 = MCU_HEADER1;
+		command.header2 = MCU_HEADER2;
 		command.command = MCU_INVERSE_KINEMATICS_COMMAND_TYPE;
 		command.velocity.x = QString(x).toFloat();
 		command.velocity.y = QString(y).toFloat();
@@ -169,6 +177,8 @@ void SerialPort::setMotor(int motor, QString velocity)
 	if (serial.isOpen())
 	{
 		McuMotorCommand command;
+		command.header1 = MCU_HEADER1;
+		command.header2 = MCU_HEADER2;
 		command.command = MCU_MOTOR_COMMAND_TYPE;
 		command.motor = motor;
 		command.velocity = QString(velocity).toFloat();
@@ -183,6 +193,8 @@ void SerialPort::setSoftEmergencyStop(bool enable)
 	if (serial.isOpen())
 	{
 		McuSoftwareEmergencyStopCommand command;
+		command.header1 = MCU_HEADER1;
+		command.header2 = MCU_HEADER2;
 		command.command = MCU_SOFTWARE_EMERGENCY_STOP_COMMAND_TYPE;
 		command.enable = enable;
 		QByteArray ba(reinterpret_cast<const char*>(&command), sizeof(McuSoftwareEmergencyStopCommand));
@@ -196,6 +208,8 @@ void SerialPort::setPidSpeed(QString level1, QString level2, QString level3)
 	if (serial.isOpen())
 	{
 		McuSetPidSpeedCommand command;
+		command.header1 = MCU_HEADER1;
+		command.header2 = MCU_HEADER2;
 		command.command = MCU_SET_PID_SPEED_COMMAND_TYPE;
 		command.pid_speed[0] = level1.toFloat();
 		command.pid_speed[1] = level2.toFloat();
@@ -211,6 +225,8 @@ void SerialPort::setPid(int motor, int level, QString p, QString i, QString d)
 	if (serial.isOpen())
 	{
 		McuSetPidCommand command;
+		command.header1 = MCU_HEADER1;
+		command.header2 = MCU_HEADER2;
 		command.command = MCU_SET_PID_COMMAND_TYPE;
 		command.motor = motor;
 		command.level = level;
@@ -228,6 +244,8 @@ void SerialPort::setMotorMaximumSpeed(QString speed1, QString speed2, QString sp
 	if (serial.isOpen())
 	{
 		McuSetMotorMaximumSpeedCommand command;
+		command.header1 = MCU_HEADER1;
+		command.header2 = MCU_HEADER2;
 		command.command = MCU_SET_MOTOR_MAXIMUM_SPEED_COMMAND_TYPE;
 		command.speed[0] = speed1.toFloat();
 		command.speed[1] = speed2.toFloat();
@@ -244,6 +262,8 @@ void SerialPort::savePid()
 	if (serial.isOpen())
 	{
 		McuSavePidCommand command;
+		command.header1 = MCU_HEADER1;
+		command.header2 = MCU_HEADER2;
 		command.command = MCU_SAVE_PID_COMMAND_TYPE;
 		QByteArray ba(reinterpret_cast<const char*>(&command), sizeof(McuSavePidCommand));
 		serial.write(ba);
@@ -256,6 +276,8 @@ void SerialPort::resetTransform()
 	if (serial.isOpen())
 	{
 		McuResetTransformCommand command;
+		command.header1 = MCU_HEADER1;
+		command.header2 = MCU_HEADER2;
 		command.command = MCU_RESET_TRANSFORM_COMMAND_TYPE;
 		QByteArray ba(reinterpret_cast<const char*>(&command), sizeof(McuResetTransformCommand));
 		serial.write(ba);
