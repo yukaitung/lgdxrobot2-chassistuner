@@ -1,39 +1,60 @@
 cmake_minimum_required(VERSION 3.16)
 
-project(LGDXRobot2-ChassisTuner VERSION 0.1 LANGUAGES CXX)
+project(LGDXRobot2ChassisTuner VERSION 0.1 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(Qt6 6.4 REQUIRED COMPONENTS Quick SerialPort Charts)
+find_package(Qt6 REQUIRED COMPONENTS Quick Graphs SerialPort)
 
-qt_standard_project_setup()
+qt_standard_project_setup(REQUIRES 6.8)
+set(CMAKE_AUTORCC ON)
 
-qt_add_executable(appLGDXRobot2-ChassisTuner
-    main.cpp
-    SerialPort.h
-    SerialPort.cpp
+qt_add_executable(appLGDXRobot2ChassisTuner
+	application.qrc
+	src/main.cpp
+	src/RobotData.cpp
+	src/SerialPort.cpp
+	src/QmlRobotData.cpp
 )
 
-qt_add_qml_module(appLGDXRobot2-ChassisTuner
-    URI LGDXRobot2-ChassisTuner
-    VERSION 1.0
-    QML_FILES Main.qml
+qt_add_qml_module(appLGDXRobot2ChassisTuner
+	URI LGDXRobot2ChassisTuner
+	VERSION 1.0
+	QML_FILES
+		qml/global.js
+		qml/Main.qml
+		qml/pages/PidTuner/MotorsMaxSpeed.qml
+		qml/pages/PidTuner/PidConfigurationPane.qml
+		qml/pages/PidTuner/PidTestPane.qml
+		qml/pages/PidTuner/PidTable.qml
+		qml/pages/PidTuner/SavePidPane.qml
+		qml/pages/RobotTesting/HardwareTestingPane.qml
+		qml/pages/RobotTesting/RobotDataPane.qml
+		qml/pages/PidTuner.qml
+		qml/pages/RobotTesting.qml
+		qml/shared/LabelHeading.qml
+		qml/shared/LabelText.qml
+		qml/shared/TextField.qml
 )
 
-set_target_properties(appLGDXRobot2-ChassisTuner PROPERTIES
-    MACOSX_BUNDLE_GUI_IDENTIFIER my.example.com
-    MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
-    MACOSX_BUNDLE_SHORT_VERSION_STRING ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}
-    MACOSX_BUNDLE TRUE
-    WIN32_EXECUTABLE TRUE
+# Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
+# If you are developing for iOS or macOS you should consider setting an
+# explicit, fixed bundle identifier manually though.
+set_target_properties(appLGDXRobot2ChassisTuner PROPERTIES
+# MACOSX_BUNDLE_GUI_IDENTIFIER com.example.appLGDXRobot2ChassisTuner
+	MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
+	MACOSX_BUNDLE_SHORT_VERSION_STRING ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}
+	MACOSX_BUNDLE TRUE
+	WIN32_EXECUTABLE TRUE
 )
 
-target_link_libraries(appLGDXRobot2-ChassisTuner
-    PRIVATE Qt6::Quick Qt6::SerialPort Qt6::Charts
+target_link_libraries(appLGDXRobot2ChassisTuner
+	PRIVATE Qt6::Quick Qt6::Graphs Qt6::SerialPort
 )
 
-install(TARGETS appLGDXRobot2-ChassisTuner
-    BUNDLE DESTINATION .
-    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+include(GNUInstallDirs)
+install(TARGETS appLGDXRobot2ChassisTuner
+	BUNDLE DESTINATION .
+	LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+	RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
 )
