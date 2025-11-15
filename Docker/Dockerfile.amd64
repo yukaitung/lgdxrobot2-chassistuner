@@ -1,0 +1,24 @@
+FROM ubuntu:24.04
+
+ARG QT_VERSION=6.10.0
+ARG QT_PATH=/opt/qt
+
+ENV DEBIAN_FRONTEND=noninteractive
+ENV QT_VERSION=${QT_VERSION}
+ENV QT_PATH=${QT_PATH}
+ENV QT_GCC=${QT_PATH}/${QT_VERSION}/gcc_64
+ENV PATH=$PATH:${QT_PATH}/Tools/CMake/bin:${QT_PATH}/Tools/Ninja:${QT_PATH}/${QT_VERSION}/gcc_64/bin:~/.local/bin
+
+RUN apt-get update && apt-get install -q -y --no-install-recommends \
+      python3-pip \
+      libxkbcommon-dev \
+      libxkbfile-dev \
+      libgl-dev \
+      libvulkan-dev \
+      && rm -rf /var/lib/apt/lists/*
+
+RUN pip install aqtinstall --break-system-packages
+
+RUN aqt install-qt -O ${QT_PATH} linux desktop ${QT_VERSION} linux_gcc_64 -m qtgraphs qtserialport qtquick3d qtshadertools
+RUN aqt install-tool -O ${QT_PATH} linux desktop tools_cmake
+RUN aqt install-tool -O ${QT_PATH} linux desktop tools_ninja
