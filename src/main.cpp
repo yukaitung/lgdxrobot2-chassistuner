@@ -1,5 +1,7 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
+#include <QIcon>
+#include <QtGui/qicon.h>
 
 #include "RobotData.h"
 #include "SerialPort.h"
@@ -23,6 +25,9 @@ static QObject *SerialPortSingletonProvider(QQmlEngine *engine, QJSEngine *scrip
 int main(int argc, char *argv[])
 {
 	QGuiApplication app(argc, argv);
+
+	QIcon icon(":/resources/icon.svg");
+	app.setWindowIcon(icon);
 
 	QQmlApplicationEngine engine;
 	qmlRegisterSingletonType<RobotData>("RobotData", 1, 0, "RobotData", RobotDataSingletonProvider);

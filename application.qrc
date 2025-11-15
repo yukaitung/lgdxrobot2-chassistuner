@@ -1,6 +1,7 @@
 <!DOCTYPE RCC>
 <RCC version="1.0">
   <qresource prefix="/">
+    <file>resources/icon.svg</file>
     <file>qtquickcontrols2.conf</file>
     <file>qml/img/connect.svg</file>
     <file>qml/img/disconnect.svg</file>
