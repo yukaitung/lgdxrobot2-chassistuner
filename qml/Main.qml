@@ -15,7 +15,7 @@ ApplicationWindow {
 	minimumWidth: 1280
 	minimumHeight: 720
 	visible: true
-	title: qsTr("LGDXRobot2 ChassisTuner")
+	title: qsTr("ChassisTuner")
 
 	Component.onCompleted: {
 		SerialPort.updateDeviceList();
