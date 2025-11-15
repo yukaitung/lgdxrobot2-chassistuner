@@ -10,11 +10,13 @@ ENV QT_GCC=${QT_PATH}/${QT_VERSION}/gcc_arm64
 ENV PATH=$PATH:${QT_PATH}/Tools/CMake/bin:${QT_PATH}/Tools/Ninja:${QT_PATH}/${QT_VERSION}/gcc_arm64/bin:~/.local/bin
 
 RUN apt-get update && apt-get install -q -y --no-install-recommends \
-      python3-pip \
+      build-essential \
+      libgl-dev \
+      libglib2.0-dev \
+      libvulkan-dev \
       libxkbcommon-dev \
       libxkbfile-dev \
-      libgl-dev \
-      libvulkan-dev \
+      python3-pip \
       && rm -rf /var/lib/apt/lists/*
 
 RUN pip install aqtinstall --break-system-packages
