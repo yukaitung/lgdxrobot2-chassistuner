@@ -22,3 +22,5 @@ RUN pip install aqtinstall --break-system-packages
 RUN aqt install-qt -O ${QT_PATH} linux_arm64 desktop ${QT_VERSION} linux_gcc_arm64 -m qtgraphs qtserialport qtquick3d qtshadertools
 RUN aqt install-tool -O ${QT_PATH} linux_arm64 desktop tools_cmake
 RUN aqt install-tool -O ${QT_PATH} linux_arm64 desktop tools_ninja
+
+WORKDIR /project
