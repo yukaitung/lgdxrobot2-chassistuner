@@ -70,7 +70,7 @@ build-amd64:
   services:
     - docker:24.0.5-dind
   script:
-    - docker run -it --rm -v ${PWD}:/project $EXT_USER/lgdxrobot2.chassistuner.build:amd64 \
+    - docker run --rm -v ${PWD}:/project $EXT_USER/lgdxrobot2.chassistuner.build:amd64 \
       sh -c 'qt-cmake . -G Ninja -B ./build; cmake --build ./build;'
   artifacts:
     paths:
@@ -90,7 +90,7 @@ build-arm64:
   services:
     - docker:24.0.5-dind
   script:
-    - docker run -it --rm -v ${PWD}:/project $EXT_USER/lgdxrobot2.chassistuner.build:arm64 \
+    - docker run --rm -v ${PWD}:/project $EXT_USER/lgdxrobot2.chassistuner.build:arm64 \
       sh -c 'qt-cmake . -G Ninja -B ./build; cmake --build ./build;'
   artifacts:
     paths:
