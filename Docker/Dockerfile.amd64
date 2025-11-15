@@ -7,6 +7,8 @@ ENV DEBIAN_FRONTEND=noninteractive
 ENV QT_VERSION=${QT_VERSION}
 ENV QT_PATH=${QT_PATH}
 ENV QT_GCC=${QT_PATH}/${QT_VERSION}/gcc_64
+ENV QML_IMPORT_PATH=${QT_PATH}/${QT_VERSION}/gcc_64/qml
+ENV QML2_IMPORT_PATH=${QT_PATH}/${QT_VERSION}/gcc_64/qml
 ENV PATH=$PATH:${QT_PATH}/Tools/CMake/bin:${QT_PATH}/Tools/Ninja:${QT_PATH}/${QT_VERSION}/gcc_64/bin:~/.local/bin
 
 RUN apt-get update && apt-get install -q -y --no-install-recommends \
