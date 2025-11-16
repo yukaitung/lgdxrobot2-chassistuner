@@ -1,4 +1,4 @@
-# LGDXRobot2 ROS2 GitLab CI/CD
+# LGDXRobot2 ChassisTuner GitLab CI/CD
 # Variables Needed
 # $EXT_REGISTRY: Registry URL (e.g. docker.io)
 # $EXT_USER: Username for the registry
@@ -9,6 +9,10 @@ stages:
   - build-sup
   - build
   - release
+
+#
+# Parepare variables
+#
 
 prepare:
   stage: prepare
@@ -25,6 +29,10 @@ prepare:
   artifacts:
     reports:
       dotenv: variables.env
+
+#
+# Build support images
+#
 
 build-sup-amd64:
   stage: build-sup
@@ -57,6 +65,10 @@ build-sup-arm64:
     - echo -n $EXT_PAT | docker login -u $EXT_USER --password-stdin $EXT_REGISTRY
     - docker build -f Docker/Dockerfile.arm64 -t $EXT_REGISTRY/$EXT_USER/lgdxrobot2.chassistuner.build:arm64 .
     - docker push $EXT_REGISTRY/$EXT_USER/lgdxrobot2.chassistuner.build:arm64
+
+#
+# Build ChassisTuner
+#
 
 build-amd64:
   stage: build
@@ -100,6 +112,10 @@ build-arm64:
       - build/ChassisTuner-arm64/*
     expire_in: 1 day
 
+#
+# Release ChassisTuner
+#
+
 release_job:
   stage: release
   image: alpine:latest
@@ -128,11 +144,11 @@ release_job:
     - |
       curl --location --header "JOB-TOKEN: ${CI_JOB_TOKEN}" \
            --upload-file ChassisTuner-amd64.zip \
-           "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/binaries/${APP_VERSION}/ChassisTuner-amd64.zip"
+           "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/binaries/latest/ChassisTuner-amd64.zip"
     - |
       curl --location --header "JOB-TOKEN: ${CI_JOB_TOKEN}" \
            --upload-file ChassisTuner-arm64.zip \
-           "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/binaries/${APP_VERSION}/ChassisTuner-arm64.zip"
+           "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/binaries/latest/ChassisTuner-arm64.zip"
   release:
     name : 'Release $APP_VERSION'
     tag_name: '$APP_VERSION'
@@ -140,5 +156,7 @@ release_job:
     ref: '$CI_COMMIT_SHA'
     assets:
       links:
-        - name: 'Download Binaries For Ubuntu'
-          url: 'https://gitlab.com/yukaitung/lgdxrobot2-chassistuner/-/packages/?orderBy=version&sort=desc'
+        - name: 'Linux ARM64'
+          url: '${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/binaries/latest/ChassisTuner-arm64.zip'
+        - name: 'Linux AMD64'
+          url: '${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/binaries/latest/ChassisTuner-amd64.zip'
