@@ -72,14 +72,12 @@ build-amd64:
   script:
     - |
       docker run --rm -v ${PWD}:/project $EXT_USER/lgdxrobot2.chassistuner.build:amd64 bash -c \
-      'qt-cmake . -G Ninja -B ./build -DCMAKE_BUILD_TYPE=Release; \
-      cmake --build ./build; \
-      cp -r resources/AppDir build; \
-      /appimagetool-*.AppImage deploy /build/AppDir/usr/share/applications/ChassisTuner.desktop; \
-      VERSION=1.0 /appimagetool-*.AppImage /build/AppDir'
+      'qt-cmake . -G Ninja -B ./build -DCMAKE_BUILD_TYPE=Release; 
+      cmake --build ./build;'
+    - mv build/ChassisTuner build/ChassisTuner-amd64
   artifacts:
     paths:
-      - ChassisTuner-1.0-x86_64.AppImage
+      - build/ChassisTuner-amd64
     expire_in: 1 day
 
 build-arm64:
@@ -96,14 +94,12 @@ build-arm64:
   script:
     - |
       docker run --rm -v ${PWD}:/project $EXT_USER/lgdxrobot2.chassistuner.build:arm64 bash -c \
-      'qt-cmake . -G Ninja -B ./build -DCMAKE_BUILD_TYPE=Release; \
-      cmake --build ./build; \
-      cp -r resources/AppDir build; \
-      /appimagetool-*.AppImage deploy /build/AppDir/usr/share/applications/ChassisTuner.desktop; \
-      VERSION=1.0 /appimagetool-*.AppImage /build/AppDir'
+      'qt-cmake . -G Ninja -B ./build -DCMAKE_BUILD_TYPE=Release; 
+      cmake --build ./build;'
+    - mv build/ChassisTuner build/ChassisTuner-arm64
   artifacts:
     paths:
-      - ChassisTuner-1.0-aarch64.AppImage
+      - build/ChassisTuner-arm64
     expire_in: 1 day
 
 release_job:
