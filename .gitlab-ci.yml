@@ -75,8 +75,8 @@ build-amd64:
       'qt-cmake . -G Ninja -B ./build -DCMAKE_BUILD_TYPE=Release; \
       cmake --build ./build; \
       cp -r resources/AppDir build; \
-      ./appimagetool-*.AppImage deploy /build/AppDir/usr/share/applications/ChassisTuner.desktop; \
-      VERSION=1.0 ./appimagetool-*.AppImage /build/AppDir'
+      /appimagetool-*.AppImage deploy /build/AppDir/usr/share/applications/ChassisTuner.desktop; \
+      VERSION=1.0 /appimagetool-*.AppImage /build/AppDir'
   artifacts:
     paths:
       - ChassisTuner-1.0-x86_64.AppImage
@@ -99,8 +99,8 @@ build-arm64:
       'qt-cmake . -G Ninja -B ./build -DCMAKE_BUILD_TYPE=Release; \
       cmake --build ./build; \
       cp -r resources/AppDir build; \
-      ./appimagetool-*.AppImage deploy /build/AppDir/usr/share/applications/ChassisTuner.desktop; \
-      VERSION=1.0 ./appimagetool-*.AppImage /build/AppDir'
+      /appimagetool-*.AppImage deploy /build/AppDir/usr/share/applications/ChassisTuner.desktop; \
+      VERSION=1.0 /appimagetool-*.AppImage /build/AppDir'
   artifacts:
     paths:
       - ChassisTuner-1.0-aarch64.AppImage
