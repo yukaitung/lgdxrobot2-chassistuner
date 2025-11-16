@@ -133,4 +133,4 @@ release_job:
     assets:
       links:
         - name: 'Download Binaries For Ubuntu'
-          url: 'https://gitlab.com/yukaitung/lgdxrobot2-chassistuner/-/packages/${APP_VERSION}'
+          url: 'https://gitlab.com/yukaitung/lgdxrobot2-chassistuner/-/packages/?orderBy=version&sort=desc
