@@ -37,8 +37,8 @@ RUN aqt install-qt -O ${QT_PATH} linux desktop ${QT_VERSION} linux_gcc_64 -m qtg
 RUN aqt install-tool -O ${QT_PATH} linux desktop tools_cmake
 RUN aqt install-tool -O ${QT_PATH} linux desktop tools_ninja
 
-wget -c https://github.com/$(wget -q https://github.com/probonopd/go-appimage/releases/expanded_assets/continuous -O - | grep "appimagetool-.*-x86_64.AppImage" | head -n 1 | cut -d '"' -f 2)
-chmod +x appimagetool-*.AppImage
+RUN wget -c https://github.com/$(wget -q https://github.com/probonopd/go-appimage/releases/expanded_assets/continuous -O - | grep "appimagetool-.*-x86_64.AppImage" | head -n 1 | cut -d '"' -f 2)
+RUN chmod +x appimagetool-*.AppImage
 
 
 WORKDIR /project
