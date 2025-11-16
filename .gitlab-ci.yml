@@ -75,7 +75,7 @@ build-amd64:
   artifacts:
     paths:
       - build/ChassisTuner-amd64
-    expire_in: 1 week
+    expire_in: 1 day
 
 build-arm64:
   stage: build
@@ -94,7 +94,7 @@ build-arm64:
   artifacts:
     paths:
       - build/ChassisTuner-arm64
-    expire_in: 1 week
+    expire_in: 1 day
 
 release_job:
   stage: release
@@ -120,11 +120,11 @@ release_job:
     - |
       curl --location --header "JOB-TOKEN: ${CI_JOB_TOKEN}" \
            --upload-file build/ChassisTuner-amd64 \
-           "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/my_package/${CI_COMMIT_TAG}/ChassisTuner-amd64"
+           "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/my_package/${CI_COMMIT_TAG}/build/ChassisTuner-amd64"
     - |
       curl --location --header "JOB-TOKEN: ${CI_JOB_TOKEN}" \
            --upload-file build/ChassisTuner-arm64 \
-           "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/my_package/${CI_COMMIT_TAG}/ChassisTuner-arm64"
+           "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/my_package/${CI_COMMIT_TAG}/build/ChassisTuner-arm64"
   release:
     name : 'Release $APP_VERSION'
     tag_name: '$APP_VERSION'
