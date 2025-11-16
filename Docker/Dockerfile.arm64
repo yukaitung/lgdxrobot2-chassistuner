@@ -10,6 +10,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 ENV QT_VERSION=${QT_VERSION}
 ENV QT_PATH=${QT_PATH}
 ENV QT_GCC=${QT_PATH}/${QT_VERSION}/gcc_arm64
+ENV QTDIR=${QT_PATH}/${QT_VERSION}/gcc_64
 ENV PATH=$PATH:${QT_PATH}/Tools/CMake/bin:${QT_PATH}/Tools/Ninja:${QT_PATH}/${QT_VERSION}/gcc_arm64/bin:~/.local/bin
 
 RUN apt-get update && apt-get install -q -y --no-install-recommends \
@@ -33,5 +34,8 @@ RUN pip install aqtinstall --break-system-packages
 RUN aqt install-qt -O ${QT_PATH} linux_arm64 desktop ${QT_VERSION} linux_gcc_arm64 -m qtgraphs qtserialport qtquick3d qtshadertools
 RUN aqt install-tool -O ${QT_PATH} linux_arm64 desktop tools_cmake
 RUN aqt install-tool -O ${QT_PATH} linux_arm64 desktop tools_ninja
+
+wget -c https://github.com/$(wget -q https://github.com/probonopd/go-appimage/releases/expanded_assets/continuous -O - | grep "appimagetool-.*-aarch64.AppImage" | head -n 1 | cut -d '"' -f 2)
+chmod +x appimagetool-*.AppImage
 
 WORKDIR /project

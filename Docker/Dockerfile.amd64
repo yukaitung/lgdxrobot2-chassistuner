@@ -10,6 +10,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 ENV QT_VERSION=${QT_VERSION}
 ENV QT_PATH=${QT_PATH}
 ENV QT_GCC=${QT_PATH}/${QT_VERSION}/gcc_64
+ENV QTDIR=${QT_PATH}/${QT_VERSION}/gcc_64
 ENV PATH=$PATH:${QT_PATH}/Tools/CMake/bin:${QT_PATH}/Tools/Ninja:${QT_PATH}/${QT_VERSION}/gcc_64/bin:~/.local/bin
 
 RUN apt-get update && apt-get install -q -y --no-install-recommends \
@@ -27,6 +28,7 @@ RUN apt-get update && apt-get install -q -y --no-install-recommends \
       libxkbcommon-dev \
       libxkbfile-dev \
       python3-pip \
+      wget \
       && rm -rf /var/lib/apt/lists/*
 
 RUN pip install aqtinstall --break-system-packages
@@ -34,5 +36,9 @@ RUN pip install aqtinstall --break-system-packages
 RUN aqt install-qt -O ${QT_PATH} linux desktop ${QT_VERSION} linux_gcc_64 -m qtgraphs qtserialport qtquick3d qtshadertools
 RUN aqt install-tool -O ${QT_PATH} linux desktop tools_cmake
 RUN aqt install-tool -O ${QT_PATH} linux desktop tools_ninja
+
+wget -c https://github.com/$(wget -q https://github.com/probonopd/go-appimage/releases/expanded_assets/continuous -O - | grep "appimagetool-.*-x86_64.AppImage" | head -n 1 | cut -d '"' -f 2)
+chmod +x appimagetool-*.AppImage
+
 
 WORKDIR /project
