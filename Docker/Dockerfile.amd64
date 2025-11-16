@@ -40,5 +40,4 @@ RUN aqt install-tool -O ${QT_PATH} linux desktop tools_ninja
 RUN wget -c https://github.com/$(wget -q https://github.com/probonopd/go-appimage/releases/expanded_assets/continuous -O - | grep "appimagetool-.*-x86_64.AppImage" | head -n 1 | cut -d '"' -f 2)
 RUN chmod +x appimagetool-*.AppImage
 
-
 WORKDIR /project
