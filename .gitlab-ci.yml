@@ -119,6 +119,7 @@ release_job:
   before_script:
     - apk add glab
     - apk add gitlab-release-cli  
+    - apk add curl
     - apk add zip
   script:
     # Create zip file
