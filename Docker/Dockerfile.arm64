@@ -3,6 +3,9 @@ FROM ubuntu:24.04
 ARG QT_VERSION=6.10.0
 ARG QT_PATH=/opt/qt
 
+ENV LANG=C.UTF-8
+ENV LC_ALL=C.UTF-8
+
 ENV DEBIAN_FRONTEND=noninteractive
 ENV QT_VERSION=${QT_VERSION}
 ENV QT_PATH=${QT_PATH}
@@ -12,7 +15,13 @@ ENV QML2_IMPORT_PATH=${QT_PATH}/${QT_VERSION}/gcc_arm64/qml
 ENV PATH=$PATH:${QT_PATH}/Tools/CMake/bin:${QT_PATH}/Tools/Ninja:${QT_PATH}/${QT_VERSION}/gcc_arm64/bin:~/.local/bin
 
 RUN apt-get update && apt-get install -q -y --no-install-recommends \
+      locales \
       build-essential \
+      libbrotli-dev \
+      libdbus-1-dev \
+      libegl-dev \
+      libfontconfig-dev \
+      libfreetype-dev \
       libgl-dev \
       libglib2.0-dev \
       libvulkan-dev \
