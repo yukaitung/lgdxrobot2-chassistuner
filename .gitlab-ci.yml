@@ -120,15 +120,17 @@ release_job:
     - |
       curl --location --header "JOB-TOKEN: ${CI_JOB_TOKEN}" \
            --upload-file build/ChassisTuner-amd64 \
-           "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/my_package/${CI_COMMIT_TAG}/build/ChassisTuner-amd64"
+           "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/binaries/${APP_VERSION}/build/ChassisTuner-amd64"
     - |
       curl --location --header "JOB-TOKEN: ${CI_JOB_TOKEN}" \
            --upload-file build/ChassisTuner-arm64 \
-           "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/my_package/${CI_COMMIT_TAG}/build/ChassisTuner-arm64"
+           "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/binaries/${APP_VERSION}/build/ChassisTuner-arm64"
   release:
     name : 'Release $APP_VERSION'
     tag_name: '$APP_VERSION'
     description: '$APP_VERSION'
     ref: '$CI_COMMIT_SHA'
-
-
+    assets:
+      links:
+        - name: 'Download Binaries For Ubuntu'
+          url: 'https://gitlab.com/yukaitung/lgdxrobot2-chassistuner/-/packages/${APP_VERSION}'
