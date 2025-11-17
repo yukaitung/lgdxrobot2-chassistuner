@@ -69,3 +69,4 @@ build
 .qmlls.ini
 .cache/**
 .DS_Store
+*.log
