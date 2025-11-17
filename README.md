@@ -25,9 +25,9 @@ sudo apt install libxkbcommon-x11-0 libxcb-cursor0 libxcb-icccm4 libxcb-keysyms1
 
 3. Download the binary from the [GitLab releases page](https://gitlab.com/yukaitung/lgdxrobot2-chassistuner/-/releases).
 4. Extract the downloaded archive.
-5. Launch the binary from `build/ChassisTuner-<arch>/bin/ChassisTuner`.
+5. Launch the program from `bin/ChassisTuner`.
 
-## Compiling
+## Building
 
 1. Download the [Qt Installer](https://www.qt.io/download-qt-installer) and install the following packages:
 
