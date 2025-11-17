@@ -178,6 +178,6 @@ release_job:
     assets:
       links:
         - name: 'Linux ARM64'
-          url: '${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/binaries/$APP_VERSION/ChassisTuner-arm64.zip'
+          url: '${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/LGDXRobot2-ChassisTuner/$APP_VERSION/ChassisTuner-arm64.zip'
         - name: 'Linux AMD64'
-          url: '${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/binaries/$APP_VERSION/ChassisTuner-amd64.zip'
+          url: '${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/LGDXRobot2-ChassisTuner/$APP_VERSION/ChassisTuner-amd64.zip'
