@@ -147,17 +147,29 @@ release_job:
     - apk add curl
     - apk add zip
   script:
-    # Create zip file
-    - zip -r ChassisTuner-amd64.zip build/ChassisTuner-amd64
-    - zip -r ChassisTuner-arm64.zip build/ChassisTuner-arm64
+    # Upload AMD64
+    - cd build/ChassisTuner-amd64
+    - zip -r ChassisTuner-amd64.zip .
     - |
       curl --location --header "JOB-TOKEN: ${CI_JOB_TOKEN}" \
            --upload-file ChassisTuner-amd64.zip \
-           "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/binaries/latest/ChassisTuner-amd64.zip"
+           "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/LGDXRobot2-ChassisTuner/latest/ChassisTuner-amd64.zip"
+    - |
+      curl --location --header "JOB-TOKEN: ${CI_JOB_TOKEN}" \
+           --upload-file ChassisTuner-amd64.zip \
+           "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/LGDXRobot2-ChassisTuner/$APP_VERSION/ChassisTuner-amd64.zip"
+    - cd ../..
+    # Upload ARM64
+    - cd build/ChassisTuner-arm64
+    - zip -r ChassisTuner-arm64.zip .
     - |
       curl --location --header "JOB-TOKEN: ${CI_JOB_TOKEN}" \
            --upload-file ChassisTuner-arm64.zip \
-           "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/binaries/latest/ChassisTuner-arm64.zip"
+           "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/LGDXRobot2-ChassisTuner/latest/ChassisTuner-arm64.zip"
+    - |
+      curl --location --header "JOB-TOKEN: ${CI_JOB_TOKEN}" \
+           --upload-file ChassisTuner-arm64.zip \
+           "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/LGDXRobot2-ChassisTuner/$APP_VERSION/ChassisTuner-arm64.zip"
   release:
     name : 'Release $APP_VERSION'
     tag_name: '$APP_VERSION'
@@ -166,6 +178,6 @@ release_job:
     assets:
       links:
         - name: 'Linux ARM64'
-          url: '${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/binaries/latest/ChassisTuner-arm64.zip'
+          url: '${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/binaries/$APP_VERSION/ChassisTuner-arm64.zip'
         - name: 'Linux AMD64'
-          url: '${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/binaries/latest/ChassisTuner-amd64.zip'
+          url: '${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/binaries/$APP_VERSION/ChassisTuner-amd64.zip'
