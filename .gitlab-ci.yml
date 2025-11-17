@@ -30,6 +30,7 @@ prepare:
   artifacts:
     reports:
       dotenv: variables.env
+    expire_in: 1 day
 
 #
 # Build toolchain (Optional)
