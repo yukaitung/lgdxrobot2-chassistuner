@@ -93,7 +93,7 @@ build-amd64:
   script:
     - |
       docker run --rm -v ${PWD}:/project $EXT_USER/$TOOLCHAIN_IMAGE_NAME:$ARCH bash -c \
-      'qt-cmake . -G Ninja -B ./build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=./build/ChassisTuner-${ARCH}; 
+      'qt-cmake . -G Ninja -B ./build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=./build/ChassisTuner-$ARCH; 
       cmake --build ./build --target install -j$(nproc);'
   artifacts:
     paths:
@@ -116,7 +116,7 @@ build-arm64:
   script:
     - |
       docker run --rm -v ${PWD}:/project $EXT_USER/$TOOLCHAIN_IMAGE_NAME:$ARCH bash -c \
-      'qt-cmake . -G Ninja -B ./build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=./build/ChassisTuner-${ARCH}; 
+      'qt-cmake . -G Ninja -B ./build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=./build/ChassisTuner-$ARCH; 
       cmake --build ./build --target install -j$(nproc);'
   artifacts:
     paths:
