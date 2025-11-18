@@ -2,6 +2,8 @@
 
 ![img](img.png)
 
+> LGDXRobot2 fully uses GitLab CI/CD for builds.<br />[![pipeline status](https://gitlab.com/lgdxrobotics/lgdxrobot2-chassistuner/badges/main/pipeline.svg)](https://gitlab.com/lgdxrobotics/lgdxrobot2-chassistuner/-/commits/main) [![Latest Release](https://gitlab.com/lgdxrobotics/lgdxrobot2-chassistuner/-/badges/release.svg)](https://gitlab.com/lgdxrobotics/lgdxrobot2-chassistuner/-/releases)
+
 LGDXRobot2 ChassisTuner is a GUI tool written in Qt, designed for testing and fine-tuning LGDXRobot2 hardware. It allows you to validate your setup and optimise performance.
 
 - [Homepage](https://lgdxrobot.bristolgram.uk/lgdxrobot2/)
