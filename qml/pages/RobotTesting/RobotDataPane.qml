@@ -219,11 +219,6 @@ Pane {
         text: qsTr("Current: %1 A").arg(RobotData.mcuData.battery1[1].toFixed(2))
         width: parent.width / 4
       }
-
-      LabelText {
-        text: qsTr("Power: %1 W").arg((RobotData.mcuData.battery1[0] * RobotData.mcuData.battery1[1]).toFixed(2))
-        width: parent.width / 4
-      }
     }
 
     LabelText {
@@ -240,11 +235,6 @@ Pane {
 
       LabelText {
         text: qsTr("Current: %1 A").arg(RobotData.mcuData.battery2[1].toFixed(2))
-        width: parent.width / 4
-      }
-
-      LabelText {
-        text: qsTr("Power: %1 W").arg((RobotData.mcuData.battery2[0] * RobotData.mcuData.battery2[1]).toFixed(2))
         width: parent.width / 4
       }
     }
