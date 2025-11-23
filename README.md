@@ -1,6 +1,7 @@
 # LGDXRobot2 ChassisTuner
 
 ![img](img.png)
+![demo](demo.gif)
 
 > LGDXRobot2 fully uses GitLab CI/CD for builds.<br />[![pipeline status](https://gitlab.com/lgdxrobotics/lgdxrobot2-chassistuner/badges/main/pipeline.svg)](https://gitlab.com/lgdxrobotics/lgdxrobot2-chassistuner/-/commits/main) [![Latest Release](https://gitlab.com/lgdxrobotics/lgdxrobot2-chassistuner/-/badges/release.svg)](https://gitlab.com/lgdxrobotics/lgdxrobot2-chassistuner/-/releases)
 
