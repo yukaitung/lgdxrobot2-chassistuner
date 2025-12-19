@@ -1,5 +1,7 @@
 # LGDXRobot2 ChassisTuner
 
+## Overview
+
 ![img](img.png)
 ![demo](demo.gif)
 
@@ -7,12 +9,19 @@
 
 LGDXRobot2 ChassisTuner is a GUI tool written in Qt, designed for testing and fine-tuning LGDXRobot2 hardware. It allows you to validate your setup and optimise performance.
 
-- [Homepage](https://lgdxrobot.bristolgram.uk/lgdxrobot2/)
-- [Documentation](https://docs.lgdxrobot.bristolgram.uk/lgdxrobot2/)
-- LGDXRobot2 Design: ([GitLab](https://gitlab.com/lgdxrobotics/lgdxrobot2-design) | [GitHub](https://github.com/yukaitung/lgdxrobot2-design))
-- LGDXRobot2 MCU: ([GitLab](https://gitlab.com/lgdxrobotics/lgdxrobot2-mcu) | [GitHub](https://github.com/yukaitung/lgdxrobot2-mcu))
-- LGDXRobot2 ChassisTuner: ([GitLab](https://gitlab.com/lgdxrobotics/lgdxrobot2-chassistuner) | [GitHub](https://github.com/yukaitung/lgdxrobot2-chassistuner))
-- LGDXRobot2 ROS2: ([GitLab](https://gitlab.com/lgdxrobotics/lgdxrobot2-ros2) | [GitHub](https://github.com/yukaitung/lgdxrobot2-ros2))
+* [Homepage](https://lgdxrobot.bristolgram.uk/lgdxrobot2/)
+
+### Getting Help
+
+* [Documentation](https://docs.lgdxrobot.bristolgram.uk/lgdxrobot2/)
+* Issue boards on both GitLab and GitHub
+
+### LGDXRobot2 All Repositories
+
+* Design files for both the chassis body and the controller board: ([GitLab](https://gitlab.com/lgdxrobotics/lgdxrobot2-design) | [GitHub](https://github.com/yukaitung/lgdxrobot2-design))
+* Firmware for the controller board: ([GitLab](https://gitlab.com/lgdxrobotics/lgdxrobot2-mcu) | [GitHub](https://github.com/yukaitung/lgdxrobot2-mcu))
+* A GUI tool for hardware testing: ([GitLab](https://gitlab.com/lgdxrobotics/lgdxrobot2-chassistuner) | [GitHub](https://github.com/yukaitung/lgdxrobot2-chassistuner))
+* LGDXRobot2 ROS 2 integration: ([GitLab](https://gitlab.com/lgdxrobotics/lgdxrobot2-ros2) | [GitHub](https://github.com/yukaitung/lgdxrobot2-ros2))
 
 ## Features
 
