@@ -8,6 +8,7 @@
 #include <QString>
 #include <QVector>
 #include <QTimer>
+#include <QtCore/qtypes.h>
 
 #include "RobotData.h"
 
@@ -18,6 +19,9 @@ class SerialPort: public QObject
 	Q_PROPERTY(bool isConnected MEMBER isConnected NOTIFY connectionStatusChanged)
 
 	private:
+		const quint16 kVid = 4617; // Vendor ID 1209H
+		const quint16 kPid = 30345;// Product ID 7689H
+
 		static SerialPort *instance;
 		static RobotData *robotData;
 		QSerialPort serial;

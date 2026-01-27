@@ -85,7 +85,10 @@ void SerialPort::updateDeviceList()
 {
 	deviceList.clear();
 	for (const QSerialPortInfo &info : QSerialPortInfo::availablePorts())
-		deviceList.append(info.portName());
+	{
+		if (info.vendorIdentifier() == kVid && info.productIdentifier() == kPid)
+			deviceList.append(info.portName());
+	}
 	emit deviceListUpdated();
 }
 
