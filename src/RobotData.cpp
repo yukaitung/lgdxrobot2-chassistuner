@@ -44,6 +44,15 @@ void RobotData::updateMcuData(const McuData &mcuData)
 	this->mcuData->battery1[1] = mcuData.battery1.current;
 	this->mcuData->battery2[0] = mcuData.battery2.voltage;
 	this->mcuData->battery2[1] = mcuData.battery2.current;
+	this->mcuData->accelerometer[0] = mcuData.imu.accelerometer.x;
+	this->mcuData->accelerometer[1] = mcuData.imu.accelerometer.y;
+	this->mcuData->accelerometer[2] = mcuData.imu.accelerometer.z;
+	this->mcuData->gyroscope[0] = mcuData.imu.gyroscope.x;
+	this->mcuData->gyroscope[1] = mcuData.imu.gyroscope.y;
+	this->mcuData->gyroscope[2] = mcuData.imu.gyroscope.z;
+	this->mcuData->magnetometer[0] = mcuData.imu.magnetometer.x;
+	this->mcuData->magnetometer[1] = mcuData.imu.magnetometer.y;
+	this->mcuData->magnetometer[2] = mcuData.imu.magnetometer.z;
 	this->mcuData->softwareEmergencyStopEnabled = mcuData.software_emergency_stop_enabled;
 	this->mcuData->hardwareEmergencyStopEnabled = mcuData.hardware_emergency_stop_enabled;	
 	this->mcuData->betteryLowEmergencyStopEnabled = mcuData.bettery_low_emergency_stop_enabled;

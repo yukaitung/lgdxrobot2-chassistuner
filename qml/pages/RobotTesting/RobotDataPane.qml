@@ -240,6 +240,75 @@ Pane {
     }
 
     LabelText {
+      text: qsTr("Accelerometer (m/s^2)")
+      font.bold: true
+    }
+
+    Row {
+      Layout.fillWidth: true
+      LabelText {
+        text: qsTr("X: %1").arg(RobotData.mcuData.accelerometer[0].toFixed(6))
+        width: parent.width / 4
+      }
+
+      LabelText {
+        text: qsTr("Y: %1").arg(RobotData.mcuData.accelerometer[1].toFixed(6))
+        width: parent.width / 4
+      }
+
+      LabelText {
+        text: qsTr("Z: %1").arg(RobotData.mcuData.accelerometer[2].toFixed(6))
+        width: parent.width / 4
+      }
+    }
+
+    LabelText {
+      text: qsTr("Gyroscope (rad/s)")
+      font.bold: true
+    }
+    
+    Row {
+      Layout.fillWidth: true
+      LabelText {
+        text: qsTr("X: %1").arg(RobotData.mcuData.gyroscope[0].toFixed(6))
+        width: parent.width / 4
+      }
+
+      LabelText {
+        text: qsTr("Y: %1").arg(RobotData.mcuData.gyroscope[1].toFixed(6))
+        width: parent.width / 4
+      }
+
+      LabelText {
+        text: qsTr("Z: %1").arg(RobotData.mcuData.gyroscope[2].toFixed(6))
+        width: parent.width / 4
+      }
+    }
+
+    LabelText {
+      text: qsTr("Magnetometer (gauss)")
+      font.bold: true
+    }
+
+    Row {
+      Layout.fillWidth: true
+      LabelText {
+        text: qsTr("X: %1").arg(RobotData.mcuData.magnetometer[0].toFixed(6))
+        width: parent.width / 4
+      }
+
+      LabelText {
+        text: qsTr("Y: %1").arg(RobotData.mcuData.magnetometer[1].toFixed(6))
+        width: parent.width / 4
+      }
+
+      LabelText {
+        text: qsTr("Z: %1").arg(RobotData.mcuData.magnetometer[2].toFixed(6))
+        width: parent.width / 4
+      }
+    }
+
+    LabelText {
       text: qsTr("Software Emergency Stop")
       font.bold: true
     }

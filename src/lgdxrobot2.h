@@ -41,6 +41,18 @@ typedef struct {
 } McuDof;
 
 typedef struct {
+  float x;
+  float y;
+  float z;
+} Mcu3D;
+
+typedef struct {
+  Mcu3D accelerometer;
+  Mcu3D gyroscope;
+  Mcu3D magnetometer;
+} McuImuDof;
+
+typedef struct {
   float voltage;
   float current;
 } McuPower;
@@ -61,6 +73,7 @@ typedef struct {
   bool software_emergency_stop_enabled;
   bool hardware_emergency_stop_enabled;
   bool bettery_low_emergency_stop_enabled;
+  McuImuDof imu;
   uint8_t header3;
   uint8_t header4;
 } McuData;
