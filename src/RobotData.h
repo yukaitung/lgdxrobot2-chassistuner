@@ -22,6 +22,11 @@ class RobotData : public QObject
 		QmlPidData *pidData;
 		QString mcuSerialNumber;
 
+		// Constants
+		double gToMs2 = 9.80665;
+		double degToRad = 0.017453292519943295;
+		double toUt = 0.15;
+
 		// Pid tuning
 		bool pidChartEnabled = false;
 		int currentMotor = 0;
@@ -30,6 +35,10 @@ class RobotData : public QObject
 
 		explicit RobotData(QObject *parent = nullptr);
 		~RobotData();
+
+		double getAccelerometerData(int16_t value, uint8_t precision);
+		double getGyroscopeData(int16_t value, uint8_t precision);
+		double getMagnetometerData(int16_t value);
 
 	public:
 		static RobotData *getInstance();

@@ -18,9 +18,9 @@ class QmlMcuData : public QObject
   Q_PROPERTY(QVector<int> motorsCcr MEMBER motorsCcr NOTIFY updated)
   Q_PROPERTY(QVector<float> battery1 MEMBER battery1 NOTIFY updated)
   Q_PROPERTY(QVector<float> battery2 MEMBER battery2 NOTIFY updated)
-  Q_PROPERTY(QVector<float> accelerometer MEMBER accelerometer NOTIFY updated)
-  Q_PROPERTY(QVector<float> gyroscope MEMBER gyroscope NOTIFY updated)
-  Q_PROPERTY(QVector<float> magnetometer MEMBER magnetometer NOTIFY updated)
+  Q_PROPERTY(QVector<double> accelerometer MEMBER accelerometer NOTIFY updated)
+  Q_PROPERTY(QVector<double> gyroscope MEMBER gyroscope NOTIFY updated)
+  Q_PROPERTY(QVector<double> magnetometer MEMBER magnetometer NOTIFY updated)
   Q_PROPERTY(bool softwareEmergencyStopEnabled MEMBER softwareEmergencyStopEnabled NOTIFY updated)
   Q_PROPERTY(bool hardwareEmergencyStopEnabled MEMBER hardwareEmergencyStopEnabled NOTIFY updated)
   Q_PROPERTY(bool betteryLowEmergencyStopEnabled MEMBER betteryLowEmergencyStopEnabled NOTIFY updated)
@@ -36,9 +36,9 @@ class QmlMcuData : public QObject
     QVector<int> motorsCcr = {0, 0, 0, 0}; // motor 1, motor 2, motor 3, motor 4
     QVector<float> battery1 = {0.0f, 0.0f}; // voltage, current
     QVector<float> battery2 = {0.0f, 0.0f}; // voltage, current
-    QVector<float> accelerometer = {0.0f, 0.0f, 0.0f}; // x, y, z
-    QVector<float> gyroscope = {0.0f, 0.0f, 0.0f}; // x, y, z
-    QVector<float> magnetometer = {0.0f, 0.0f, 0.0f}; // x, y, z
+    QVector<double> accelerometer = {0.0f, 0.0f, 0.0f}; // x, y, z
+    QVector<double> gyroscope = {0.0f, 0.0f, 0.0f}; // x, y, z
+    QVector<double> magnetometer = {0.0f, 0.0f, 0.0f}; // x, y, z
     bool softwareEmergencyStopEnabled = false;
     bool hardwareEmergencyStopEnabled = false;
     bool betteryLowEmergencyStopEnabled = false;

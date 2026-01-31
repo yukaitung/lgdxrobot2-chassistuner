@@ -16,6 +16,45 @@ RobotData::~RobotData()
 	delete this->pidData;
 }
 
+double RobotData::getAccelerometerData(int16_t value, uint8_t precision)
+{
+  switch (precision) 
+	{
+    case MCU_IMU_ACCEL_2G:
+      return (double)value * (2 / 32768.0) * gToMs2;
+    case MCU_IMU_ACCEL_4G:
+      return (double)value * (4 / 32768.0) * gToMs2;
+    case MCU_IMU_ACCEL_8G:
+      return (double)value * (8 / 32768.0) * gToMs2;
+    case MCU_IMU_ACCEL_16G:
+      return (double)value * (16 / 32768.0) * gToMs2;
+    default:
+      return 0.0;
+	}
+}
+
+double RobotData::getGyroscopeData(int16_t value, uint8_t precision)
+{
+	switch (precision) 
+	{
+    case MCU_IMU_GYRO_250_DPS:
+      return (double)value * (250 / 32768.0) * degToRad;
+    case MCU_IMU_GYRO_500_DPS:
+      return (double)value * (500 / 32768.0) * degToRad;
+    case MCU_IMU_GYRO_1000_DPS:
+      return (double)value * (1000 / 32768.0) * degToRad;
+    case MCU_IMU_GYRO_2000_DPS:
+      return (double)value * (2000 / 32768.0) * degToRad;
+    default:
+      return 0.0;
+	}
+}
+
+double RobotData::getMagnetometerData(int16_t value)
+{
+	return (double)value * 0.15;
+}
+
 RobotData *RobotData::getInstance()
 {
 	if (instance == nullptr)
@@ -44,15 +83,15 @@ void RobotData::updateMcuData(const McuData &mcuData)
 	this->mcuData->battery1[1] = mcuData.battery1.current;
 	this->mcuData->battery2[0] = mcuData.battery2.voltage;
 	this->mcuData->battery2[1] = mcuData.battery2.current;
-	this->mcuData->accelerometer[0] = mcuData.imu.accelerometer.x;
-	this->mcuData->accelerometer[1] = mcuData.imu.accelerometer.y;
-	this->mcuData->accelerometer[2] = mcuData.imu.accelerometer.z;
-	this->mcuData->gyroscope[0] = mcuData.imu.gyroscope.x;
-	this->mcuData->gyroscope[1] = mcuData.imu.gyroscope.y;
-	this->mcuData->gyroscope[2] = mcuData.imu.gyroscope.z;
-	this->mcuData->magnetometer[0] = mcuData.imu.magnetometer.x;
-	this->mcuData->magnetometer[1] = mcuData.imu.magnetometer.y;
-	this->mcuData->magnetometer[2] = mcuData.imu.magnetometer.z;
+	this->mcuData->accelerometer[0] = getAccelerometerData(mcuData.imu.accelerometer.x, mcuData.imu.accelerometer_precision);
+	this->mcuData->accelerometer[1] = getAccelerometerData(mcuData.imu.accelerometer.y, mcuData.imu.accelerometer_precision);
+	this->mcuData->accelerometer[2] = getAccelerometerData(mcuData.imu.accelerometer.z, mcuData.imu.accelerometer_precision);
+	this->mcuData->gyroscope[0] = getGyroscopeData(mcuData.imu.gyroscope.x, mcuData.imu.gyroscope_precision);
+	this->mcuData->gyroscope[1] = getGyroscopeData(mcuData.imu.gyroscope.y, mcuData.imu.gyroscope_precision);
+	this->mcuData->gyroscope[2] = getGyroscopeData(mcuData.imu.gyroscope.z, mcuData.imu.gyroscope_precision);
+	this->mcuData->magnetometer[0] = getMagnetometerData(mcuData.imu.magnetometer.x);
+	this->mcuData->magnetometer[1] = getMagnetometerData(mcuData.imu.magnetometer.y);
+	this->mcuData->magnetometer[2] = getMagnetometerData(mcuData.imu.magnetometer.z);
 	this->mcuData->softwareEmergencyStopEnabled = mcuData.software_emergency_stop_enabled;
 	this->mcuData->hardwareEmergencyStopEnabled = mcuData.hardware_emergency_stop_enabled;	
 	this->mcuData->betteryLowEmergencyStopEnabled = mcuData.bettery_low_emergency_stop_enabled;

@@ -28,6 +28,16 @@
 #define MCU_RESET_TRANSFORM_COMMAND_TYPE 'T'
 #define MCU_SET_MOTOR_MAXIMUM_SPEED_COMMAND_TYPE 'V'
 
+#define MCU_IMU_GYRO_250_DPS 0x00
+#define MCU_IMU_GYRO_500_DPS 0x01
+#define MCU_IMU_GYRO_1000_DPS 0x02
+#define MCU_IMU_GYRO_2000_DPS 0x03
+
+#define MCU_IMU_ACCEL_2G 0x00
+#define MCU_IMU_ACCEL_4G 0x01
+#define MCU_IMU_ACCEL_8G 0x02
+#define MCU_IMU_ACCEL_16G 0x03
+
 #pragma pack(push, 1)
 
 /*
@@ -41,15 +51,17 @@ typedef struct {
 } McuDof;
 
 typedef struct {
-  float x;
-  float y;
-  float z;
-} Mcu3D;
+  int16_t x;
+  int16_t y;
+  int16_t z;
+} McuAxisRaw;
 
 typedef struct {
-  Mcu3D accelerometer;
-  Mcu3D gyroscope;
-  Mcu3D magnetometer;
+  McuAxisRaw accelerometer;
+  McuAxisRaw gyroscope;
+  McuAxisRaw magnetometer;
+  uint8_t accelerometer_precision;
+  uint8_t gyroscope_precision;
 } McuImuDof;
 
 typedef struct {

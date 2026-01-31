@@ -286,7 +286,7 @@ Pane {
     }
 
     LabelText {
-      text: qsTr("Magnetometer (Tesla)")
+      text: qsTr("Magnetometer (µT)")
       font.bold: true
     }
 
