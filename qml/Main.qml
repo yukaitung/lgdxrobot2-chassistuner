@@ -68,7 +68,10 @@ ApplicationWindow {
 			ToolButton {
 				icon.source: Qt.resolvedUrl("qrc:/qml/img/disconnect.svg")
 				icon.color: "white"
-				onClicked: SerialPort.disconnect()
+				onClicked: {
+					SerialPort.disconnect();
+					RobotData.clearImuCalibration();
+				}
 				visible: SerialPort.isConnected
 			}
 		}

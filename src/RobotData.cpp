@@ -83,12 +83,12 @@ void RobotData::updateMcuData(const McuData &mcuData)
 	this->mcuData->battery1[1] = mcuData.battery1.current;
 	this->mcuData->battery2[0] = mcuData.battery2.voltage;
 	this->mcuData->battery2[1] = mcuData.battery2.current;
-	this->mcuData->accelerometer[0] = getAccelerometerData(mcuData.imu.accelerometer.x, mcuData.imu.accelerometer_precision);
-	this->mcuData->accelerometer[1] = getAccelerometerData(mcuData.imu.accelerometer.y, mcuData.imu.accelerometer_precision);
-	this->mcuData->accelerometer[2] = getAccelerometerData(mcuData.imu.accelerometer.z, mcuData.imu.accelerometer_precision);
-	this->mcuData->gyroscope[0] = getGyroscopeData(mcuData.imu.gyroscope.x, mcuData.imu.gyroscope_precision);
-	this->mcuData->gyroscope[1] = getGyroscopeData(mcuData.imu.gyroscope.y, mcuData.imu.gyroscope_precision);
-	this->mcuData->gyroscope[2] = getGyroscopeData(mcuData.imu.gyroscope.z, mcuData.imu.gyroscope_precision);
+	this->mcuData->accelerometer[0] = getAccelerometerData(mcuData.imu.accelerometer.x, mcuData.imu.accelerometer_precision) - this->imuAccelerometerBias[0];
+	this->mcuData->accelerometer[1] = getAccelerometerData(mcuData.imu.accelerometer.y, mcuData.imu.accelerometer_precision) - this->imuAccelerometerBias[1];
+	this->mcuData->accelerometer[2] = getAccelerometerData(mcuData.imu.accelerometer.z, mcuData.imu.accelerometer_precision) - this->imuAccelerometerBias[2];
+	this->mcuData->gyroscope[0] = getGyroscopeData(mcuData.imu.gyroscope.x, mcuData.imu.gyroscope_precision) - this->imuGyroscopeBias[0];
+	this->mcuData->gyroscope[1] = getGyroscopeData(mcuData.imu.gyroscope.y, mcuData.imu.gyroscope_precision) - this->imuGyroscopeBias[1];
+	this->mcuData->gyroscope[2] = getGyroscopeData(mcuData.imu.gyroscope.z, mcuData.imu.gyroscope_precision) - this->imuGyroscopeBias[2];
 	this->mcuData->magnetometer[0] = getMagnetometerData(mcuData.imu.magnetometer.x);
 	this->mcuData->magnetometer[1] = getMagnetometerData(mcuData.imu.magnetometer.y);
 	this->mcuData->magnetometer[2] = getMagnetometerData(mcuData.imu.magnetometer.z);
@@ -102,6 +102,29 @@ void RobotData::updateMcuData(const McuData &mcuData)
 		QTime now = QTime::currentTime();
 		float timeDiff = pidChartStartTime.msecsTo(now);
 		emit pidChartUpdated(timeDiff, mcuData.motors_actual_velocity[currentMotor], pidChartTargetVelocity);
+	}
+
+	if (this->imuCalibrating)
+	{
+		acculumatedAccelerometer[0] += getAccelerometerData(mcuData.imu.accelerometer.x, mcuData.imu.accelerometer_precision);
+		acculumatedAccelerometer[1] += getAccelerometerData(mcuData.imu.accelerometer.y, mcuData.imu.accelerometer_precision);
+		acculumatedAccelerometer[2] += getAccelerometerData(mcuData.imu.accelerometer.z, mcuData.imu.accelerometer_precision);
+		acculumatedGyroscope[0] += getGyroscopeData(mcuData.imu.gyroscope.x, mcuData.imu.gyroscope_precision);
+		acculumatedGyroscope[1] += getGyroscopeData(mcuData.imu.gyroscope.y, mcuData.imu.gyroscope_precision);
+		acculumatedGyroscope[2] += getGyroscopeData(mcuData.imu.gyroscope.z, mcuData.imu.gyroscope_precision);
+		imuCalibrationIterations++;
+		if (imuCalibrationIterations >= kMaxImuCalibrationIterations)
+		{
+			this->imuCalibrating = false;
+			imuAccelerometerBias[0] = acculumatedAccelerometer[0] / kMaxImuCalibrationIterations;
+			imuAccelerometerBias[1] = acculumatedAccelerometer[1] / kMaxImuCalibrationIterations;
+			imuAccelerometerBias[2] = acculumatedAccelerometer[2] / kMaxImuCalibrationIterations;
+			imuAccelerometerBias[2] -= gToMs2;
+			imuGyroscopeBias[0] = acculumatedGyroscope[0] / kMaxImuCalibrationIterations;
+			imuGyroscopeBias[1] = acculumatedGyroscope[1] / kMaxImuCalibrationIterations;
+			imuGyroscopeBias[2] = acculumatedGyroscope[2] / kMaxImuCalibrationIterations;
+			emit imuCalibratingUpdated();
+		}
 	}
 }
 
@@ -133,6 +156,38 @@ void RobotData::updateMcuPid(const McuPid &mcuPid)
 		this->pidData->motorMaximumSpeed[i] = QString::number(mcuPid.motors_maximum_speed[i]);
 	}
 	emit mcuPidUpdated();
+}
+
+void RobotData::calibrateImu()
+{
+	this->imuCalibrating = true;
+	this->imuCalibrationIterations = 0;
+	this->acculumatedAccelerometer[0] = 0.0;
+	this->acculumatedAccelerometer[1] = 0.0;
+	this->acculumatedAccelerometer[2] = 0.0;
+	this->acculumatedGyroscope[0] = 0.0;
+	this->acculumatedGyroscope[1] = 0.0;
+	this->acculumatedGyroscope[2] = 0.0;
+	emit imuCalibratingUpdated();
+}
+
+void RobotData::clearImuCalibration()
+{
+	this->imuCalibrating = false;
+	this->imuCalibrationIterations = 0;
+	this->acculumatedAccelerometer[0] = 0.0;
+	this->acculumatedAccelerometer[1] = 0.0;
+	this->acculumatedAccelerometer[2] = 0.0;
+	this->acculumatedGyroscope[0] = 0.0;
+	this->acculumatedGyroscope[1] = 0.0;
+	this->acculumatedGyroscope[2] = 0.0;
+	this->imuAccelerometerBias[0] = 0.0;
+	this->imuAccelerometerBias[1] = 0.0;
+	this->imuAccelerometerBias[2] = 0.0;
+	this->imuGyroscopeBias[0] = 0.0;
+	this->imuGyroscopeBias[1] = 0.0;
+	this->imuGyroscopeBias[2] = 0.0;
+	emit imuCalibratingUpdated();
 }
 
 void RobotData::startPidChart(int motor, QString targetVelocity)
