@@ -140,5 +140,16 @@ Pane
         text: RobotData.mcuData.softIronMatrix[8].toFixed(6)
       }
     }
+
+    // Copy for testing
+    Button {
+      text: qsTr("Copy for Testing")
+      Material.foreground: "white"
+      Material.background: Material.accent
+      enabled: SerialPort.isConnected && !RobotData.magCalbrating && !RobotData.magTesting
+      onClicked: {
+        RobotData.copyMcuMagDataForTesting();
+      }
+    }
   }
 }

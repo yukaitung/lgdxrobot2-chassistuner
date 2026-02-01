@@ -92,6 +92,7 @@ class RobotData : public QObject
 		void startMagTesting();
 		void stopMagTesting();
 		void sendMagCalData();
+		void copyMcuMagDataForTesting();
 
 		void startPidChart(int motor, QString targetVelocity);
 		void stopPidChart();

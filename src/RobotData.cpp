@@ -260,12 +260,11 @@ void RobotData::calibrateImu()
 {
 	this->imuCalibrating = true;
 	this->imuCalibrationIterations = 0;
-	this->acculumatedAccelerometer[0] = 0.0;
-	this->acculumatedAccelerometer[1] = 0.0;
-	this->acculumatedAccelerometer[2] = 0.0;
-	this->acculumatedGyroscope[0] = 0.0;
-	this->acculumatedGyroscope[1] = 0.0;
-	this->acculumatedGyroscope[2] = 0.0;
+	for (int i = 0; i < 3; i++)
+	{
+		this->acculumatedAccelerometer[i] = 0.0;
+		this->acculumatedGyroscope[i] = 0.0;
+	}
 	emit imuCalibratingUpdated();
 }
 
@@ -273,30 +272,24 @@ void RobotData::clearImuCalibration()
 {
 	this->imuCalibrating = false;
 	this->imuCalibrationIterations = 0;
-	this->acculumatedAccelerometer[0] = 0.0;
-	this->acculumatedAccelerometer[1] = 0.0;
-	this->acculumatedAccelerometer[2] = 0.0;
-	this->acculumatedGyroscope[0] = 0.0;
-	this->acculumatedGyroscope[1] = 0.0;
-	this->acculumatedGyroscope[2] = 0.0;
-	this->imuAccelerometerBias[0] = 0.0;
-	this->imuAccelerometerBias[1] = 0.0;
-	this->imuAccelerometerBias[2] = 0.0;
-	this->imuGyroscopeBias[0] = 0.0;
-	this->imuGyroscopeBias[1] = 0.0;
-	this->imuGyroscopeBias[2] = 0.0;
+	for (int i = 0; i < 3; i++)
+	{
+		this->acculumatedAccelerometer[i] = 0.0;
+		this->acculumatedGyroscope[i] = 0.0;
+		this->imuAccelerometerBias[i] = 0.0;
+		this->imuGyroscopeBias[i] = 0.0;
+	}
 	emit imuCalibratingUpdated();
 }
 
 void RobotData::startMagCal()
 {
 	this->magCalbrating = true;
-	hardIronMax[0] = -kSensorMax;
-	hardIronMax[1] = -kSensorMax;
-	hardIronMax[2] = -kSensorMax;
-	hardIronMin[0] = kSensorMax;
-	hardIronMin[1] = kSensorMax;
-	hardIronMin[2] = kSensorMax;
+	for (int i = 0; i < 3; i++)
+	{
+		hardIronMax[i] = -kSensorMax;
+		hardIronMin[i] = kSensorMax;
+	}
 	magDataCount = 0;
 	softIronPoints.resize(0, 3);
 	softIronPoints.resize(1,3);
@@ -335,6 +328,21 @@ void RobotData::sendMagCalData()
 	{
 		serialPort->setMagCalibrationData(this->hardIronMax, this->hardIronMin, this->softIronMatrix);	
 	}
+}
+
+void RobotData::copyMcuMagDataForTesting()
+{
+	for (int i = 0; i < 3; i++)
+	{
+		this->hardIronMax[i] = this->mcuData->hardIronMax[i];
+		this->hardIronMin[i] = this->mcuData->hardIronMin[i];
+	}
+	for (int i = 0; i < 9; i++)
+	{
+		this->softIronMatrix[i] = this->mcuData->softIronMatrix[i];
+	}
+	emit magSoftIronMatrixUpdated();
+	emit magDataUpdated();
 }
 
 void RobotData::startPidChart(int motor, QString targetVelocity)
