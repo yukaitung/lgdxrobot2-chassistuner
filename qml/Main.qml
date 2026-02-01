@@ -90,6 +90,14 @@ ApplicationWindow {
 		TabButton {
 			text: qsTr("PID Tuner")
 		}
+
+		TabButton {
+			text: qsTr("Magtonometer Calibration")
+		}
+
+		TabButton {
+			text: qsTr("Save Settings")
+		}	
 	}
 
 	StackLayout {
@@ -104,6 +112,16 @@ ApplicationWindow {
 		}
 
 		PidTuner {
+			Layout.fillWidth: true
+			Layout.fillHeight: true
+		}
+
+		MagtonometerCalibration {
+			Layout.fillWidth: true
+			Layout.fillHeight: true
+		}
+
+		SaveSettings {
 			Layout.fillWidth: true
 			Layout.fillHeight: true
 		}

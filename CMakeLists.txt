@@ -31,21 +31,25 @@ endif()
 qt_add_qml_module(${PROJECT_NAME}
 	URI LGDXRobot2ChassisTuner
 	VERSION 1.0
+	NO_RESOURCE_TARGET_PATH
 	QML_FILES
-		qml/global.js
-		qml/Main.qml
-		qml/pages/PidTuner/MotorsMaxSpeed.qml
-		qml/pages/PidTuner/PidConfigurationPane.qml
-		qml/pages/PidTuner/PidTestPane.qml
-		qml/pages/PidTuner/PidTable.qml
-		qml/pages/PidTuner/SavePidPane.qml
-		qml/pages/RobotTesting/HardwareTestingPane.qml
-		qml/pages/RobotTesting/RobotDataPane.qml
-		qml/pages/PidTuner.qml
-		qml/pages/RobotTesting.qml
-		qml/shared/LabelHeading.qml
-		qml/shared/LabelText.qml
-		qml/shared/TextField.qml
+		"qml/global.js"
+		"qml/Main.qml"
+		"qml/pages/PidTuner/MotorsMaxSpeed.qml"
+		"qml/pages/PidTuner/PidConfigurationPane.qml"
+		"qml/pages/PidTuner/PidTestPane.qml"
+		"qml/pages/PidTuner/PidTable.qml"
+		"qml/pages/RobotTesting/HardwareTestingPane.qml"
+		"qml/pages/RobotTesting/RobotDataPane.qml"
+		"qml/pages/MagtonometerCalibration/CalibrationPane.qml"
+		"qml/pages/SaveSettings/SavePane.qml"
+		"qml/pages/PidTuner.qml"
+		"qml/pages/RobotTesting.qml"
+		"qml/pages/MagtonometerCalibration.qml"
+		"qml/pages/SaveSettings.qml"
+		"qml/shared/LabelHeading.qml"
+		"qml/shared/LabelText.qml"
+		"qml/shared/TextField.qml"
 )
 
 set_target_properties(${PROJECT_NAME} PROPERTIES
