@@ -20,6 +20,7 @@ class RobotData : public QObject
 	Q_PROPERTY(bool pidChartEnabled MEMBER pidChartEnabled NOTIFY pidChartEnabledUpdated)
 	Q_PROPERTY(bool imuCalibrating MEMBER imuCalibrating NOTIFY imuCalibratingUpdated)
 	Q_PROPERTY(bool magCalbrating MEMBER magCalbrating NOTIFY magCalibratingUpdated)
+	Q_PROPERTY(bool magTesting MEMBER magTesting NOTIFY magTestingUpdated)
 	Q_PROPERTY(QVector<double> hardIronMax MEMBER hardIronMax NOTIFY magDataUpdated)
 	Q_PROPERTY(QVector<double> hardIronMin MEMBER hardIronMin NOTIFY magDataUpdated)
 
@@ -39,6 +40,7 @@ class RobotData : public QObject
 
 		const double kSensorMax = 1000.0;
 		bool magCalbrating = false;
+		bool magTesting = false;
 		QVector<double> hardIronMax = {0.0, 0.0, 0.0}; // x, y, z,
 		QVector<double> hardIronMin = {0.0, 0.0, 0.0}; // x, y, z,
 
@@ -59,6 +61,7 @@ class RobotData : public QObject
 		double getAccelerometerData(int16_t value, uint8_t precision);
 		double getGyroscopeData(int16_t value, uint8_t precision);
 		double getMagnetometerData(int16_t value);
+		double getMagnetometerCalibrated(double value, int axis);
 
 	public:
 		static RobotData *getInstance();
@@ -73,6 +76,8 @@ class RobotData : public QObject
 
 		void startMagCal();
 		void stopMagCal();
+		void startMagTesting();
+		void stopMagTesting();
 
 		void startPidChart(int motor, QString targetVelocity);
 		void stopPidChart();
@@ -91,6 +96,7 @@ class RobotData : public QObject
 		void magCalChartUpdated(double x, double y, double z);
 		void magDataUpdated();
 		void magCalibratingUpdated();
+		void magTestingUpdated();
 
 		void imuCalibratingUpdated();
 };

@@ -55,6 +55,17 @@ double RobotData::getMagnetometerData(int16_t value)
 	return (double)value * 0.15;
 }
 
+double RobotData::getMagnetometerCalibrated(double value, int axis)
+{
+	if (axis == 0)
+		return value - (this->hardIronMax[0] + this->hardIronMin[0]) / 2.0;
+	else if (axis == 1)
+		return value - (this->hardIronMax[1] + this->hardIronMin[1]) / 2.0;
+	else if (axis == 2)
+		return value - (this->hardIronMax[2] + this->hardIronMin[2]) / 2.0;
+	return 0.0;
+}
+
 RobotData *RobotData::getInstance()
 {
 	if (instance == nullptr)
@@ -138,6 +149,13 @@ void RobotData::updateMcuData(const McuData &mcuData)
 		this->hardIronMin[2] = std::min(this->hardIronMin[2], this->mcuData->magnetometer[2]);
 		emit magDataUpdated();
 	}
+
+	if (this->magTesting)
+	{
+		emit magCalChartUpdated(getMagnetometerCalibrated(this->mcuData->magnetometer[0], 0), 
+			getMagnetometerCalibrated(this->mcuData->magnetometer[1], 1), 
+			getMagnetometerCalibrated(this->mcuData->magnetometer[2], 2));
+	}
 }
 
 void RobotData::updateMcuSerialNumber(const McuSerialNumber &mcuSerialNumber)
@@ -220,6 +238,19 @@ void RobotData::stopMagCal()
 {
 	this->magCalbrating = false;
 	emit magCalibratingUpdated();
+}
+
+void RobotData::startMagTesting()
+{
+	this->magTesting = true;
+	emit magCalChartClear();
+	emit magTestingUpdated();
+}
+
+void RobotData::stopMagTesting()
+{
+	this->magTesting = false;
+	emit magTestingUpdated();
 }
 
 void RobotData::startPidChart(int motor, QString targetVelocity)

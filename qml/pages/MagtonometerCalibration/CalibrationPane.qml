@@ -56,22 +56,42 @@ Pane
       spacing: 16
 
       Button {
-        text: qsTr("Start")
+        text: qsTr("Start Calibration")
         Material.foreground: "white"
         Material.background: Material.accent
-        enabled: SerialPort.isConnected && !RobotData.magCalbrating
+        enabled: SerialPort.isConnected && !RobotData.magCalbrating && !RobotData.magTesting
         onClicked: {
           RobotData.startMagCal();
         }
       }
 
       Button {
-        text: qsTr("Stop")
+        text: qsTr("Stop Calibration")
         Material.foreground: "white"
         Material.background: Material.accent
-        enabled: SerialPort.isConnected && RobotData.magCalbrating
+        enabled: SerialPort.isConnected && RobotData.magCalbrating && !RobotData.magTesting
         onClicked: {
           RobotData.stopMagCal();
+        }
+      }
+
+      Button {
+        text: qsTr("Start Testing")
+        Material.foreground: "white"
+        Material.background: Material.accent
+        enabled: SerialPort.isConnected && !RobotData.magTesting && !RobotData.magCalbrating
+        onClicked: {
+          RobotData.startMagTesting();
+        }
+      }
+
+      Button {
+        text: qsTr("Stop Testing")
+        Material.foreground: "white"
+        Material.background: Material.accent
+        enabled: SerialPort.isConnected && RobotData.magTesting && !RobotData.magCalbrating
+        onClicked: {
+          RobotData.stopMagTesting();
         }
       }
     }
