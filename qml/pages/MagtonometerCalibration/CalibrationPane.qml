@@ -4,27 +4,195 @@ import QtQuick.Controls
 import QtQuick.Controls.Material
 import QtQuick.Layouts
 import SerialPort
+import RobotData
 import "../../shared"
 
 Pane 
 {
+  id: pane
   Material.elevation: 2
   width: parent.width
 
-  GraphsTheme {
-    id: themeQt
-    theme: GraphsTheme.Theme.QtGreen
-    labelFont.pointSize: 40
+  property double axisXMin: 0.0
+  property double axisXMax: 1.0
+  property double axisYMin: 0.0
+  property double axisYMax: 1.0
+
+  Connections {
+    target: RobotData
+    function onMagCalChartClear()
+    {
+      xyScatterSeries.clear();
+      yzScatterSeries.clear();
+      xzScatterSeries.clear();
+      pane.axisXMin = 0.0;
+      pane.axisXMax = 1.0;
+      pane.axisYMin = 0.0;
+      pane.axisYMax = 1.0;
+    }
+
+    function onMagCalChartUpdated(x, y, z)
+    {
+      let xmax = Math.max(Math.max(x, y));
+      let xmin = Math.min(Math.min(x, y));
+      pane.axisXMin = Math.min(pane.axisXMin, xmin);
+      pane.axisXMax = Math.max(pane.axisXMax, xmax);
+      let ymax = Math.max(Math.max(y, z));
+      let ymin = Math.min(Math.min(y, z));
+      pane.axisYMin = Math.min(pane.axisYMin, ymin);
+      pane.axisYMax = Math.max(pane.axisYMax, ymax);
+      xyScatterSeries.append(x, y);
+      yzScatterSeries.append(y, z);
+      xzScatterSeries.append(x, z);
+    }
   }
 
-  ListModel {
-    id: dataModel
-    ListElement{ xPos: "2.754"; yPos: "1.455"; zPos: "3.362"; }
-    ListElement{ xPos: "3.164"; yPos: "2.022"; zPos: "4.348"; }
-    ListElement{ xPos: "4.564"; yPos: "1.865"; zPos: "1.346"; }
-    ListElement{ xPos: "1.068"; yPos: "1.224"; zPos: "2.983"; }
-    ListElement{ xPos: "2.323"; yPos: "2.502"; zPos: "3.133"; }
+  ColumnLayout {
+    width: parent.width
+    spacing: 8
+
+    // Control Buttons
+    Row {
+      spacing: 16
+
+      Button {
+        text: qsTr("Start")
+        Material.foreground: "white"
+        Material.background: Material.accent
+        enabled: SerialPort.isConnected && !RobotData.magCalbrating
+        onClicked: {
+          RobotData.startMagCal();
+        }
+      }
+
+      Button {
+        text: qsTr("Stop")
+        Material.foreground: "white"
+        Material.background: Material.accent
+        enabled: SerialPort.isConnected && RobotData.magCalbrating
+        onClicked: {
+          RobotData.stopMagCal();
+        }
+      }
+    }
+
+    // Magtonometer Calibration Graph
+    LabelText {
+      text: qsTr("Magtonometer Calibration, Red: XY, Green: YZ, Blue: XZ")
+      font.bold: true
+      Layout.columnSpan: 2
+      Layout.alignment: Qt.AlignHCenter
+    }
+
+    GraphsView {
+      id: graphView
+      Layout.fillWidth: true
+      Layout.preferredHeight: 600
+      Layout.columnSpan: 2
+      Layout.alignment: Qt.AlignHCenter
+
+      theme: GraphsTheme {
+        readonly property color c1: "#1E1F24"
+        readonly property color c2: "#EFF0F3"
+        readonly property color c3: "#E0E1E6"
+        colorScheme: GraphsTheme.ColorScheme.Light
+        seriesColors: ["red", "green", "blue"]
+        grid.mainColor: c3
+        grid.subColor: c2
+        axisX.mainColor: c3
+        axisY.mainColor: c3
+        axisX.subColor: c2
+        axisY.subColor: c2
+        axisX.labelTextColor: c1
+        axisY.labelTextColor: c1
+      }
+
+      // Axis
+      axisX: ValueAxis {
+        id: axisX
+        max: pane.axisXMax
+        min: pane.axisXMin
+      }
+
+      axisY: ValueAxis {
+        id: axisY
+        max: pane.axisYMax
+        min: pane.axisYMin
+      }
+
+      ScatterSeries {
+        id : xyScatterSeries
+      }
+
+      ScatterSeries {
+        id : yzScatterSeries
+      }
+
+      ScatterSeries {
+        id: xzScatterSeries
+      }
+    }
+
+    // Hard Iron Calibration Data
+    GridLayout {
+      width: parent.width
+      columns: 4
+
+      LabelText {
+        text: qsTr("Hard Iron Calibration Data")
+        Layout.preferredWidth: 250
+        font.bold: true
+      }
+
+      LabelText {
+        text: qsTr("X")
+        Layout.fillWidth: true
+        font.bold: true
+      }
+
+      LabelText {
+        text: qsTr("Y")
+        Layout.fillWidth: true
+        font.bold: true
+      }
+
+      LabelText {
+        text: qsTr("Z")
+        Layout.fillWidth: true
+        font.bold: true
+      }
+
+      LabelText {
+        text: "Maximum"
+      }
+
+      LabelText {
+        text: RobotData.hardIronMax[0].toFixed(4)
+      }
+
+      LabelText {
+        text: RobotData.hardIronMax[1].toFixed(4)
+      }
+
+      LabelText {
+        text: RobotData.hardIronMax[2].toFixed(4)
+      }
+
+      LabelText {
+        text: "Minimum"
+      }
+
+      LabelText {
+        text: RobotData.hardIronMin[0].toFixed(4)
+      }
+
+      LabelText {
+        text: RobotData.hardIronMin[1].toFixed(4)
+      }
+
+      LabelText {
+        text: RobotData.hardIronMin[2].toFixed(4)
+      }
+    }
   }
-
-
 }

@@ -126,6 +126,18 @@ void RobotData::updateMcuData(const McuData &mcuData)
 			emit imuCalibratingUpdated();
 		}
 	}
+
+	if (this->magCalbrating)
+	{
+		emit magCalChartUpdated(this->mcuData->magnetometer[0], this->mcuData->magnetometer[1], this->mcuData->magnetometer[2]);
+		this->hardIronMax[0] = std::max(this->hardIronMax[0], this->mcuData->magnetometer[0]);
+		this->hardIronMax[1] = std::max(this->hardIronMax[1], this->mcuData->magnetometer[1]);
+		this->hardIronMax[2] = std::max(this->hardIronMax[2], this->mcuData->magnetometer[2]);
+		this->hardIronMin[0] = std::min(this->hardIronMin[0], this->mcuData->magnetometer[0]);
+		this->hardIronMin[1] = std::min(this->hardIronMin[1], this->mcuData->magnetometer[1]);
+		this->hardIronMin[2] = std::min(this->hardIronMin[2], this->mcuData->magnetometer[2]);
+		emit magDataUpdated();
+	}
 }
 
 void RobotData::updateMcuSerialNumber(const McuSerialNumber &mcuSerialNumber)
@@ -188,6 +200,26 @@ void RobotData::clearImuCalibration()
 	this->imuGyroscopeBias[1] = 0.0;
 	this->imuGyroscopeBias[2] = 0.0;
 	emit imuCalibratingUpdated();
+}
+
+void RobotData::startMagCal()
+{
+	this->magCalbrating = true;
+	hardIronMax[0] = -kSensorMax;
+	hardIronMax[1] = -kSensorMax;
+	hardIronMax[2] = -kSensorMax;
+	hardIronMin[0] = kSensorMax;
+	hardIronMin[1] = kSensorMax;
+	hardIronMin[2] = kSensorMax;
+	emit magDataUpdated();
+	emit magCalChartClear();
+	emit magCalibratingUpdated();
+}
+
+void RobotData::stopMagCal()
+{
+	this->magCalbrating = false;
+	emit magCalibratingUpdated();
 }
 
 void RobotData::startPidChart(int motor, QString targetVelocity)

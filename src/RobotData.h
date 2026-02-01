@@ -6,6 +6,7 @@
 #include <QString>
 #include <QtCore/qcontainerfwd.h>
 #include <QtCore/qtmetamacros.h>
+#include <QScatterSeries>
 
 #include "QmlRobotData.h"
 #include "lgdxrobot2.h"
@@ -18,6 +19,9 @@ class RobotData : public QObject
 	Q_PROPERTY(QmlPidData* pidData MEMBER pidData NOTIFY mcuPidUpdated)
 	Q_PROPERTY(bool pidChartEnabled MEMBER pidChartEnabled NOTIFY pidChartEnabledUpdated)
 	Q_PROPERTY(bool imuCalibrating MEMBER imuCalibrating NOTIFY imuCalibratingUpdated)
+	Q_PROPERTY(bool magCalbrating MEMBER magCalbrating NOTIFY magCalibratingUpdated)
+	Q_PROPERTY(QVector<double> hardIronMax MEMBER hardIronMax NOTIFY magDataUpdated)
+	Q_PROPERTY(QVector<double> hardIronMin MEMBER hardIronMin NOTIFY magDataUpdated)
 
 	private:
 		static RobotData *instance;
@@ -25,13 +29,18 @@ class RobotData : public QObject
 		QmlPidData *pidData;
 		QString mcuSerialNumber;
 
-		const int kMaxImuCalibrationIterations = 500;
+		const int kMaxImuCalibrationIterations = 300;
 		int imuCalibrationIterations = 0;
 		bool imuCalibrating = false;
 		QVector<double> acculumatedAccelerometer = {0.0, 0.0, 0.0}; // x, y, z
 		QVector<double> acculumatedGyroscope = {0.0, 0.0, 0.0}; // x, y, z
 		QVector<double> imuAccelerometerBias = {0.0, 0.0, 0.0}; // x, y, z
 		QVector<double> imuGyroscopeBias = {0.0, 0.0, 0.0}; // x, y, z
+
+		const double kSensorMax = 1000.0;
+		bool magCalbrating = false;
+		QVector<double> hardIronMax = {0.0, 0.0, 0.0}; // x, y, z,
+		QVector<double> hardIronMin = {0.0, 0.0, 0.0}; // x, y, z,
 
 		// Constants
 		const double gToMs2 = 9.80665;
@@ -61,6 +70,10 @@ class RobotData : public QObject
 	public slots:
 		void calibrateImu();
 		void clearImuCalibration();
+
+		void startMagCal();
+		void stopMagCal();
+
 		void startPidChart(int motor, QString targetVelocity);
 		void stopPidChart();
 
@@ -73,6 +86,11 @@ class RobotData : public QObject
 		void pidChartSetTargetVelocity(float velocity);
 		void pidChartUpdated(float time, float velocity, float targetVelocity);
 		void pidChartEnabledUpdated();
+
+		void magCalChartClear();
+		void magCalChartUpdated(double x, double y, double z);
+		void magDataUpdated();
+		void magCalibratingUpdated();
 
 		void imuCalibratingUpdated();
 };
