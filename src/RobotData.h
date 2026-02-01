@@ -40,13 +40,14 @@ class RobotData : public QObject
 		QVector<double> imuAccelerometerBias = {0.0, 0.0, 0.0}; // x, y, z
 		QVector<double> imuGyroscopeBias = {0.0, 0.0, 0.0}; // x, y, z
 
-		const int kFitPoints = 25;
+		const int kFitPoints = 10;
 		const double kSensorMax = 1000.0;
 		const double kMinDistance = 3.0;
 		const double kMaxDistance = 10.0;
 		bool magCalbrating = false;
 		bool magTesting = false;
 		int magDataCount = 0;
+		QHash<QString, bool> magHasData;
 		QVector<double> hardIronMax = {0.0, 0.0, 0.0}; // x, y, z,
 		QVector<double> hardIronMin = {0.0, 0.0, 0.0}; // x, y, z,
 		QVector<double> magLastReading = {0.0, 0.0, 0.0}; // x, y, z,
@@ -75,6 +76,7 @@ class RobotData : public QObject
 		double getMagnetometerData(int16_t value);
 		double getMagnetometerCalibrated(double value, int axis);
 		double getMagnetometerDistance(double x1, double y1, double z1, double x2, double y2, double z2);
+		int roundToNearest5(double value);
 
 	public:
 		static RobotData *getInstance();

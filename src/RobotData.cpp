@@ -82,6 +82,11 @@ double RobotData::getMagnetometerDistance(double x1, double y1, double z1, doubl
 	return sqrt(pow(x1 - x2, 2) + pow(y1 - y2, 2) + pow(z1 - z2, 2));
 }
 
+int RobotData::roundToNearest5(double value)
+{
+	return round(value / 5.0) * 5.0;
+}
+
 RobotData *RobotData::getInstance()
 {
 	if (instance == nullptr)
@@ -181,35 +186,43 @@ void RobotData::updateMcuData(const McuData &mcuData)
 			this->hardIronMin[1] = std::min(this->hardIronMin[1], this->mcuData->magnetometer[1]);
 			this->hardIronMin[2] = std::min(this->hardIronMin[2], this->mcuData->magnetometer[2]);
 
-			Eigen::Vector3d point;
-			point.x() = this->mcuData->magnetometer[0];
-			point.y() = this->mcuData->magnetometer[1];
-			point.z() = this->mcuData->magnetometer[2];
-			this->softIronPoints.row(magDataCount) = point.transpose();
-			magDataCount++;
-			if (magDataCount >= this->softIronPoints.rows())
+			QString key = QString("%1,%2,%3")
+				.arg(roundToNearest5(this->mcuData->magnetometer[0]))
+				.arg(roundToNearest5(this->mcuData->magnetometer[1]))
+				.arg(roundToNearest5(this->mcuData->magnetometer[2]));
+			if (!magHasData.contains(key))
 			{
-				this->softIronPoints.conservativeResize(magDataCount * 2, 3);
-			}
-			if (magDataCount % kFitPoints == 0)
-			{
-				// Calculate the shape matrix for every kFitPoints points
-				ellipsoid::fit(this->softIronPoints, &softIronCofficients, ellipsoid::EllipsoidType::Arbitrary);
-				// Update the shape matrix
-				// Output: Ax^2 + By^2 + Cz^2 + 2Dxy + 2Exz + 2Fyz + 2Gx + 2Hy + 2Iz + J = 0
-				// Matrix: A F E
-				//				 F B D
-				//         E D C
-				softIronMatrix[0] = softIronCofficients[0];
-				softIronMatrix[1] = softIronCofficients[5];
-				softIronMatrix[2] = softIronCofficients[4];
-				softIronMatrix[3] = softIronCofficients[5];
-				softIronMatrix[4] = softIronCofficients[1];
-				softIronMatrix[5] = softIronCofficients[3];
-				softIronMatrix[6] = softIronCofficients[4];
-				softIronMatrix[7] = softIronCofficients[3];
-				softIronMatrix[8] = softIronCofficients[2];
-				emit magSoftIronMatrixUpdated();
+				magHasData.insert(key, true);
+				Eigen::Vector3d point;
+				point.x() = this->mcuData->magnetometer[0];
+				point.y() = this->mcuData->magnetometer[1];
+				point.z() = this->mcuData->magnetometer[2];
+				this->softIronPoints.row(magDataCount) = point.transpose();
+				magDataCount++;
+				if (magDataCount >= this->softIronPoints.rows())
+				{
+					this->softIronPoints.conservativeResize(magDataCount * 2, 3);
+				}
+				if (magDataCount % kFitPoints == 0)
+				{
+					// Calculate the shape matrix for every kFitPoints points
+					ellipsoid::fit(this->softIronPoints, &softIronCofficients, ellipsoid::EllipsoidType::Arbitrary);
+					// Update the shape matrix
+					// Output: Ax^2 + By^2 + Cz^2 + 2Dxy + 2Exz + 2Fyz + 2Gx + 2Hy + 2Iz + J = 0
+					// Matrix: A F E
+					//				 F B D
+					//         E D C
+					softIronMatrix[0] = softIronCofficients[0];
+					softIronMatrix[1] = softIronCofficients[5];
+					softIronMatrix[2] = softIronCofficients[4];
+					softIronMatrix[3] = softIronCofficients[5];
+					softIronMatrix[4] = softIronCofficients[1];
+					softIronMatrix[5] = softIronCofficients[3];
+					softIronMatrix[6] = softIronCofficients[4];
+					softIronMatrix[7] = softIronCofficients[3];
+					softIronMatrix[8] = softIronCofficients[2];
+					emit magSoftIronMatrixUpdated();
+				}
 			}
 			emit magDataUpdated();
 		}
@@ -285,6 +298,7 @@ void RobotData::clearImuCalibration()
 void RobotData::startMagCal()
 {
 	this->magCalbrating = true;
+	magHasData.clear();
 	for (int i = 0; i < 3; i++)
 	{
 		hardIronMax[i] = -kSensorMax;
