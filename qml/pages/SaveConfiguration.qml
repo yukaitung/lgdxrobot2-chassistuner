@@ -1,7 +1,7 @@
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Controls.Material
-import "SaveSettings"
+import "SaveConfiguration"
 import "../shared"
 import "../global.js" as Global
  
@@ -19,7 +19,7 @@ Flickable {
       spacing: 16
       
       LabelHeading {
-        text: qsTr("Save Settings")
+        text: qsTr("Save Configuration")
       }
 
       SavePane {

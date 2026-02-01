@@ -20,12 +20,12 @@ Pane
     spacing: 16
 
     Button {
-      text: qsTr("Save Settings")
+      text: qsTr("Save Configuration")
       Material.foreground: "white"
       Material.background: Material.accent
       enabled: SerialPort.isConnected
       onClicked: {
-        SerialPort.saveSettings();
+        SerialPort.saveConfiguration();
         label.visible = true;
         timer.start();
       }

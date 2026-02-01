@@ -59,7 +59,7 @@ class SerialPort: public QObject
 
 		void setMagCalibrationData(QVector<double> &hardIronMax, QVector<double> &hardIronMin, QVector<double> &softIronMatrix);
 		
-		void saveSettings();
+		void saveConfiguration();
 		void resetTransform();
 
 	signals:

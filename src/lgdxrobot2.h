@@ -23,7 +23,7 @@
 #define MCU_SET_PID_SPEED_COMMAND_TYPE 'L'
 #define MCU_GET_PID_COMMAND_TYPE 'P'
 #define MCU_SET_PID_COMMAND_TYPE 'Q'
-#define MCU_SAVE_SETTINGS_COMMAND_TYPE 'R'
+#define MCU_SAVE_CONFIGURATION_COMMAND_TYPE 'R'
 #define MCU_GET_SERIAL_NUMBER_COMMAND_TYPE 'S'
 #define MCU_RESET_TRANSFORM_COMMAND_TYPE 'T'
 #define MCU_SET_MOTOR_MAXIMUM_SPEED_COMMAND_TYPE 'V'
@@ -188,12 +188,12 @@ typedef struct {
   float soft_iron_matrix[9];
 } McuSetMagCalibrationDataCommand;
 
-// Settings
+// Configuration
 typedef struct {
   uint8_t header1;
   uint8_t header2;
   char command;
-} McuSaveSettingsCommand;
+} McuSaveConfigurationCommand;
 
 // Other
 typedef struct {

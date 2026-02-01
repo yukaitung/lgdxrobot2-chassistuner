@@ -283,15 +283,15 @@ void SerialPort::setMagCalibrationData(QVector<double> &hardIronMax, QVector<dou
 	}
 }
 
-void SerialPort::saveSettings()
+void SerialPort::saveConfiguration()
 {
 	if (serial.isOpen())
 	{
-		McuSaveSettingsCommand command;
+		McuSaveConfigurationCommand command;
 		command.header1 = MCU_HEADER1;
 		command.header2 = MCU_HEADER2;
-		command.command = MCU_SAVE_SETTINGS_COMMAND_TYPE;
-		QByteArray ba(reinterpret_cast<const char*>(&command), sizeof(McuSaveSettingsCommand));
+		command.command = MCU_SAVE_CONFIGURATION_COMMAND_TYPE;
+		QByteArray ba(reinterpret_cast<const char*>(&command), sizeof(McuSaveConfigurationCommand));
 		serial.write(ba);
 		serial.waitForBytesWritten();
 	}

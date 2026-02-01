@@ -96,7 +96,7 @@ ApplicationWindow {
 		}
 
 		TabButton {
-			text: qsTr("Save Settings")
+			text: qsTr("Save Configuration")
 		}	
 	}
 
@@ -121,7 +121,7 @@ ApplicationWindow {
 			Layout.fillHeight: true
 		}
 
-		SaveSettings {
+		SaveConfiguration {
 			Layout.fillWidth: true
 			Layout.fillHeight: true
 		}
