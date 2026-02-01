@@ -10,6 +10,10 @@ qt_standard_project_setup(REQUIRES 6.8)
 set(CMAKE_AUTORCC ON)
 
 set(SOURCES
+	src/ellipsoid/common.cpp
+	src/ellipsoid/eigenOrder.cpp
+	src/ellipsoid/fit.cpp
+	src/ellipsoid/generate.cpp
 	src/main.cpp
 	src/RobotData.cpp
 	src/SerialPort.cpp
@@ -61,6 +65,10 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
 
 target_link_libraries(${PROJECT_NAME}
 	PRIVATE Qt6::Quick Qt6::Graphs Qt6::SerialPort
+)
+
+target_include_directories(${PROJECT_NAME} 
+	SYSTEM PUBLIC third_party/eigen
 )
 
 include(GNUInstallDirs)

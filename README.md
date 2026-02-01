@@ -54,3 +54,8 @@ sudo apt install libxkbcommon-x11-0 libxcb-cursor0 libxcb-icccm4 libxcb-keysyms1
 2. Clone the [lgdxrobot2-chassistuner](https://gitlab.com/yukaitung/lgdxrobot2-chassistuner) repository.
 3. Open the project in Qt Creator.
 4. Press **Run** to build and launch the application.
+
+## Credits
+
+* [ellipsoid-fit](https://github.com/lirmm/ellipsoid-fit): Ellipsoid fitting for soft iron calibration, released under the LGPLv3 license.
+* [eigen](https://gitlab.com/libeigen/eigen): Eigen library used for ellipsoid fitting.
