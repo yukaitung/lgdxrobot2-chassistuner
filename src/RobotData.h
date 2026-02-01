@@ -41,11 +41,14 @@ class RobotData : public QObject
 		QVector<double> imuGyroscopeBias = {0.0, 0.0, 0.0}; // x, y, z
 
 		const double kSensorMax = 1000.0;
+		const double kMinDistance = 3.0;
+		const double kMaxDistance = 10.0;
 		bool magCalbrating = false;
 		bool magTesting = false;
 		int magDataCount = 0;
 		QVector<double> hardIronMax = {0.0, 0.0, 0.0}; // x, y, z,
 		QVector<double> hardIronMin = {0.0, 0.0, 0.0}; // x, y, z,
+		QVector<double> magLastReading = {0.0, 0.0, 0.0}; // x, y, z,
 		Eigen::Matrix<double, Eigen::Dynamic, 3> softIronPoints;
 		Eigen::Matrix<double, 10, 1> softIronCofficients;
 		QVector<double> softIronMatrix = {0.0, 0.0, 0.0,
@@ -70,6 +73,7 @@ class RobotData : public QObject
 		double getGyroscopeData(int16_t value, uint8_t precision);
 		double getMagnetometerData(int16_t value);
 		double getMagnetometerCalibrated(double value, int axis);
+		double getMagnetometerDistance(double x1, double y1, double z1, double x2, double y2, double z2);
 
 	public:
 		static RobotData *getInstance();
