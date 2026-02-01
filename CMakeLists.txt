@@ -46,6 +46,7 @@ qt_add_qml_module(${PROJECT_NAME}
 		"qml/pages/RobotTesting/HardwareTestingPane.qml"
 		"qml/pages/RobotTesting/RobotDataPane.qml"
 		"qml/pages/MagtonometerCalibration/CalibrationPane.qml"
+		"qml/pages/MagtonometerCalibration/ConfigurationPane.qml"
 		"qml/pages/SaveSettings/SavePane.qml"
 		"qml/pages/PidTuner.qml"
 		"qml/pages/RobotTesting.qml"

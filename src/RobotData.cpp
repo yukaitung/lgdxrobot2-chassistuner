@@ -1,4 +1,5 @@
 #include "RobotData.h"
+#include "src/SerialPort.h"
 #include "src/lgdxrobot2.h"
 #include "ellipsoid/fit.h"
 #include <QtCore/qlogging.h>
@@ -118,6 +119,15 @@ void RobotData::updateMcuData(const McuData &mcuData)
 	this->mcuData->magnetometer[0] = getMagnetometerData(mcuData.imu.magnetometer.x);
 	this->mcuData->magnetometer[1] = getMagnetometerData(mcuData.imu.magnetometer.y);
 	this->mcuData->magnetometer[2] = getMagnetometerData(mcuData.imu.magnetometer.z);
+	for (int i = 0; i < 3; i++)
+	{
+		this->mcuData->hardIronMax[i] = mcuData.imu.magnetometer_hard_iron_max[i];
+		this->mcuData->hardIronMin[i] = mcuData.imu.magnetometer_hard_iron_min[i];
+	}
+	for (int i = 0; i < 9; i++)
+	{
+		this->mcuData->softIronMatrix[i] = mcuData.imu.magnetometer_soft_iron_matrix[i];
+	}
 	this->mcuData->softwareEmergencyStopEnabled = mcuData.software_emergency_stop_enabled;
 	this->mcuData->hardwareEmergencyStopEnabled = mcuData.hardware_emergency_stop_enabled;	
 	this->mcuData->betteryLowEmergencyStopEnabled = mcuData.bettery_low_emergency_stop_enabled;
@@ -181,9 +191,9 @@ void RobotData::updateMcuData(const McuData &mcuData)
 			{
 				this->softIronPoints.conservativeResize(magDataCount * 2, 3);
 			}
-			if (magDataCount % 100 == 0)
+			if (magDataCount % kFitPoints == 0)
 			{
-				// Calculate the shape matrix for every 100 points
+				// Calculate the shape matrix for every kFitPoints points
 				ellipsoid::fit(this->softIronPoints, &softIronCofficients, ellipsoid::EllipsoidType::Arbitrary);
 				// Update the shape matrix
 				// Output: Ax^2 + By^2 + Cz^2 + 2Dxy + 2Exz + 2Fyz + 2Gx + 2Hy + 2Iz + J = 0
@@ -316,6 +326,15 @@ void RobotData::stopMagTesting()
 {
 	this->magTesting = false;
 	emit magTestingUpdated();
+}
+
+void RobotData::sendMagCalData()
+{
+	SerialPort *serialPort = SerialPort::getInstance();
+	if (serialPort != nullptr && serialPort->getIsConnected())
+	{
+		serialPort->setMagCalibrationData(this->hardIronMax, this->hardIronMin, this->softIronMatrix);	
+	}
 }
 
 void RobotData::startPidChart(int motor, QString targetVelocity)

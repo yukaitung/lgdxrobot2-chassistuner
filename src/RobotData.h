@@ -40,6 +40,7 @@ class RobotData : public QObject
 		QVector<double> imuAccelerometerBias = {0.0, 0.0, 0.0}; // x, y, z
 		QVector<double> imuGyroscopeBias = {0.0, 0.0, 0.0}; // x, y, z
 
+		const int kFitPoints = 25;
 		const double kSensorMax = 1000.0;
 		const double kMinDistance = 3.0;
 		const double kMaxDistance = 10.0;
@@ -90,6 +91,7 @@ class RobotData : public QObject
 		void stopMagCal();
 		void startMagTesting();
 		void stopMagTesting();
+		void sendMagCalData();
 
 		void startPidChart(int motor, QString targetVelocity);
 		void stopPidChart();

@@ -8,6 +8,7 @@
 #include <QString>
 #include <QVector>
 #include <QTimer>
+#include <QtCore/qcontainerfwd.h>
 #include <QtCore/qtypes.h>
 
 #include "RobotData.h"
@@ -55,8 +56,10 @@ class SerialPort: public QObject
 		void setPidSpeed(QString level1, QString level2, QString level3);
 		void setPid(int motor,int level, QString p, QString i, QString d);
 		void setMotorMaximumSpeed(QString speed1, QString speed2, QString speed3, QString speed4);
+
+		void setMagCalibrationData(QVector<double> &hardIronMax, QVector<double> &hardIronMin, QVector<double> &softIronMatrix);
 		
-		void savePid();
+		void saveSettings();
 		void resetTransform();
 
 	signals:

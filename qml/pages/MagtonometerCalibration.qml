@@ -17,6 +17,14 @@ Flickable {
       width: Math.min(parent.width, Global.maxWidth)
       anchors.horizontalCenter: parent.horizontalCenter
       spacing: 16
+
+      LabelHeading {
+        text: qsTr("Current Configuration")
+      }
+
+      ConfigurationPane {
+        width: parent.width
+      }
       
       LabelHeading {
         text: qsTr("Magtonometer Calibration")

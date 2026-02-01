@@ -5,6 +5,7 @@
 #include <QMetaType>
 #include <QVector>
 #include <QtCore/qcontainerfwd.h>
+#include <QtCore/qtmetamacros.h>
 
 class QmlMcuData : public QObject
 {
@@ -21,6 +22,9 @@ class QmlMcuData : public QObject
   Q_PROPERTY(QVector<double> accelerometer MEMBER accelerometer NOTIFY updated)
   Q_PROPERTY(QVector<double> gyroscope MEMBER gyroscope NOTIFY updated)
   Q_PROPERTY(QVector<double> magnetometer MEMBER magnetometer NOTIFY updated)
+  Q_PROPERTY(QVector<float> hardIronMax MEMBER hardIronMax NOTIFY updated)
+  Q_PROPERTY(QVector<float> hardIronMin MEMBER hardIronMin NOTIFY updated)
+  Q_PROPERTY(QVector<float> softIronMatrix MEMBER softIronMatrix NOTIFY updated)
   Q_PROPERTY(bool softwareEmergencyStopEnabled MEMBER softwareEmergencyStopEnabled NOTIFY updated)
   Q_PROPERTY(bool hardwareEmergencyStopEnabled MEMBER hardwareEmergencyStopEnabled NOTIFY updated)
   Q_PROPERTY(bool betteryLowEmergencyStopEnabled MEMBER betteryLowEmergencyStopEnabled NOTIFY updated)
@@ -39,6 +43,9 @@ class QmlMcuData : public QObject
     QVector<double> accelerometer = {0.0f, 0.0f, 0.0f}; // x, y, z
     QVector<double> gyroscope = {0.0f, 0.0f, 0.0f}; // x, y, z
     QVector<double> magnetometer = {0.0f, 0.0f, 0.0f}; // x, y, z
+    QVector<float> hardIronMax = {0.0f, 0.0f, 0.0f}; // x, y, z
+    QVector<float> hardIronMin = {0.0f, 0.0f, 0.0f}; // x, y, z
+    QVector<float> softIronMatrix = {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f}; // Matrix
     bool softwareEmergencyStopEnabled = false;
     bool hardwareEmergencyStopEnabled = false;
     bool betteryLowEmergencyStopEnabled = false;

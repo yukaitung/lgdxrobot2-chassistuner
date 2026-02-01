@@ -260,15 +260,38 @@ void SerialPort::setMotorMaximumSpeed(QString speed1, QString speed2, QString sp
 	}
 }
 
-void SerialPort::savePid()
+void SerialPort::setMagCalibrationData(QVector<double> &hardIronMax, QVector<double> &hardIronMin, QVector<double> &softIronMatrix)
 {
 	if (serial.isOpen())
 	{
-		McuSavePidCommand command;
+		McuSetMagCalibrationDataCommand command;
 		command.header1 = MCU_HEADER1;
 		command.header2 = MCU_HEADER2;
-		command.command = MCU_SAVE_PID_COMMAND_TYPE;
-		QByteArray ba(reinterpret_cast<const char*>(&command), sizeof(McuSavePidCommand));
+		command.command = MCU_SET_MAG_CALIBRATION_DATA_COMMAND_TYPE;
+		for (int i = 0; i < hardIronMax.size(); i++)
+		{
+			command.hard_iron_max[i] = hardIronMax[i];
+			command.hard_iron_min[i] = hardIronMin[i];
+		}
+		for (int i = 0; i < softIronMatrix.size(); i++)
+		{
+			command.soft_iron_matrix[i] = softIronMatrix[i];
+		}
+		QByteArray ba(reinterpret_cast<const char*>(&command), sizeof(McuSetMagCalibrationDataCommand));
+		serial.write(ba);
+		serial.waitForBytesWritten();		
+	}
+}
+
+void SerialPort::saveSettings()
+{
+	if (serial.isOpen())
+	{
+		McuSaveSettingsCommand command;
+		command.header1 = MCU_HEADER1;
+		command.header2 = MCU_HEADER2;
+		command.command = MCU_SAVE_SETTINGS_COMMAND_TYPE;
+		QByteArray ba(reinterpret_cast<const char*>(&command), sizeof(McuSaveSettingsCommand));
 		serial.write(ba);
 		serial.waitForBytesWritten();
 	}
