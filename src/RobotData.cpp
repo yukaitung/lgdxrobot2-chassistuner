@@ -1,6 +1,6 @@
 #include "RobotData.h"
 #include "src/lgdxrobot2.h"
-#include <QtCore/qlogging.h>
+#include "ellipsoid/fit.h"
 
 RobotData* RobotData::instance = nullptr;
 
@@ -57,12 +57,21 @@ double RobotData::getMagnetometerData(int16_t value)
 
 double RobotData::getMagnetometerCalibrated(double value, int axis)
 {
+	double hardX = value - (this->hardIronMax[0] + this->hardIronMin[0]) / 2.0;
+	double hardY = value - (this->hardIronMax[1] + this->hardIronMin[1]) / 2.0;
+	double hardZ = value - (this->hardIronMax[2] + this->hardIronMin[2]) / 2.0;
 	if (axis == 0)
-		return value - (this->hardIronMax[0] + this->hardIronMin[0]) / 2.0;
+	{
+		return softIronMatrix[0] * hardX + softIronMatrix[1] * hardY + softIronMatrix[2] * hardZ;
+	}
 	else if (axis == 1)
-		return value - (this->hardIronMax[1] + this->hardIronMin[1]) / 2.0;
+	{
+		return softIronMatrix[3] * hardX + softIronMatrix[4] * hardY + softIronMatrix[5] * hardZ;
+	}
 	else if (axis == 2)
-		return value - (this->hardIronMax[2] + this->hardIronMin[2]) / 2.0;
+	{
+		return softIronMatrix[6] * hardX + softIronMatrix[7] * hardY + softIronMatrix[8] * hardZ;
+	}
 	return 0.0;
 }
 
@@ -140,13 +149,49 @@ void RobotData::updateMcuData(const McuData &mcuData)
 
 	if (this->magCalbrating)
 	{
+		// Update Chart
 		emit magCalChartUpdated(this->mcuData->magnetometer[0], this->mcuData->magnetometer[1], this->mcuData->magnetometer[2]);
+		
+		// Update Hard Iron
 		this->hardIronMax[0] = std::max(this->hardIronMax[0], this->mcuData->magnetometer[0]);
 		this->hardIronMax[1] = std::max(this->hardIronMax[1], this->mcuData->magnetometer[1]);
 		this->hardIronMax[2] = std::max(this->hardIronMax[2], this->mcuData->magnetometer[2]);
 		this->hardIronMin[0] = std::min(this->hardIronMin[0], this->mcuData->magnetometer[0]);
 		this->hardIronMin[1] = std::min(this->hardIronMin[1], this->mcuData->magnetometer[1]);
 		this->hardIronMin[2] = std::min(this->hardIronMin[2], this->mcuData->magnetometer[2]);
+
+		// Update Soft Iron
+		Eigen::Vector3d point;
+		point.x() = this->mcuData->magnetometer[0];
+		point.y() = this->mcuData->magnetometer[1];
+		point.z() = this->mcuData->magnetometer[2];
+		this->softIronPoints.row(magDataCount) = point.transpose();
+		magDataCount++;
+		if (magDataCount >= this->softIronPoints.rows())
+		{
+			this->softIronPoints.conservativeResize(magDataCount * 2, 3);
+		}
+		if (magDataCount % 100 == 0)
+		{
+			// Calculate the shape matrix for every 100 points
+			ellipsoid::fit(this->softIronPoints, &softIronCofficients, ellipsoid::EllipsoidType::Arbitrary);
+			// Update the shape matrix
+			// Output: Ax^2 + By^2 + Cz^2 + 2Dxy + 2Exz + 2Fyz + 2Gx + 2Hy + 2Iz + J = 0
+			// Matrix: A F E
+			//				 F B D
+			//         E D C
+			softIronMatrix[0] = softIronCofficients[0];
+			softIronMatrix[1] = softIronCofficients[5];
+			softIronMatrix[2] = softIronCofficients[4];
+			softIronMatrix[3] = softIronCofficients[5];
+			softIronMatrix[4] = softIronCofficients[1];
+			softIronMatrix[5] = softIronCofficients[3];
+			softIronMatrix[6] = softIronCofficients[4];
+			softIronMatrix[7] = softIronCofficients[3];
+			softIronMatrix[8] = softIronCofficients[2];
+			emit magSoftIronMatrixUpdated();
+		}
+
 		emit magDataUpdated();
 	}
 
@@ -229,6 +274,13 @@ void RobotData::startMagCal()
 	hardIronMin[0] = kSensorMax;
 	hardIronMin[1] = kSensorMax;
 	hardIronMin[2] = kSensorMax;
+	magDataCount = 0;
+	softIronPoints.resize(0, 3);
+	softIronPoints.resize(1,3);
+	for (int i = 0; i < 9; i++)
+	{
+		softIronMatrix[i] = 0.0;
+	}
 	emit magDataUpdated();
 	emit magCalChartClear();
 	emit magCalibratingUpdated();

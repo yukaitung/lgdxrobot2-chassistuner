@@ -214,5 +214,68 @@ Pane
         text: RobotData.hardIronMin[2].toFixed(4)
       }
     }
+
+    LabelText {
+      text: ""
+    }
+
+    // Soft Iron Calibration Data
+    GridLayout {
+      width: parent.width
+      columns: 4
+
+      LabelText {
+        text: qsTr("Soft Iron Calibration Data")
+        Layout.preferredWidth: 250
+        font.bold: true
+      }
+
+      LabelText {
+        text: RobotData.softIronMatrix[0].toFixed(4)
+        Layout.fillWidth: true
+      }
+
+      LabelText {
+        text: RobotData.softIronMatrix[1].toFixed(4)
+        Layout.fillWidth: true
+      }
+
+      LabelText {
+        text: RobotData.softIronMatrix[2].toFixed(4)
+        Layout.fillWidth: true
+      }
+
+      LabelText {
+        text: ""
+      }
+
+      LabelText {
+        text: RobotData.softIronMatrix[3].toFixed(4)
+      }
+
+      LabelText {
+        text: RobotData.softIronMatrix[4].toFixed(4)
+      }
+
+      LabelText {
+        text: RobotData.softIronMatrix[5].toFixed(4)
+      }
+
+      LabelText {
+        text: ""
+      }
+
+      LabelText {
+        text: RobotData.softIronMatrix[6].toFixed(4)
+      }
+
+      LabelText {
+        text: RobotData.softIronMatrix[7].toFixed(4)
+      }
+
+      LabelText {
+        text: RobotData.softIronMatrix[8].toFixed(4)
+      }
+    }
   }
 }

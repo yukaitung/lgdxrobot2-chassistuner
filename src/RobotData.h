@@ -1,6 +1,7 @@
 #ifndef ROBOTDATA_H
 #define ROBOTDATA_H
 
+#include <Eigen/Core>
 #include <QObject>
 #include <QQmlEngine>
 #include <QString>
@@ -23,6 +24,7 @@ class RobotData : public QObject
 	Q_PROPERTY(bool magTesting MEMBER magTesting NOTIFY magTestingUpdated)
 	Q_PROPERTY(QVector<double> hardIronMax MEMBER hardIronMax NOTIFY magDataUpdated)
 	Q_PROPERTY(QVector<double> hardIronMin MEMBER hardIronMin NOTIFY magDataUpdated)
+	Q_PROPERTY(QVector<double> softIronMatrix MEMBER softIronMatrix NOTIFY magSoftIronMatrixUpdated)
 
 	private:
 		static RobotData *instance;
@@ -41,8 +43,14 @@ class RobotData : public QObject
 		const double kSensorMax = 1000.0;
 		bool magCalbrating = false;
 		bool magTesting = false;
+		int magDataCount = 0;
 		QVector<double> hardIronMax = {0.0, 0.0, 0.0}; // x, y, z,
 		QVector<double> hardIronMin = {0.0, 0.0, 0.0}; // x, y, z,
+		Eigen::Matrix<double, Eigen::Dynamic, 3> softIronPoints;
+		Eigen::Matrix<double, 10, 1> softIronCofficients;
+		QVector<double> softIronMatrix = {0.0, 0.0, 0.0,
+			0.0, 0.0, 0.0, 
+			0.0, 0.0, 0.0}; // Following the shape matrix
 
 		// Constants
 		const double gToMs2 = 9.80665;
@@ -97,6 +105,7 @@ class RobotData : public QObject
 		void magDataUpdated();
 		void magCalibratingUpdated();
 		void magTestingUpdated();
+		void magSoftIronMatrixUpdated();
 
 		void imuCalibratingUpdated();
 };
