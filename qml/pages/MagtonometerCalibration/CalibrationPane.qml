@@ -278,14 +278,29 @@ Pane
       }
     }
 
-    // Send
-    Button {
-      text: qsTr("Send")
-      Material.foreground: "white"
-      Material.background: Material.accent
-      enabled: SerialPort.isConnected && !RobotData.magCalbrating && !RobotData.magTesting
-      onClicked: {
-        RobotData.sendMagCalData();
+     // Send
+    Row {
+      width: parent.width
+      spacing: 16
+
+      Button {
+        text: qsTr("Send")
+        Material.foreground: "white"
+        Material.background: Material.accent
+        enabled: SerialPort.isConnected && !RobotData.magCalbrating && !RobotData.magTesting
+        onClicked: {
+          RobotData.sendMagCalData();
+        }
+      }
+
+      Button {
+        text: qsTr("Send Hard Iron Only")
+        Material.foreground: "white"
+        Material.background: Material.accent
+        enabled: SerialPort.isConnected && !RobotData.magCalbrating && !RobotData.magTesting
+        onClicked: {
+          RobotData.sendHardIronOnly();
+        }
       }
     }
   }

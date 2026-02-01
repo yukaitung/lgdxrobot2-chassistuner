@@ -344,6 +344,16 @@ void RobotData::sendMagCalData()
 	}
 }
 
+void RobotData::sendHardIronOnly()
+{
+	SerialPort *serialPort = SerialPort::getInstance();
+	if (serialPort != nullptr && serialPort->getIsConnected())
+	{
+		QVector <double> softIronMatrix = {1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0};
+		serialPort->setMagCalibrationData(this->hardIronMax, this->hardIronMin, softIronMatrix);
+	}
+}
+
 void RobotData::copyMcuMagDataForTesting()
 {
 	for (int i = 0; i < 3; i++)

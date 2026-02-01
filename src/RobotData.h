@@ -94,6 +94,7 @@ class RobotData : public QObject
 		void startMagTesting();
 		void stopMagTesting();
 		void sendMagCalData();
+		void sendHardIronOnly();
 		void copyMcuMagDataForTesting();
 		void copyCustomMagDataForTesting(QString hardIronXMax, QString hardIronYMax, QString hardIronZMax, 
 			QString hardIronXMin, QString hardIronYMin, QString hardIronZMin, 
