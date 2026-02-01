@@ -187,15 +187,15 @@ Pane
       }
 
       LabelText {
-        text: RobotData.hardIronMax[0].toFixed(6)
+        text: RobotData.hardIronMax[0].toFixed(10)
       }
 
       LabelText {
-        text: RobotData.hardIronMax[1].toFixed(6)
+        text: RobotData.hardIronMax[1].toFixed(10)
       }
 
       LabelText {
-        text: RobotData.hardIronMax[2].toFixed(6)
+        text: RobotData.hardIronMax[2].toFixed(10)
       }
 
       LabelText {
@@ -203,15 +203,15 @@ Pane
       }
 
       LabelText {
-        text: RobotData.hardIronMin[0].toFixed(6)
+        text: RobotData.hardIronMin[0].toFixed(10)
       }
 
       LabelText {
-        text: RobotData.hardIronMin[1].toFixed(6)
+        text: RobotData.hardIronMin[1].toFixed(10)
       }
 
       LabelText {
-        text: RobotData.hardIronMin[2].toFixed(6)
+        text: RobotData.hardIronMin[2].toFixed(10)
       }
     }
 
@@ -231,17 +231,17 @@ Pane
       }
 
       LabelText {
-        text: RobotData.softIronMatrix[0].toFixed(6)
+        text: RobotData.softIronMatrix[0].toFixed(10)
         Layout.fillWidth: true
       }
 
       LabelText {
-        text: RobotData.softIronMatrix[1].toFixed(6)
+        text: RobotData.softIronMatrix[1].toFixed(10)
         Layout.fillWidth: true
       }
 
       LabelText {
-        text: RobotData.softIronMatrix[2].toFixed(6)
+        text: RobotData.softIronMatrix[2].toFixed(10)
         Layout.fillWidth: true
       }
 
@@ -250,15 +250,15 @@ Pane
       }
 
       LabelText {
-        text: RobotData.softIronMatrix[3].toFixed(6)
+        text: RobotData.softIronMatrix[3].toFixed(10)
       }
 
       LabelText {
-        text: RobotData.softIronMatrix[4].toFixed(6)
+        text: RobotData.softIronMatrix[4].toFixed(10)
       }
 
       LabelText {
-        text: RobotData.softIronMatrix[5].toFixed(6)
+        text: RobotData.softIronMatrix[5].toFixed(10)
       }
 
       LabelText {
@@ -266,15 +266,15 @@ Pane
       }
 
       LabelText {
-        text: RobotData.softIronMatrix[6].toFixed(6)
+        text: RobotData.softIronMatrix[6].toFixed(10)
       }
 
       LabelText {
-        text: RobotData.softIronMatrix[7].toFixed(6)
+        text: RobotData.softIronMatrix[7].toFixed(10)
       }
 
       LabelText {
-        text: RobotData.softIronMatrix[8].toFixed(6)
+        text: RobotData.softIronMatrix[8].toFixed(10)
       }
     }
 

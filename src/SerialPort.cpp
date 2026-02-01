@@ -1,5 +1,6 @@
 #include "SerialPort.h"
 #include "src/lgdxrobot2.h"
+#include <QtCore/qcontainerfwd.h>
 
 RobotData* SerialPort::robotData = nullptr;
 SerialPort* SerialPort::instance = nullptr; 
@@ -280,6 +281,23 @@ void SerialPort::setMagCalibrationData(QVector<double> &hardIronMax, QVector<dou
 		QByteArray ba(reinterpret_cast<const char*>(&command), sizeof(McuSetMagCalibrationDataCommand));
 		serial.write(ba);
 		serial.waitForBytesWritten();		
+	}
+}
+
+void SerialPort::setMagCalibrationDataCustom(double hardIronXMax, double hardIronYMax, double hardIronZMax, 
+			double hardIronXMin, double hardIronYMin, double hardIronZMin, 
+			double softIronMatrix0, double softIronMatrix1, double softIronMatrix2, 
+			double softIronMatrix3, double softIronMatrix4, double softIronMatrix5, 
+			double softIronMatrix6, double softIronMatrix7, double softIronMatrix8)
+{
+	if (serial.isOpen())
+	{
+		QVector<double> hardIronMax = {hardIronXMax, hardIronYMax, hardIronZMax};
+		QVector<double> hardIronMin = {hardIronXMin, hardIronYMin, hardIronZMin};
+		QVector<double> softIronMatrix = {softIronMatrix0, softIronMatrix1, softIronMatrix2, 
+			softIronMatrix3, softIronMatrix4, softIronMatrix5, 
+			softIronMatrix6, softIronMatrix7, softIronMatrix8};
+		setMagCalibrationData(hardIronMax, hardIronMin, softIronMatrix);
 	}
 }
 

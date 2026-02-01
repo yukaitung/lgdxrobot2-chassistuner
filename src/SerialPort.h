@@ -58,6 +58,11 @@ class SerialPort: public QObject
 		void setMotorMaximumSpeed(QString speed1, QString speed2, QString speed3, QString speed4);
 
 		void setMagCalibrationData(QVector<double> &hardIronMax, QVector<double> &hardIronMin, QVector<double> &softIronMatrix);
+		void setMagCalibrationDataCustom(double hardIronXMax, double hardIronYMax, double hardIronZMax, 
+			double hardIronXMin, double hardIronYMin, double hardIronZMin, 
+			double softIronMatrix0, double softIronMatrix1, double softIronMatrix2, 
+			double softIronMatrix3, double softIronMatrix4, double softIronMatrix5, 
+			double softIronMatrix6, double softIronMatrix7, double softIronMatrix8);
 		
 		void saveConfiguration();
 		void resetTransform();

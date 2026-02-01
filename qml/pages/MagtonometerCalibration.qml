@@ -25,6 +25,14 @@ Flickable {
       ConfigurationPane {
         width: parent.width
       }
+
+      LabelHeading {
+        text: qsTr("Custom Configuration")
+      }
+
+      CustomPane {
+        width: parent.width
+      }
       
       LabelHeading {
         text: qsTr("Magtonometer Calibration")
