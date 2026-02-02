@@ -20,8 +20,11 @@ class QmlMcuData : public QObject
   Q_PROPERTY(QVector<float> battery1 MEMBER battery1 NOTIFY updated)
   Q_PROPERTY(QVector<float> battery2 MEMBER battery2 NOTIFY updated)
   Q_PROPERTY(QVector<float> accelerometer MEMBER accelerometer NOTIFY updated)
+  Q_PROPERTY(QVector<float> accelerometerCovariance MEMBER accelerometerCovariance NOTIFY updated)
   Q_PROPERTY(QVector<float> gyroscope MEMBER gyroscope NOTIFY updated)
+  Q_PROPERTY(QVector<float> gyroscopeCovariance MEMBER gyroscopeCovariance NOTIFY updated)
   Q_PROPERTY(QVector<float> magnetometer MEMBER magnetometer NOTIFY updated)
+  Q_PROPERTY(QVector<float> magnetometerCovariance MEMBER magnetometerCovariance NOTIFY updated)
   Q_PROPERTY(QVector<float> hardIronMax MEMBER hardIronMax NOTIFY updated)
   Q_PROPERTY(QVector<float> hardIronMin MEMBER hardIronMin NOTIFY updated)
   Q_PROPERTY(QVector<float> softIronMatrix MEMBER softIronMatrix NOTIFY updated)
@@ -41,8 +44,11 @@ class QmlMcuData : public QObject
     QVector<float> battery1 = {0.0f, 0.0f}; // voltage, current
     QVector<float> battery2 = {0.0f, 0.0f}; // voltage, current
     QVector<float> accelerometer = {0.0f, 0.0f, 0.0f}; // x, y, z
+    QVector<float> accelerometerCovariance = {0.0f, 0.0f, 0.0f}; // x major, y major, z major
     QVector<float> gyroscope = {0.0f, 0.0f, 0.0f}; // x, y, z
+    QVector<float> gyroscopeCovariance = {0.0f, 0.0f, 0.0f}; // x major, y major, z major
     QVector<float> magnetometer = {0.0f, 0.0f, 0.0f}; // x, y, z
+    QVector<float> magnetometerCovariance = {0.0f, 0.0f, 0.0f}; // x major, y major, z major
     QVector<float> hardIronMax = {0.0f, 0.0f, 0.0f}; // x, y, z
     QVector<float> hardIronMin = {0.0f, 0.0f, 0.0f}; // x, y, z
     QVector<float> softIronMatrix = {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f}; // Matrix

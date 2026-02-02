@@ -29,6 +29,7 @@
 #define MCU_RESET_TRANSFORM_COMMAND_TYPE 'T'
 #define MCU_SET_MOTOR_MAXIMUM_SPEED_COMMAND_TYPE 'V'
 #define MCU_SET_MAG_CALIBRATION_DATA_COMMAND_TYPE 'W'
+#define MCU_GET_MAG_CALIBRATION_DATA_COMMAND_TYPE 'X'
 
 #pragma pack(push, 1)
 
@@ -106,6 +107,17 @@ typedef struct {
   uint8_t header3;
   uint8_t header4;
 } McuPid;
+
+typedef struct {
+  uint8_t header1;
+  uint8_t header2;
+  char type;
+  float hard_iron_max[3];
+  float hard_iron_min[3];
+  float soft_iron_matrix[9];
+  uint8_t header3;
+  uint8_t header4;
+} McuGetMagCalibrationDataCommand;
 
 /*
  * PC to MCU communication

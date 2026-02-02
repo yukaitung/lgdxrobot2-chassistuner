@@ -59,12 +59,21 @@ void RobotData::updateMcuData(const McuData &mcuData)
 	this->mcuData->accelerometer[0] = mcuData.imu.accelerometer.x;
 	this->mcuData->accelerometer[1] = mcuData.imu.accelerometer.y;
 	this->mcuData->accelerometer[2] = mcuData.imu.accelerometer.z;
+	this->mcuData->accelerometerCovariance[0] = mcuData.imu.accelerometer_covariance.x;
+	this->mcuData->accelerometerCovariance[1] = mcuData.imu.accelerometer_covariance.y;
+	this->mcuData->accelerometerCovariance[2] = mcuData.imu.accelerometer_covariance.z;
 	this->mcuData->gyroscope[0] = mcuData.imu.gyroscope.x;
 	this->mcuData->gyroscope[1] = mcuData.imu.gyroscope.y;
 	this->mcuData->gyroscope[2] = mcuData.imu.gyroscope.z;
+	this->mcuData->gyroscopeCovariance[0] = mcuData.imu.gyroscope_covariance.x;
+	this->mcuData->gyroscopeCovariance[1] = mcuData.imu.gyroscope_covariance.y;
+	this->mcuData->gyroscopeCovariance[2] = mcuData.imu.gyroscope_covariance.z;
 	this->mcuData->magnetometer[0] = mcuData.imu.magnetometer.x;
 	this->mcuData->magnetometer[1] = mcuData.imu.magnetometer.y;
 	this->mcuData->magnetometer[2] = mcuData.imu.magnetometer.z;
+	this->mcuData->magnetometerCovariance[0] = mcuData.imu.magnetometer_covariance.x;
+	this->mcuData->magnetometerCovariance[1] = mcuData.imu.magnetometer_covariance.y;
+	this->mcuData->magnetometerCovariance[2] = mcuData.imu.magnetometer_covariance.z;
 	this->mcuData->softwareEmergencyStopEnabled = mcuData.software_emergency_stop_enabled;
 	this->mcuData->hardwareEmergencyStopEnabled = mcuData.hardware_emergency_stop_enabled;	
 	this->mcuData->betteryLowEmergencyStopEnabled = mcuData.bettery_low_emergency_stop_enabled;
@@ -256,21 +265,21 @@ void RobotData::copyCustomMagDataForTesting(QString hardIronXMax, QString hardIr
 			QString softIronMatrix3, QString softIronMatrix4, QString softIronMatrix5, 
 			QString softIronMatrix6, QString softIronMatrix7, QString softIronMatrix8)
 {
-	this->hardIronMax[0] = hardIronXMax.toDouble();
-	this->hardIronMax[1] = hardIronYMax.toDouble();
-	this->hardIronMax[2] = hardIronZMax.toDouble();
-	this->hardIronMin[0] = hardIronXMin.toDouble();
-	this->hardIronMin[1] = hardIronYMin.toDouble();
-	this->hardIronMin[2] = hardIronZMin.toDouble();
-	this->softIronMatrix[0] = softIronMatrix0.toDouble();
-	this->softIronMatrix[1] = softIronMatrix1.toDouble();
-	this->softIronMatrix[2] = softIronMatrix2.toDouble();
-	this->softIronMatrix[3] = softIronMatrix3.toDouble();
-	this->softIronMatrix[4] = softIronMatrix4.toDouble();
-	this->softIronMatrix[5] = softIronMatrix5.toDouble();
-	this->softIronMatrix[6] = softIronMatrix6.toDouble();
-	this->softIronMatrix[7] = softIronMatrix7.toDouble();
-	this->softIronMatrix[8] = softIronMatrix8.toDouble();
+	this->hardIronMax[0] = hardIronXMax.toFloat();
+	this->hardIronMax[1] = hardIronYMax.toFloat();
+	this->hardIronMax[2] = hardIronZMax.toFloat();
+	this->hardIronMin[0] = hardIronXMin.toFloat();
+	this->hardIronMin[1] = hardIronYMin.toFloat();
+	this->hardIronMin[2] = hardIronZMin.toFloat();
+	this->softIronMatrix[0] = softIronMatrix0.toFloat();
+	this->softIronMatrix[1] = softIronMatrix1.toFloat();
+	this->softIronMatrix[2] = softIronMatrix2.toFloat();
+	this->softIronMatrix[3] = softIronMatrix3.toFloat();
+	this->softIronMatrix[4] = softIronMatrix4.toFloat();
+	this->softIronMatrix[5] = softIronMatrix5.toFloat();
+	this->softIronMatrix[6] = softIronMatrix6.toFloat();
+	this->softIronMatrix[7] = softIronMatrix7.toFloat();
+	this->softIronMatrix[8] = softIronMatrix8.toFloat();
 	emit magSoftIronMatrixUpdated();
 	emit magDataUpdated();
 }

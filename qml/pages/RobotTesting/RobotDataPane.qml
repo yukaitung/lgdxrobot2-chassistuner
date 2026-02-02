@@ -263,6 +263,29 @@ Pane {
     }
 
     LabelText {
+      text: qsTr("Accelerometer Variance")
+      font.bold: true
+    }
+
+    Row {
+      Layout.fillWidth: true
+      LabelText {
+        text: qsTr("X: %1").arg(RobotData.mcuData.accelerometerCovariance[0].toFixed(6))
+        width: parent.width / 4
+      }
+
+      LabelText {
+        text: qsTr("Y: %1").arg(RobotData.mcuData.accelerometerCovariance[1].toFixed(6))
+        width: parent.width / 4
+      }
+
+      LabelText {
+        text: qsTr("Z: %1").arg(RobotData.mcuData.accelerometerCovariance[2].toFixed(6))
+        width: parent.width / 4
+      }
+    }
+
+    LabelText {
       text: qsTr("Gyroscope (rad/s)")
       font.bold: true
     }
@@ -286,6 +309,29 @@ Pane {
     }
 
     LabelText {
+      text: qsTr("Gyroscope Variance")
+      font.bold: true
+    }
+
+    Row {
+      Layout.fillWidth: true
+      LabelText {
+        text: qsTr("X: %1").arg(RobotData.mcuData.gyroscopeCovariance[0].toFixed(6))
+        width: parent.width / 4
+      }
+
+      LabelText {
+        text: qsTr("Y: %1").arg(RobotData.mcuData.gyroscopeCovariance[1].toFixed(6))
+        width: parent.width / 4
+      }
+
+      LabelText {
+        text: qsTr("Z: %1").arg(RobotData.mcuData.gyroscopeCovariance[2].toFixed(6))
+        width: parent.width / 4
+      }
+    }
+
+    LabelText {
       text: qsTr("Magnetometer (µT)")
       font.bold: true
     }
@@ -304,6 +350,29 @@ Pane {
 
       LabelText {
         text: qsTr("Z: %1").arg(RobotData.mcuData.magnetometer[2].toFixed(6))
+        width: parent.width / 4
+      }
+    }
+
+    LabelText {
+      text: qsTr("Magnetometer Variance")
+      font.bold: true
+    }
+
+    Row {
+      Layout.fillWidth: true
+      LabelText {
+        text: qsTr("X: %1").arg(RobotData.mcuData.magnetometerCovariance[0].toFixed(6))
+        width: parent.width / 4
+      }
+
+      LabelText {
+        text: qsTr("Y: %1").arg(RobotData.mcuData.magnetometerCovariance[1].toFixed(6))
+        width: parent.width / 4
+      }
+
+      LabelText {
+        text: qsTr("Z: %1").arg(RobotData.mcuData.magnetometerCovariance[2].toFixed(6))
         width: parent.width / 4
       }
     }
