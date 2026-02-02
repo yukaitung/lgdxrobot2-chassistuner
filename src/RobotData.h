@@ -82,12 +82,6 @@ class RobotData : public QObject
 		void stopMagTesting();
 		void sendMagCalData();
 		void sendHardIronOnly();
-		void copyMcuMagDataForTesting();
-		void copyCustomMagDataForTesting(QString hardIronXMax, QString hardIronYMax, QString hardIronZMax, 
-			QString hardIronXMin, QString hardIronYMin, QString hardIronZMin, 
-			QString softIronMatrix0, QString softIronMatrix1, QString softIronMatrix2, 
-			QString softIronMatrix3, QString softIronMatrix4, QString softIronMatrix5, 
-			QString softIronMatrix6, QString softIronMatrix7, QString softIronMatrix8);
 
 		void startPidChart(int motor, QString targetVelocity);
 		void stopPidChart();

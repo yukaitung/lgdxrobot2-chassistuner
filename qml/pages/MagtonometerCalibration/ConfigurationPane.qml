@@ -157,16 +157,6 @@ Pane
       }
 
       Button {
-        text: qsTr("Copy for Testing")
-        Material.foreground: "white"
-        Material.background: Material.accent
-        enabled: SerialPort.isConnected && !RobotData.magCalbrating && !RobotData.magTesting
-        onClicked: {
-          RobotData.copyMcuMagDataForTesting();
-        }
-      }
-
-      Button {
         text: qsTr("Reset Calibration Data")
         Material.foreground: "white"
         Material.background: Material.accent

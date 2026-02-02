@@ -260,46 +260,6 @@ void RobotData::sendHardIronOnly()
 	}
 }
 
-void RobotData::copyMcuMagDataForTesting()
-{
-	for (int i = 0; i < 3; i++)
-	{
-		this->hardIronMax[i] = this->magCalibrationData->hardIronMax[i];
-		this->hardIronMin[i] = this->magCalibrationData->hardIronMin[i];
-	}
-	for (int i = 0; i < 9; i++)
-	{
-		this->softIronMatrix[i] = this->magCalibrationData->softIronMatrix[i];
-	}
-	emit magSoftIronMatrixUpdated();
-	emit magDataUpdated();
-}
-
-void RobotData::copyCustomMagDataForTesting(QString hardIronXMax, QString hardIronYMax, QString hardIronZMax, 
-			QString hardIronXMin, QString hardIronYMin, QString hardIronZMin, 
-			QString softIronMatrix0, QString softIronMatrix1, QString softIronMatrix2, 
-			QString softIronMatrix3, QString softIronMatrix4, QString softIronMatrix5, 
-			QString softIronMatrix6, QString softIronMatrix7, QString softIronMatrix8)
-{
-	this->hardIronMax[0] = hardIronXMax.toFloat();
-	this->hardIronMax[1] = hardIronYMax.toFloat();
-	this->hardIronMax[2] = hardIronZMax.toFloat();
-	this->hardIronMin[0] = hardIronXMin.toFloat();
-	this->hardIronMin[1] = hardIronYMin.toFloat();
-	this->hardIronMin[2] = hardIronZMin.toFloat();
-	this->softIronMatrix[0] = softIronMatrix0.toFloat();
-	this->softIronMatrix[1] = softIronMatrix1.toFloat();
-	this->softIronMatrix[2] = softIronMatrix2.toFloat();
-	this->softIronMatrix[3] = softIronMatrix3.toFloat();
-	this->softIronMatrix[4] = softIronMatrix4.toFloat();
-	this->softIronMatrix[5] = softIronMatrix5.toFloat();
-	this->softIronMatrix[6] = softIronMatrix6.toFloat();
-	this->softIronMatrix[7] = softIronMatrix7.toFloat();
-	this->softIronMatrix[8] = softIronMatrix8.toFloat();
-	emit magSoftIronMatrixUpdated();
-	emit magDataUpdated();
-}
-
 void RobotData::startPidChart(int motor, QString targetVelocity)
 {
 	if (!this->pidChartEnabled)

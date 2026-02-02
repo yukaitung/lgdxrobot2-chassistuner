@@ -180,20 +180,6 @@ Pane
       spacing: 16
 
       Button {
-        text: qsTr("Copy for Testing")
-        Material.foreground: "white"
-        Material.background: Material.accent
-        enabled: SerialPort.isConnected && !RobotData.magCalbrating && !RobotData.magTesting
-        onClicked: {
-          RobotData.copyCustomMagDataForTesting(hardIronXMaxTextField.text, hardIronYMaxTextField.text, hardIronZMaxTextField.text, 
-            hardIronXMinTextField.text, hardIronYMinTextField.text, hardIronZMinTextField.text, 
-            softIronMatrix0TextField.text, softIronMatrix1TextField.text, softIronMatrix2TextField.text, 
-            softIronMatrix3TextField.text, softIronMatrix4TextField.text, softIronMatrix5TextField.text, 
-            softIronMatrix6TextField.text, softIronMatrix7TextField.text, softIronMatrix8TextField.text);
-        }
-      }
-
-      Button {
         text: qsTr("Send")
         Material.foreground: "white"
         Material.background: Material.accent
