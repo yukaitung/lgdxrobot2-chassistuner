@@ -57,12 +57,12 @@ class SerialPort: public QObject
 		void setPid(int motor,int level, QString p, QString i, QString d);
 		void setMotorMaximumSpeed(QString speed1, QString speed2, QString speed3, QString speed4);
 
-		void setMagCalibrationData(QVector<double> &hardIronMax, QVector<double> &hardIronMin, QVector<double> &softIronMatrix);
-		void setMagCalibrationDataCustom(double hardIronXMax, double hardIronYMax, double hardIronZMax, 
-			double hardIronXMin, double hardIronYMin, double hardIronZMin, 
-			double softIronMatrix0, double softIronMatrix1, double softIronMatrix2, 
-			double softIronMatrix3, double softIronMatrix4, double softIronMatrix5, 
-			double softIronMatrix6, double softIronMatrix7, double softIronMatrix8);
+		void setMagCalibrationData(QVector<float> &hardIronMax, QVector<float> &hardIronMin, QVector<float> &softIronMatrix);
+		void setMagCalibrationDataCustom(float hardIronXMax, float hardIronYMax, float hardIronZMax,
+			float hardIronXMin, float hardIronYMin, float hardIronZMin,
+			float softIronMatrix0, float softIronMatrix1, float softIronMatrix2,
+			float softIronMatrix3, float softIronMatrix4, float softIronMatrix5,
+			float softIronMatrix6, float softIronMatrix7, float softIronMatrix8);
 		
 		void saveConfiguration();
 		void resetTransform();

@@ -261,7 +261,7 @@ void SerialPort::setMotorMaximumSpeed(QString speed1, QString speed2, QString sp
 	}
 }
 
-void SerialPort::setMagCalibrationData(QVector<double> &hardIronMax, QVector<double> &hardIronMin, QVector<double> &softIronMatrix)
+void SerialPort::setMagCalibrationData(QVector<float> &hardIronMax, QVector<float> &hardIronMin, QVector<float> &softIronMatrix)
 {
 	if (serial.isOpen())
 	{
@@ -284,17 +284,17 @@ void SerialPort::setMagCalibrationData(QVector<double> &hardIronMax, QVector<dou
 	}
 }
 
-void SerialPort::setMagCalibrationDataCustom(double hardIronXMax, double hardIronYMax, double hardIronZMax, 
-			double hardIronXMin, double hardIronYMin, double hardIronZMin, 
-			double softIronMatrix0, double softIronMatrix1, double softIronMatrix2, 
-			double softIronMatrix3, double softIronMatrix4, double softIronMatrix5, 
-			double softIronMatrix6, double softIronMatrix7, double softIronMatrix8)
+void SerialPort::setMagCalibrationDataCustom(float hardIronXMax, float hardIronYMax, float hardIronZMax, 
+			float hardIronXMin, float hardIronYMin, float hardIronZMin, 
+			float softIronMatrix0, float softIronMatrix1, float softIronMatrix2, 
+			float softIronMatrix3, float softIronMatrix4, float softIronMatrix5, 
+			float softIronMatrix6, float softIronMatrix7, float softIronMatrix8)
 {
 	if (serial.isOpen())
 	{
-		QVector<double> hardIronMax = {hardIronXMax, hardIronYMax, hardIronZMax};
-		QVector<double> hardIronMin = {hardIronXMin, hardIronYMin, hardIronZMin};
-		QVector<double> softIronMatrix = {softIronMatrix0, softIronMatrix1, softIronMatrix2, 
+		QVector<float> hardIronMax = {hardIronXMax, hardIronYMax, hardIronZMax};
+		QVector<float> hardIronMin = {hardIronXMin, hardIronYMin, hardIronZMin};
+		QVector<float> softIronMatrix = {softIronMatrix0, softIronMatrix1, softIronMatrix2, 
 			softIronMatrix3, softIronMatrix4, softIronMatrix5, 
 			softIronMatrix6, softIronMatrix7, softIronMatrix8};
 		setMagCalibrationData(hardIronMax, hardIronMin, softIronMatrix);

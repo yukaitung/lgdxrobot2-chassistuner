@@ -47,37 +47,6 @@ Pane {
     }
 
     LabelText {
-      text: qsTr("Calibrate IMU")
-      font.bold: true
-    }
-
-    Row {
-      width: parent.width
-      spacing: 16
-      Layout.columnSpan: 2
-
-      Button {
-        text: qsTr("Calibrate")
-        Material.foreground: "white"
-        Material.background: Material.accent
-        Layout.columnSpan: 2
-        Layout.preferredHeight: 48
-        onClicked: RobotData.calibrateImu()
-        enabled: SerialPort.isConnected && !RobotData.imuCalibrating
-      }
-
-      LabelText {
-        id: label
-        height: parent.height
-        text: qsTr("Calibrating")
-        color: "green"
-        font.bold: true
-        visible: RobotData.imuCalibrating
-        verticalAlignment: Text.AlignVCenter
-      }
-    }
-
-    LabelText {
       text: qsTr("Inverse Kinematics")
       font.bold: true
     }

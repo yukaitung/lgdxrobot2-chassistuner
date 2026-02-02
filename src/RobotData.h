@@ -19,26 +19,17 @@ class RobotData : public QObject
 	Q_PROPERTY(QString mcuSerialNumber MEMBER mcuSerialNumber NOTIFY mcuSerialNumberUpdated)
 	Q_PROPERTY(QmlPidData* pidData MEMBER pidData NOTIFY mcuPidUpdated)
 	Q_PROPERTY(bool pidChartEnabled MEMBER pidChartEnabled NOTIFY pidChartEnabledUpdated)
-	Q_PROPERTY(bool imuCalibrating MEMBER imuCalibrating NOTIFY imuCalibratingUpdated)
 	Q_PROPERTY(bool magCalbrating MEMBER magCalbrating NOTIFY magCalibratingUpdated)
 	Q_PROPERTY(bool magTesting MEMBER magTesting NOTIFY magTestingUpdated)
-	Q_PROPERTY(QVector<double> hardIronMax MEMBER hardIronMax NOTIFY magDataUpdated)
-	Q_PROPERTY(QVector<double> hardIronMin MEMBER hardIronMin NOTIFY magDataUpdated)
-	Q_PROPERTY(QVector<double> softIronMatrix MEMBER softIronMatrix NOTIFY magSoftIronMatrixUpdated)
+	Q_PROPERTY(QVector<float> hardIronMax MEMBER hardIronMax NOTIFY magDataUpdated)
+	Q_PROPERTY(QVector<float> hardIronMin MEMBER hardIronMin NOTIFY magDataUpdated)
+	Q_PROPERTY(QVector<float> softIronMatrix MEMBER softIronMatrix NOTIFY magSoftIronMatrixUpdated)
 
 	private:
 		static RobotData *instance;
 		QmlMcuData *mcuData;
 		QmlPidData *pidData;
 		QString mcuSerialNumber;
-
-		const int kMaxImuCalibrationIterations = 300;
-		int imuCalibrationIterations = 0;
-		bool imuCalibrating = false;
-		QVector<double> acculumatedAccelerometer = {0.0, 0.0, 0.0}; // x, y, z
-		QVector<double> acculumatedGyroscope = {0.0, 0.0, 0.0}; // x, y, z
-		QVector<double> imuAccelerometerBias = {0.0, 0.0, 0.0}; // x, y, z
-		QVector<double> imuGyroscopeBias = {0.0, 0.0, 0.0}; // x, y, z
 
 		const int kFitPoints = 10;
 		const double kSensorMax = 1000.0;
@@ -48,14 +39,14 @@ class RobotData : public QObject
 		bool magTesting = false;
 		int magDataCount = 0;
 		QHash<QString, bool> magHasData;
-		QVector<double> hardIronMax = {0.0, 0.0, 0.0}; // x, y, z,
-		QVector<double> hardIronMin = {0.0, 0.0, 0.0}; // x, y, z,
-		QVector<double> magLastReading = {0.0, 0.0, 0.0}; // x, y, z,
-		Eigen::Matrix<double, Eigen::Dynamic, 3> softIronPoints;
-		Eigen::Matrix<double, 10, 1> softIronCofficients;
-		QVector<double> softIronMatrix = {0.0, 0.0, 0.0,
+		QVector<float> hardIronMax = {0.0, 0.0, 0.0}; // x, y, z,
+		QVector<float> hardIronMin = {0.0, 0.0, 0.0}; // x, y, z,
+		QVector<float> magLastReading = {0.0, 0.0, 0.0}; // x, y, z,
+		QVector<float> softIronMatrix = {0.0, 0.0, 0.0,
 			0.0, 0.0, 0.0, 
 			0.0, 0.0, 0.0}; // Following the shape matrix
+		Eigen::Matrix<double, Eigen::Dynamic, 3> softIronPoints;
+		Eigen::Matrix<double, 10, 1> softIronCofficients;
 
 		// Constants
 		const double gToMs2 = 9.80665;
@@ -71,12 +62,8 @@ class RobotData : public QObject
 		explicit RobotData(QObject *parent = nullptr);
 		~RobotData();
 
-		double getAccelerometerData(int16_t value, uint8_t precision);
-		double getGyroscopeData(int16_t value, uint8_t precision);
-		double getMagnetometerData(int16_t value);
-		double getMagnetometerCalibrated(double value, int axis);
-		double getMagnetometerDistance(double x1, double y1, double z1, double x2, double y2, double z2);
-		int roundToNearest5(double value);
+		float getMagnetometerDistance(float x1, float y1, float z1, float x2, float y2, float z2);
+		int roundToNearest5(float value);
 
 	public:
 		static RobotData *getInstance();
@@ -86,9 +73,6 @@ class RobotData : public QObject
 		void updateMcuPid(const McuPid &mcuPid);
 
 	public slots:
-		void calibrateImu();
-		void clearImuCalibration();
-
 		void startMagCal();
 		void stopMagCal();
 		void startMagTesting();
@@ -116,7 +100,7 @@ class RobotData : public QObject
 		void pidChartEnabledUpdated();
 
 		void magCalChartClear();
-		void magCalChartUpdated(double x, double y, double z);
+		void magCalChartUpdated(float x, float y, float z);
 		void magDataUpdated();
 		void magCalibratingUpdated();
 		void magTestingUpdated();
