@@ -59,6 +59,11 @@ void SerialPort::read()
 					memcpy(&mcuPid, frame.data(), sizeof(McuPid));
 					robotData->updateMcuPid(mcuPid);
 					break;
+				case MCU_MAG_CALIBRATION_DATA_TYPE:
+					McuMagCalibrationData mcuMagCalibrationData;
+					memcpy(&mcuMagCalibrationData, frame.data(), sizeof(McuMagCalibrationData));
+					robotData->updateMcuMagCalibrationData(mcuMagCalibrationData);
+					break;
 				default:
 					break;
 			}
@@ -106,6 +111,7 @@ void SerialPort::connect(QString portName)
 		isConnected = true;
 		emit connectionStatusChanged();
 		getPid();
+		getMagCalibrationData();
 	}
 }
 
@@ -153,6 +159,20 @@ void SerialPort::getPid()
 		command.header2 = MCU_HEADER2;
 		command.command = MCU_GET_PID_COMMAND_TYPE;
 		QByteArray ba(reinterpret_cast<const char*>(&command), sizeof(McuGetPidCommand));
+		serial.write(ba);
+		serial.waitForBytesWritten();
+	}
+}
+
+void SerialPort::getMagCalibrationData()
+{
+	if (serial.isOpen())
+	{
+		McuGetMagCalibrationDataCommand command;
+		command.header1 = MCU_HEADER1;
+		command.header2 = MCU_HEADER2;
+		command.command = MCU_GET_MAG_CALIBRATION_DATA_COMMAND_TYPE;
+		QByteArray ba(reinterpret_cast<const char*>(&command), sizeof(McuGetMagCalibrationDataCommand));
 		serial.write(ba);
 		serial.waitForBytesWritten();
 	}
@@ -258,6 +278,17 @@ void SerialPort::setMotorMaximumSpeed(QString speed1, QString speed2, QString sp
 		QByteArray ba(reinterpret_cast<const char*>(&command), sizeof(McuSetMotorMaximumSpeedCommand));
 		serial.write(ba);
 		serial.waitForBytesWritten();
+	}
+}
+
+void SerialPort::resetMagCalibrationData()
+{
+	if (serial.isOpen())
+	{
+		QVector<float> hardIronMax = {0, 0, 0};
+		QVector<float> hardIronMin = {0, 0, 0};
+		QVector<float> softIronMatrix = {1, 0, 0, 0, 1, 0, 0, 0, 1};
+		setMagCalibrationData(hardIronMax, hardIronMin, softIronMatrix);
 	}
 }
 

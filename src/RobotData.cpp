@@ -10,12 +10,14 @@ RobotData::RobotData(QObject *parent) : QObject{parent}
 {
 	this->mcuData = new QmlMcuData;
 	this->pidData = new QmlPidData;
+	this->magCalibrationData = new QmlMagCalibrationData;
 }
 
 RobotData::~RobotData()
 {
 	delete this->mcuData;
 	delete this->pidData;
+	delete this->magCalibrationData;
 }
 
 float RobotData::getMagnetometerDistance(float x1, float y1, float z1, float x2, float y2, float z2)
@@ -185,6 +187,20 @@ void RobotData::updateMcuPid(const McuPid &mcuPid)
 	emit mcuPidUpdated();
 }
 
+void RobotData::updateMcuMagCalibrationData(const McuMagCalibrationData &mcuMagData)
+{
+	for (int i = 0; i < 3; i++)
+	{
+		this->magCalibrationData->hardIronMax[i] = mcuMagData.hard_iron_max[i];
+		this->magCalibrationData->hardIronMin[i] = mcuMagData.hard_iron_min[i];
+	}
+	for (int i = 0; i < 9; i++)
+	{
+		this->magCalibrationData->softIronMatrix[i] = mcuMagData.soft_iron_matrix[i];
+	}
+	emit mcuMagCalibrationDataUpdated();
+}
+
 void RobotData::startMagCal()
 {
 	this->magCalbrating = true;
@@ -248,12 +264,12 @@ void RobotData::copyMcuMagDataForTesting()
 {
 	for (int i = 0; i < 3; i++)
 	{
-		this->hardIronMax[i] = this->mcuData->hardIronMax[i];
-		this->hardIronMin[i] = this->mcuData->hardIronMin[i];
+		this->hardIronMax[i] = this->magCalibrationData->hardIronMax[i];
+		this->hardIronMin[i] = this->magCalibrationData->hardIronMin[i];
 	}
 	for (int i = 0; i < 9; i++)
 	{
-		this->softIronMatrix[i] = this->mcuData->softIronMatrix[i];
+		this->softIronMatrix[i] = this->magCalibrationData->softIronMatrix[i];
 	}
 	emit magSoftIronMatrixUpdated();
 	emit magDataUpdated();

@@ -18,6 +18,7 @@ class RobotData : public QObject
 	Q_PROPERTY(QmlMcuData* mcuData MEMBER mcuData NOTIFY mcuDataUpdated)
 	Q_PROPERTY(QString mcuSerialNumber MEMBER mcuSerialNumber NOTIFY mcuSerialNumberUpdated)
 	Q_PROPERTY(QmlPidData* pidData MEMBER pidData NOTIFY mcuPidUpdated)
+	Q_PROPERTY(QmlMagCalibrationData* magCalibrationData MEMBER magCalibrationData NOTIFY mcuMagCalibrationDataUpdated)
 	Q_PROPERTY(bool pidChartEnabled MEMBER pidChartEnabled NOTIFY pidChartEnabledUpdated)
 	Q_PROPERTY(bool magCalbrating MEMBER magCalbrating NOTIFY magCalibratingUpdated)
 	Q_PROPERTY(bool magTesting MEMBER magTesting NOTIFY magTestingUpdated)
@@ -29,6 +30,7 @@ class RobotData : public QObject
 		static RobotData *instance;
 		QmlMcuData *mcuData;
 		QmlPidData *pidData;
+		QmlMagCalibrationData *magCalibrationData;
 		QString mcuSerialNumber;
 
 		const int kFitPoints = 10;
@@ -71,6 +73,7 @@ class RobotData : public QObject
 		void updateMcuData(const McuData &mcuData);
 		void updateMcuSerialNumber(const McuSerialNumber &mcuSerialNumber);
 		void updateMcuPid(const McuPid &mcuPid);
+		void updateMcuMagCalibrationData(const McuMagCalibrationData &mcuMagData);
 
 	public slots:
 		void startMagCal();
@@ -105,6 +108,7 @@ class RobotData : public QObject
 		void magCalibratingUpdated();
 		void magTestingUpdated();
 		void magSoftIronMatrixUpdated();
+		void mcuMagCalibrationDataUpdated();
 
 		void imuCalibratingUpdated();
 };

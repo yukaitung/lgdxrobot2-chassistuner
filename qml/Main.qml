@@ -70,7 +70,6 @@ ApplicationWindow {
 				icon.color: "white"
 				onClicked: {
 					SerialPort.disconnect();
-					RobotData.clearImuCalibration();
 				}
 				visible: SerialPort.isConnected
 			}

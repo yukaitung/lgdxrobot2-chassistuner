@@ -49,6 +49,7 @@ class SerialPort: public QObject
 
 		void getSerialNumber();
 		void getPid();
+		void getMagCalibrationData();
 
 		void setInverseKinematics(QString x, QString y, QString rotation);
 		void setMotor(int motor, QString velocity);
@@ -57,6 +58,7 @@ class SerialPort: public QObject
 		void setPid(int motor,int level, QString p, QString i, QString d);
 		void setMotorMaximumSpeed(QString speed1, QString speed2, QString speed3, QString speed4);
 
+		void resetMagCalibrationData();
 		void setMagCalibrationData(QVector<float> &hardIronMax, QVector<float> &hardIronMin, QVector<float> &softIronMatrix);
 		void setMagCalibrationDataCustom(float hardIronXMax, float hardIronYMax, float hardIronZMax,
 			float hardIronXMin, float hardIronYMin, float hardIronZMin,

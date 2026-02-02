@@ -50,15 +50,15 @@ Pane
       }
 
       LabelText {
-        text: RobotData.mcuData.hardIronMax[0].toFixed(10)
+        text: RobotData.magCalibrationData.hardIronMax[0].toFixed(10)
       }
 
       LabelText {
-        text: RobotData.mcuData.hardIronMax[1].toFixed(10)
+        text: RobotData.magCalibrationData.hardIronMax[1].toFixed(10)
       }
 
       LabelText {
-        text: RobotData.mcuData.hardIronMax[2].toFixed(10)
+        text: RobotData.magCalibrationData.hardIronMax[2].toFixed(10)
       }
 
       LabelText {
@@ -66,15 +66,15 @@ Pane
       }
 
       LabelText {
-        text: RobotData.mcuData.hardIronMin[0].toFixed(10)
+        text: RobotData.magCalibrationData.hardIronMin[0].toFixed(10)
       }
 
       LabelText {
-        text: RobotData.mcuData.hardIronMin[1].toFixed(10)
+        text: RobotData.magCalibrationData.hardIronMin[1].toFixed(10)
       }
 
       LabelText {
-        text: RobotData.mcuData.hardIronMin[2].toFixed(10)
+        text: RobotData.magCalibrationData.hardIronMin[2].toFixed(10)
       }
     }
 
@@ -94,17 +94,17 @@ Pane
       }
 
       LabelText {
-        text: RobotData.mcuData.softIronMatrix[0].toFixed(10)
+        text: RobotData.magCalibrationData.softIronMatrix[0].toFixed(10)
         Layout.fillWidth: true
       }
 
       LabelText {
-        text: RobotData.mcuData.softIronMatrix[1].toFixed(10)
+        text: RobotData.magCalibrationData.softIronMatrix[1].toFixed(10)
         Layout.fillWidth: true
       }
 
       LabelText {
-        text: RobotData.mcuData.softIronMatrix[2].toFixed(10)
+        text: RobotData.magCalibrationData.softIronMatrix[2].toFixed(10)
         Layout.fillWidth: true
       }
 
@@ -113,15 +113,15 @@ Pane
       }
 
       LabelText {
-        text: RobotData.mcuData.softIronMatrix[3].toFixed(10)
+        text: RobotData.magCalibrationData.softIronMatrix[3].toFixed(10)
       }
 
       LabelText {
-        text: RobotData.mcuData.softIronMatrix[4].toFixed(10)
+        text: RobotData.magCalibrationData.softIronMatrix[4].toFixed(10)
       }
 
       LabelText {
-        text: RobotData.mcuData.softIronMatrix[5].toFixed(10)
+        text: RobotData.magCalibrationData.softIronMatrix[5].toFixed(10)
       }
 
       LabelText {
@@ -129,26 +129,51 @@ Pane
       }
 
       LabelText {
-        text: RobotData.mcuData.softIronMatrix[6].toFixed(10)
+        text: RobotData.magCalibrationData.softIronMatrix[6].toFixed(10)
       }
 
       LabelText {
-        text: RobotData.mcuData.softIronMatrix[7].toFixed(10)
+        text: RobotData.magCalibrationData.softIronMatrix[7].toFixed(10)
       }
 
       LabelText {
-        text: RobotData.mcuData.softIronMatrix[8].toFixed(10)
+        text: RobotData.magCalibrationData.softIronMatrix[8].toFixed(10)
       }
     }
 
     // Copy for testing
-    Button {
-      text: qsTr("Copy for Testing")
-      Material.foreground: "white"
-      Material.background: Material.accent
-      enabled: SerialPort.isConnected && !RobotData.magCalbrating && !RobotData.magTesting
-      onClicked: {
-        RobotData.copyMcuMagDataForTesting();
+    Row {
+      width: parent.width
+      spacing: 16
+
+      Button {
+        text: qsTr("Refresh")
+        Material.foreground: "white"
+        Material.background: Material.accent
+        enabled: SerialPort.isConnected && !RobotData.magCalbrating && !RobotData.magTesting
+        onClicked: {
+          SerialPort.getMagCalibrationData();
+        }
+      }
+
+      Button {
+        text: qsTr("Copy for Testing")
+        Material.foreground: "white"
+        Material.background: Material.accent
+        enabled: SerialPort.isConnected && !RobotData.magCalbrating && !RobotData.magTesting
+        onClicked: {
+          RobotData.copyMcuMagDataForTesting();
+        }
+      }
+
+      Button {
+        text: qsTr("Reset Calibration Data")
+        Material.foreground: "white"
+        Material.background: Material.accent
+        enabled: SerialPort.isConnected && !RobotData.magCalbrating && !RobotData.magTesting
+        onClicked: {
+          SerialPort.resetMagCalibrationData();
+        }
       }
     }
   }

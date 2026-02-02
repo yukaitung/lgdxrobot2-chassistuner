@@ -278,7 +278,7 @@ Pane
       }
     }
 
-     // Send
+    // Send
     Row {
       width: parent.width
       spacing: 16

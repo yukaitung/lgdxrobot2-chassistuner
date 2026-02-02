@@ -117,7 +117,7 @@ typedef struct {
   float soft_iron_matrix[9];
   uint8_t header3;
   uint8_t header4;
-} McuGetMagCalibrationDataCommand;
+} McuMagCalibrationData;
 
 /*
  * PC to MCU communication
@@ -188,6 +188,12 @@ typedef struct {
   float hard_iron_min[3];
   float soft_iron_matrix[9];
 } McuSetMagCalibrationDataCommand;
+
+typedef struct {
+  uint8_t header1;
+  uint8_t header2;
+  char command;
+} McuGetMagCalibrationDataCommand;
 
 // Configuration
 typedef struct {
