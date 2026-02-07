@@ -92,6 +92,7 @@ build-amd64:
   variables:
     ARCH: amd64
   script:
+    - git pull --recurse-submodules
     - |
       docker run --rm -v ${PWD}:/project $EXT_USER/$TOOLCHAIN_IMAGE_NAME:$ARCH bash -c \
       "qt-cmake . -G Ninja -B ./build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=./build/ChassisTuner-$ARCH; 
@@ -115,6 +116,7 @@ build-arm64:
   variables:
     ARCH: arm64
   script:
+    - git pull --recurse-submodules 
     - |
       docker run --rm -v ${PWD}:/project $EXT_USER/$TOOLCHAIN_IMAGE_NAME:$ARCH bash -c \
       "qt-cmake . -G Ninja -B ./build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=./build/ChassisTuner-$ARCH; 

@@ -52,5 +52,10 @@ sudo apt install libxkbcommon-x11-0 libxcb-cursor0 libxcb-icccm4 libxcb-keysyms1
 * Qt Graphs
 
 2. Clone the [lgdxrobot2-chassistuner](https://gitlab.com/yukaitung/lgdxrobot2-chassistuner) repository.
+
+```bash
+git clone --recurse-submodules https://gitlab.com/lgdxrobotics/lgdxrobot2-chassistuner
+```
+
 3. Open the project in Qt Creator.
 4. Press **Run** to build and launch the application.
