@@ -1,5 +1,6 @@
 #include "SerialPort.h"
 #include "src/lgdxrobot2.h"
+#include <QtCore/qcontainerfwd.h>
 
 RobotData* SerialPort::robotData = nullptr;
 SerialPort* SerialPort::instance = nullptr; 
@@ -58,6 +59,11 @@ void SerialPort::read()
 					memcpy(&mcuPid, frame.data(), sizeof(McuPid));
 					robotData->updateMcuPid(mcuPid);
 					break;
+				case MCU_MAG_CALIBRATION_DATA_TYPE:
+					McuMagCalibrationData mcuMagCalibrationData;
+					memcpy(&mcuMagCalibrationData, frame.data(), sizeof(McuMagCalibrationData));
+					robotData->updateMcuMagCalibrationData(mcuMagCalibrationData);
+					break;
 				default:
 					break;
 			}
@@ -85,7 +91,10 @@ void SerialPort::updateDeviceList()
 {
 	deviceList.clear();
 	for (const QSerialPortInfo &info : QSerialPortInfo::availablePorts())
-		deviceList.append(info.portName());
+	{
+		if (info.vendorIdentifier() == kVid && info.productIdentifier() == kPid)
+			deviceList.append(info.portName());
+	}
 	emit deviceListUpdated();
 }
 
@@ -102,6 +111,7 @@ void SerialPort::connect(QString portName)
 		isConnected = true;
 		emit connectionStatusChanged();
 		getPid();
+		getMagCalibrationData();
 	}
 }
 
@@ -149,6 +159,20 @@ void SerialPort::getPid()
 		command.header2 = MCU_HEADER2;
 		command.command = MCU_GET_PID_COMMAND_TYPE;
 		QByteArray ba(reinterpret_cast<const char*>(&command), sizeof(McuGetPidCommand));
+		serial.write(ba);
+		serial.waitForBytesWritten();
+	}
+}
+
+void SerialPort::getMagCalibrationData()
+{
+	if (serial.isOpen())
+	{
+		McuGetMagCalibrationDataCommand command;
+		command.header1 = MCU_HEADER1;
+		command.header2 = MCU_HEADER2;
+		command.command = MCU_GET_MAG_CALIBRATION_DATA_COMMAND_TYPE;
+		QByteArray ba(reinterpret_cast<const char*>(&command), sizeof(McuGetMagCalibrationDataCommand));
 		serial.write(ba);
 		serial.waitForBytesWritten();
 	}
@@ -257,15 +281,66 @@ void SerialPort::setMotorMaximumSpeed(QString speed1, QString speed2, QString sp
 	}
 }
 
-void SerialPort::savePid()
+void SerialPort::resetMagCalibrationData()
 {
 	if (serial.isOpen())
 	{
-		McuSavePidCommand command;
+		QVector<float> hardIronMax = {0, 0, 0};
+		QVector<float> hardIronMin = {0, 0, 0};
+		QVector<float> softIronMatrix = {1, 0, 0, 0, 1, 0, 0, 0, 1};
+		setMagCalibrationData(hardIronMax, hardIronMin, softIronMatrix);
+	}
+}
+
+void SerialPort::setMagCalibrationData(QVector<float> &hardIronMax, QVector<float> &hardIronMin, QVector<float> &softIronMatrix)
+{
+	if (serial.isOpen())
+	{
+		McuSetMagCalibrationDataCommand command;
 		command.header1 = MCU_HEADER1;
 		command.header2 = MCU_HEADER2;
-		command.command = MCU_SAVE_PID_COMMAND_TYPE;
-		QByteArray ba(reinterpret_cast<const char*>(&command), sizeof(McuSavePidCommand));
+		command.command = MCU_SET_MAG_CALIBRATION_DATA_COMMAND_TYPE;
+		for (int i = 0; i < hardIronMax.size(); i++)
+		{
+			command.hard_iron_max[i] = hardIronMax[i];
+			command.hard_iron_min[i] = hardIronMin[i];
+		}
+		for (int i = 0; i < softIronMatrix.size(); i++)
+		{
+			command.soft_iron_matrix[i] = softIronMatrix[i];
+		}
+		QByteArray ba(reinterpret_cast<const char*>(&command), sizeof(McuSetMagCalibrationDataCommand));
+		serial.write(ba);
+		serial.waitForBytesWritten();		
+	}
+}
+
+void SerialPort::setMagCalibrationDataCustom(float hardIronXMax, float hardIronYMax, float hardIronZMax, 
+			float hardIronXMin, float hardIronYMin, float hardIronZMin, 
+			float softIronMatrix0, float softIronMatrix1, float softIronMatrix2, 
+			float softIronMatrix3, float softIronMatrix4, float softIronMatrix5, 
+			float softIronMatrix6, float softIronMatrix7, float softIronMatrix8)
+{
+	if (serial.isOpen())
+	{
+		QVector<float> hardIronMax = {hardIronXMax, hardIronYMax, hardIronZMax};
+		QVector<float> hardIronMin = {hardIronXMin, hardIronYMin, hardIronZMin};
+		QVector<float> softIronMatrix = {softIronMatrix0, softIronMatrix1, softIronMatrix2, 
+			softIronMatrix3, softIronMatrix4, softIronMatrix5, 
+			softIronMatrix6, softIronMatrix7, softIronMatrix8};
+		setMagCalibrationData(hardIronMax, hardIronMin, softIronMatrix);
+	}
+}
+
+void SerialPort::saveConfiguration()
+{
+	if (serial.isOpen())
+	{
+		McuSaveConfigurationCommand command;
+		command.header1 = MCU_HEADER1;
+		command.header2 = MCU_HEADER2;
+		command.command = MCU_SAVE_CONFIGURATION_COMMAND_TYPE;
+		QByteArray ba(reinterpret_cast<const char*>(&command), sizeof(McuSaveConfigurationCommand));
 		serial.write(ba);
 		serial.waitForBytesWritten();
 	}

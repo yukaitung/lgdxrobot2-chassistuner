@@ -1,11 +1,10 @@
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Controls.Material
-import SerialPort
-import "PidTuner"
+import "MagtonometerCalibration"
 import "../shared"
 import "../global.js" as Global
-
+ 
 Flickable {
   contentHeight: pane.height
   clip: true
@@ -20,26 +19,26 @@ Flickable {
       spacing: 16
 
       LabelHeading {
-        text: qsTr("Motors Maximum Speed")
+        text: qsTr("Current Configuration")
       }
 
-      MotorsMaxSpeed {
+      ConfigurationPane {
         width: parent.width
       }
 
       LabelHeading {
-        text: qsTr("PID Configuration")
+        text: qsTr("Custom Configuration")
       }
 
-      PidConfigurationPane {
+      CustomPane {
         width: parent.width
       }
-
+      
       LabelHeading {
-        text: qsTr("PID Test")
+        text: qsTr("Magtonometer Calibration")
       }
 
-      PidTestPane {
+      CalibrationPane {
         width: parent.width
       }
     }

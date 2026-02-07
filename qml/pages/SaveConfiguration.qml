@@ -1,11 +1,10 @@
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Controls.Material
-import SerialPort
-import "PidTuner"
+import "SaveConfiguration"
 import "../shared"
 import "../global.js" as Global
-
+ 
 Flickable {
   contentHeight: pane.height
   clip: true
@@ -18,28 +17,12 @@ Flickable {
       width: Math.min(parent.width, Global.maxWidth)
       anchors.horizontalCenter: parent.horizontalCenter
       spacing: 16
-
+      
       LabelHeading {
-        text: qsTr("Motors Maximum Speed")
+        text: qsTr("Save Configuration")
       }
 
-      MotorsMaxSpeed {
-        width: parent.width
-      }
-
-      LabelHeading {
-        text: qsTr("PID Configuration")
-      }
-
-      PidConfigurationPane {
-        width: parent.width
-      }
-
-      LabelHeading {
-        text: qsTr("PID Test")
-      }
-
-      PidTestPane {
+      SavePane {
         width: parent.width
       }
     }

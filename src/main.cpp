@@ -26,8 +26,10 @@ int main(int argc, char *argv[])
 {
 	QGuiApplication app(argc, argv);
 
+	#ifndef Q_OS_MACOS
 	QIcon icon(":/resources/icon.svg");
 	app.setWindowIcon(icon);
+	#endif
 
 	QQmlApplicationEngine engine;
 	qmlRegisterSingletonType<RobotData>("RobotData", 1, 0, "RobotData", RobotDataSingletonProvider);
@@ -38,7 +40,9 @@ int main(int argc, char *argv[])
 		&app,
 		[]() { QCoreApplication::exit(-1); },
 		Qt::QueuedConnection);
-	engine.loadFromModule("LGDXRobot2ChassisTuner", "Main");
+	engine.load(QUrl(QStringLiteral("qrc:/qml/Main.qml")));
+	if (engine.rootObjects().isEmpty())
+		return -1;
 
 	QObject::connect(&app, &QCoreApplication::aboutToQuit, []() {
 		SerialPort *serialPort = SerialPort::getInstance();
