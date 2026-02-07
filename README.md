@@ -25,7 +25,7 @@ LGDXRobot2 ChassisTuner is a GUI tool written in Qt, designed for testing and fi
 
 * Test the communication between the robot and the PC.
 * Fine-tune the PID parameters for the motors using a graph.
-* Magtonometer calibration for both hard iron and soft iron.
+* Magnetometer calibration for both hard iron and soft iron.
 
 ## Installation
 
@@ -56,5 +56,5 @@ sudo apt install libxkbcommon-x11-0 libxcb-cursor0 libxcb-icccm4 libxcb-keysyms1
 
 ## Credits
 
-* [ellipsoid-fit](https://github.com/lirmm/ellipsoid-fit): Ellipsoid fitting for soft iron calibration, released under the LGPLv3 license.
+* [ellipsoid-fit](https://github.com/lirmm/ellipsoid-fit): Ellipsoid fitting for soft iron calibration, released under the LGPLv3 licence.
 * [eigen](https://gitlab.com/libeigen/eigen): Eigen library used for ellipsoid fitting.
