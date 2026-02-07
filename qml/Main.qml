@@ -68,7 +68,9 @@ ApplicationWindow {
 			ToolButton {
 				icon.source: Qt.resolvedUrl("qrc:/qml/img/disconnect.svg")
 				icon.color: "white"
-				onClicked: SerialPort.disconnect()
+				onClicked: {
+					SerialPort.disconnect();
+				}
 				visible: SerialPort.isConnected
 			}
 		}
@@ -87,6 +89,14 @@ ApplicationWindow {
 		TabButton {
 			text: qsTr("PID Tuner")
 		}
+
+		TabButton {
+			text: qsTr("Magtonometer Calibration")
+		}
+
+		TabButton {
+			text: qsTr("Save Configuration")
+		}	
 	}
 
 	StackLayout {
@@ -101,6 +111,16 @@ ApplicationWindow {
 		}
 
 		PidTuner {
+			Layout.fillWidth: true
+			Layout.fillHeight: true
+		}
+
+		MagtonometerCalibration {
+			Layout.fillWidth: true
+			Layout.fillHeight: true
+		}
+
+		SaveConfiguration {
 			Layout.fillWidth: true
 			Layout.fillHeight: true
 		}

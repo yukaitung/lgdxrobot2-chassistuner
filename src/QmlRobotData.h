@@ -5,6 +5,7 @@
 #include <QMetaType>
 #include <QVector>
 #include <QtCore/qcontainerfwd.h>
+#include <QtCore/qtmetamacros.h>
 
 class QmlMcuData : public QObject
 {
@@ -18,6 +19,12 @@ class QmlMcuData : public QObject
   Q_PROPERTY(QVector<int> motorsCcr MEMBER motorsCcr NOTIFY updated)
   Q_PROPERTY(QVector<float> battery1 MEMBER battery1 NOTIFY updated)
   Q_PROPERTY(QVector<float> battery2 MEMBER battery2 NOTIFY updated)
+  Q_PROPERTY(QVector<float> accelerometer MEMBER accelerometer NOTIFY updated)
+  Q_PROPERTY(QVector<float> accelerometerCovariance MEMBER accelerometerCovariance NOTIFY updated)
+  Q_PROPERTY(QVector<float> gyroscope MEMBER gyroscope NOTIFY updated)
+  Q_PROPERTY(QVector<float> gyroscopeCovariance MEMBER gyroscopeCovariance NOTIFY updated)
+  Q_PROPERTY(QVector<float> magnetometer MEMBER magnetometer NOTIFY updated)
+  Q_PROPERTY(QVector<float> magnetometerCovariance MEMBER magnetometerCovariance NOTIFY updated)
   Q_PROPERTY(bool softwareEmergencyStopEnabled MEMBER softwareEmergencyStopEnabled NOTIFY updated)
   Q_PROPERTY(bool hardwareEmergencyStopEnabled MEMBER hardwareEmergencyStopEnabled NOTIFY updated)
   Q_PROPERTY(bool betteryLowEmergencyStopEnabled MEMBER betteryLowEmergencyStopEnabled NOTIFY updated)
@@ -33,6 +40,12 @@ class QmlMcuData : public QObject
     QVector<int> motorsCcr = {0, 0, 0, 0}; // motor 1, motor 2, motor 3, motor 4
     QVector<float> battery1 = {0.0f, 0.0f}; // voltage, current
     QVector<float> battery2 = {0.0f, 0.0f}; // voltage, current
+    QVector<float> accelerometer = {0.0f, 0.0f, 0.0f}; // x, y, z
+    QVector<float> accelerometerCovariance = {0.0f, 0.0f, 0.0f}; // x major, y major, z major
+    QVector<float> gyroscope = {0.0f, 0.0f, 0.0f}; // x, y, z
+    QVector<float> gyroscopeCovariance = {0.0f, 0.0f, 0.0f}; // x major, y major, z major
+    QVector<float> magnetometer = {0.0f, 0.0f, 0.0f}; // x, y, z
+    QVector<float> magnetometerCovariance = {0.0f, 0.0f, 0.0f}; // x major, y major, z major
     bool softwareEmergencyStopEnabled = false;
     bool hardwareEmergencyStopEnabled = false;
     bool betteryLowEmergencyStopEnabled = false;
@@ -57,6 +70,22 @@ class QmlPidData : public QObject
     QVector<QVector<QString>> i = { {"-", "-", "-", "-"}, {"-", "-", "-", "-"}, {"-", "-", "-", "-"} };
     QVector<QVector<QString>> d = { {"-", "-", "-", "-"}, {"-", "-", "-", "-"}, {"-", "-", "-", "-"} };
     QVector<QString> motorMaximumSpeed = {"-", "-", "-", "-"};
+  signals:
+    void updated();
+};
+
+class QmlMagCalibrationData : public QObject
+{
+  Q_OBJECT
+  Q_PROPERTY(QVector<float> hardIronMax MEMBER hardIronMax NOTIFY updated)
+  Q_PROPERTY(QVector<float> hardIronMin MEMBER hardIronMin NOTIFY updated)
+  Q_PROPERTY(QVector<float> softIronMatrix MEMBER softIronMatrix NOTIFY updated)
+
+  public:
+    explicit QmlMagCalibrationData(QObject *parent = nullptr);
+    QVector<float> hardIronMax = {0.0f, 0.0f, 0.0f}; // x, y, z
+    QVector<float> hardIronMin = {0.0f, 0.0f, 0.0f}; // x, y, z
+    QVector<float> softIronMatrix = {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f}; // Matrix
   signals:
     void updated();
 };

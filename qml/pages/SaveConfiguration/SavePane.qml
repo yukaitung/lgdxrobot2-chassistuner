@@ -25,7 +25,7 @@ Pane
       Material.background: Material.accent
       enabled: SerialPort.isConnected
       onClicked: {
-        SerialPort.savePid();
+        SerialPort.saveConfiguration();
         label.visible = true;
         timer.start();
       }
