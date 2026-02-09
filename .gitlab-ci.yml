@@ -162,16 +162,18 @@ release_job:
       curl --location --header "JOB-TOKEN: ${CI_JOB_TOKEN}" \
            --upload-file ChassisTuner-amd64.zip \
            "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/LGDXRobot2-ChassisTuner/$APP_VERSION/ChassisTuner-amd64.zip"
+    - rm *.zip
     # Build debian package
-    - mkdir deb
-    - cp ../../Debian/control deb/control
-    - sed -i "s/%REPLACE_VERSION%/$APP_VERSION/g" deb/control
-    - sed -i "s/%REPLACE_ARCH%/amd64/g" deb/control
-    - cp build/ChassisTuner-amd64/ deb/opt/lgdxrobot2-chassistuner
-    - dpkg-deb --build deb
+    - cd ..
+    - mkdir deb-amd64
+    - cp ../../Debian/control deb-amd64/control
+    - sed -i "s/%REPLACE_VERSION%/$APP_VERSION/g" deb-amd64/control
+    - sed -i "s/%REPLACE_ARCH%/amd64/g" deb-amd64/control
+    - cp ChassisTuner-amd64/ deb-amd64/opt/lgdxrobot2-chassistuner
+    - dpkg-deb --build deb-amd64
     - ls -la
     # Done
-    - cd ../..
+    - cd ..
     # Upload ARM64
     - cd build/ChassisTuner-arm64
     - zip -r ChassisTuner-arm64.zip .
