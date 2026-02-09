@@ -149,6 +149,7 @@ release_job:
     - apk add gitlab-release-cli  
     - apk add curl
     - apk add zip
+    - apk add dpkg
   script:
     # Upload AMD64
     - cd build/ChassisTuner-amd64
@@ -161,6 +162,15 @@ release_job:
       curl --location --header "JOB-TOKEN: ${CI_JOB_TOKEN}" \
            --upload-file ChassisTuner-amd64.zip \
            "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/LGDXRobot2-ChassisTuner/$APP_VERSION/ChassisTuner-amd64.zip"
+    # Build debian package
+    - mkdir deb
+    - cp /Debian/control deb/control
+    - sed -i "s/%REPLACE_VERSION%/$APP_VERSION/g" deb/control
+    - sed -i "s/%REPLACE_ARCH%/amd64/g" deb/control
+    - cp build/ChassisTuner-amd64/ deb/opt/lgdxrobot2-chassistuner
+    - dpkg-deb --build deb
+    - ls -la
+    # Done
     - cd ../..
     # Upload ARM64
     - cd build/ChassisTuner-arm64

@@ -1,0 +1,7 @@
+Package: lgdxrobot2-chassistuner
+Version: %REPLACE_VERSION%
+Section: misc
+Priority: optional
+Architecture: %REPLACE_ARCH%
+Maintainer: LGDXRobotics <info@bristolgram.uk>
+Description: Udev rules for LGDXRobot2 hardware.
