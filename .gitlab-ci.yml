@@ -167,7 +167,7 @@ release_job:
     - cd ..
     - mkdir -p deb-amd64/opt/lgdxrobot2-chassistuner
     - mkdir -p deb-amd64/Debian
-    - cp ../Debian/control deb-amd64/Debian
+    - cp ../Debian/control deb-amd64/Debian/control
     - sed -i "s/%REPLACE_VERSION%/$APP_VERSION/g" deb-amd64/Debian/control
     - sed -i "s/%REPLACE_ARCH%/amd64/g" deb-amd64/Debian/control
     - cp -r ChassisTuner-amd64/* deb-amd64/opt/lgdxrobot2-chassistuner
@@ -195,7 +195,7 @@ release_job:
     - cd ..
     - mkdir -p deb-arm64/opt/lgdxrobot2-chassistuner
     - mkdir -p deb-arm64/Debian
-    - cp ../Debian/control deb-arm64/Debian
+    - cp ../Debian/control deb-arm64/Debian/control
     - sed -i "s/%REPLACE_VERSION%/$APP_VERSION/g" deb-arm64/Debian/control
     - sed -i "s/%REPLACE_ARCH%/arm64/g" deb-arm64/Debian/control
     - cp -r ChassisTuner-arm64/* deb-arm64/opt/lgdxrobot2-chassistuner
