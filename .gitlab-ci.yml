@@ -164,7 +164,7 @@ release_job:
            "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/LGDXRobot2-ChassisTuner/$APP_VERSION/ChassisTuner-amd64.zip"
     # Build debian package
     - mkdir deb
-    - cp /Debian/control deb/control
+    - cp ../../Debian/control deb/control
     - sed -i "s/%REPLACE_VERSION%/$APP_VERSION/g" deb/control
     - sed -i "s/%REPLACE_ARCH%/amd64/g" deb/control
     - cp build/ChassisTuner-amd64/ deb/opt/lgdxrobot2-chassistuner
