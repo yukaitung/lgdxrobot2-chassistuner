@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 
-project(ChassisTuner VERSION 3.1 LANGUAGES CXX)
+project(ChassisTuner VERSION 3.2 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
