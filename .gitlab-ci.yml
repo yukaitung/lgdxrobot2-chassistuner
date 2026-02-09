@@ -1,4 +1,5 @@
 variables:
+  TOOLCHAIN_IMAGE_NAME: "lgdxrobot2-chassistuner-build"
   GIT_SUBMODULE_STRATEGY: recursive
   GIT_SUBMODULE_FORCE_HTTPS: "true"
 
