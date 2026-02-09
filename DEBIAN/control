@@ -5,7 +5,4 @@ Priority: optional
 Architecture: %REPLACE_ARCH%
 Maintainer: LGDXRobotics <info@bristolgram.uk>
 Description: GUI tool for testing and fine-tuning LGDXRobot2 hardware.
-Depends: libxkbcommon-x11-0,
-         libxcb-cursor0,
-         libxcb-icccm4,
-         libxcb-keysyms1
+Depends: libxkbcommon-x11-0, libxcb-cursor0, libxcb-icccm4, libxcb-keysyms1
