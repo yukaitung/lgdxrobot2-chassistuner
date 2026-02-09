@@ -166,12 +166,16 @@ release_job:
     # Build debian package
     - cd ..
     - mkdir deb-amd64
-    - cp ../../Debian/control deb-amd64/control
+    - cp ../Debian/control deb-amd64/control
     - sed -i "s/%REPLACE_VERSION%/$APP_VERSION/g" deb-amd64/control
     - sed -i "s/%REPLACE_ARCH%/amd64/g" deb-amd64/control
-    - cp ChassisTuner-amd64/ deb-amd64/opt/lgdxrobot2-chassistuner
+    - cp ChassisTuner-amd64 deb-amd64/opt/lgdxrobot2-chassistuner
     - dpkg-deb --build deb-amd64
-    - ls -la
+    - mv deb-amd64.deb lgdxrobot2-chassistuner-amd64.deb
+    - |
+      curl --location --header "JOB-TOKEN: ${CI_JOB_TOKEN}" \
+           --upload-file lgdxrobot2-chassistuner-amd64.deb \
+           "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/LGDXRobot2-ChassisTuner-Deb/latest/lgdxrobot2-chassistuner-amd64.deb"
     # Done
     - cd ..
     # Upload ARM64
@@ -185,6 +189,20 @@ release_job:
       curl --location --header "JOB-TOKEN: ${CI_JOB_TOKEN}" \
            --upload-file ChassisTuner-arm64.zip \
            "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/LGDXRobot2-ChassisTuner/$APP_VERSION/ChassisTuner-arm64.zip"
+    - rm *.zip
+    # Build debian package
+    - cd ..
+    - mkdir deb-arm64
+    - cp ../Debian/control deb-arm64/control
+    - sed -i "s/%REPLACE_VERSION%/$APP_VERSION/g" deb-arm64/control
+    - sed -i "s/%REPLACE_ARCH%/arm64/g" deb-arm64/control
+    - cp ChassisTuner-arm64 deb-arm64/opt/lgdxrobot2-chassistuner
+    - dpkg-deb --build deb-arm64
+    - mv deb-arm64.deb lgdxrobot2-chassistuner-arm64.deb
+    - |
+      curl --location --header "JOB-TOKEN: ${CI_JOB_TOKEN}" \
+           --upload-file lgdxrobot2-chassistuner-arm64.deb \
+           "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/LGDXRobot2-ChassisTuner-Deb/latest/lgdxrobot2-chassistuner-arm64.deb"
   release:
     name : 'Release $APP_VERSION'
     tag_name: '$APP_VERSION'
