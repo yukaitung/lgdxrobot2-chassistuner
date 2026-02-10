@@ -98,8 +98,6 @@ build-arm64:
   needs:
     - job: prepare
       artifacts: true
-    - job: build-amd64
-    - job: build-arm64
   variables:
     ARCH: arm64
   before_script:
@@ -153,6 +151,8 @@ release:
   needs:
     - job: prepare
       artifacts: true
+    - job: build-amd64
+    - job: build-arm64
   script:
     - apk add glab
     - apk add gitlab-release-cli  
