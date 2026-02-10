@@ -74,10 +74,10 @@ build-amd64:
     # Build DEBIAN package
     - mkdir -p deb/opt/lgdxrobot2-chassistuner
     - mkdir -p deb/DEBIAN
-    - cp ./DEBIAN/control deb/DEBIAN/control
+    - cp DEBIAN/control deb/DEBIAN/control
     - sed -i "s/%REPLACE_VERSION%/$APP_VERSION/g" deb/DEBIAN/control
     - sed -i "s/%REPLACE_ARCH%/$ARCH/g" deb/DEBIAN/control
-    - cp -r ChassisTuner-$ARCH/* deb/opt/lgdxrobot2-chassistuner
+    - cp -r build/ChassisTuner-$ARCH/* deb/opt/lgdxrobot2-chassistuner
     - dpkg-deb --build deb
     - mv deb.deb lgdxrobot2-chassistuner-$ARCH.deb
     - |
@@ -127,10 +127,10 @@ build-arm64:
     # Build DEBIAN package
     - mkdir -p deb/opt/lgdxrobot2-chassistuner
     - mkdir -p deb/DEBIAN
-    - cp ./DEBIAN/control deb/DEBIAN/control
+    - cp DEBIAN/control deb/DEBIAN/control
     - sed -i "s/%REPLACE_VERSION%/$APP_VERSION/g" deb/DEBIAN/control
     - sed -i "s/%REPLACE_ARCH%/$ARCH/g" deb/DEBIAN/control
-    - cp -r ChassisTuner-$ARCH/* deb/opt/lgdxrobot2-chassistuner
+    - cp -r build/ChassisTuner-$ARCH/* deb/opt/lgdxrobot2-chassistuner
     - dpkg-deb --build deb
     - mv deb.deb lgdxrobot2-chassistuner-$ARCH.deb
     - |
