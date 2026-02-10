@@ -98,6 +98,8 @@ build-arm64:
   needs:
     - job: prepare
       artifacts: true
+    - job: build-amd64
+    - job: build-arm64
   variables:
     ARCH: arm64
   before_script:
